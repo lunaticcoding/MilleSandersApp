@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/constants/k_colors.dart';
-import 'ViewsAndViewModels/mille_sanders_tabbar_view.dart';
+import 'views_and_viewmodels/mille_sanders_tabbar_view.dart';
 
 void main() => runApp(MyApp());
 

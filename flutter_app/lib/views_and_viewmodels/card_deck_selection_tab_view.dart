@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ViewsAndViewModels/card_deck_selection_tab_viewmodel.dart';
+import 'package:flutter_app/views_and_viewmodels/card_deck_selection_tab_viewmodel.dart';
 import 'package:provider_architecture/viewmodel_provider.dart';
 
 class CardDeckSelectionTabView extends StatelessWidget {

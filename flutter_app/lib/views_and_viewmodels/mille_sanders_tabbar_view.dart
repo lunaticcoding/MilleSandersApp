@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ViewsAndViewModels/card_deck_selection_tab_view.dart';
-import 'package:flutter_app/ViewsAndViewModels/mille_sanders_tabbar_viewmodel.dart';
+import 'package:flutter_app/views_and_viewmodels/card_deck_selection_tab_view.dart';
+import 'package:flutter_app/views_and_viewmodels/mille_sanders_tabbar_viewmodel.dart';
 import 'package:flutter_app/constants/k_colors.dart';
 import 'package:flutter_app/constants/the_noun_project_icons_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,11 +22,40 @@ class _MilleSandersTabBarViewState extends State<MilleSandersTabBarView> {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(40.0),
           child: AppBar(
-            title: Text(
-              "MILLE SANDERS",
-              style: GoogleFonts.bebasNeue(
-                textStyle: TextStyle(color: Colors.black, letterSpacing: 0.8),
-              ),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  "MILLE SANDERS",
+                  style: GoogleFonts.bebasNeue(
+                    textStyle:
+                        TextStyle(color: Colors.black, letterSpacing: 0.8, fontSize: 21),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    IconButton(
+                      padding: EdgeInsets.all(0),
+                      iconSize: 33,
+                      onPressed: model.launchPinterest,
+                      icon: Icon(
+                        TheNounProjectIcons.pinterest,
+                        color: Colors.black,
+                      ),
+                    ),
+                    IconButton(
+                      padding: EdgeInsets.all(0),
+                      iconSize: 33,
+                      onPressed: model.launchInstagram,
+                      icon: Icon(
+                        TheNounProjectIcons.instagram,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
             centerTitle: false,
             backgroundColor: Colors.white,
@@ -60,7 +89,7 @@ class _MilleSandersTabBarViewState extends State<MilleSandersTabBarView> {
                 onTap: model.setTabIndex,
                 items: <BottomNavigationBarItem>[
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
+                    icon: Icon(TheNounProjectIcons.logo_millesanders),
                     title: Container(
                       height: 0,
                     ),

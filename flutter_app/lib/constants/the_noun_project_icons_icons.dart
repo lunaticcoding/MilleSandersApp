@@ -44,4 +44,9 @@ class TheNounProjectIcons {
   static const IconData noun_unlock = const IconData(0xe814, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData noun_whatsapp = const IconData(0xe815, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData noun_write = const IconData(0xe816, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData logo_millesanders = const IconData(0xe817, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData pinterest = const IconData(0xe818, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData linkedin = const IconData(0xe819, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData instagram = const IconData(0xe81a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData facebook = const IconData(0xe81b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
