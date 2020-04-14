@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/views_and_viewmodels/card_deck_selection_tab_viewmodel.dart';
-import 'package:provider_architecture/viewmodel_provider.dart';
+import 'package:flutter_app/models/Cards.dart';
+import 'package:flutter_app/custom_widgets/card.dart';
+import 'package:provider/provider.dart';
+
+import 'card_deck_selection_tab_viewmodel.dart';
 
 class CardDeckSelectionTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ViewModelProvider.withConsumer(
-      viewModel: CardDeckSelectionTabViewModel(),
-      builder: (context, model, child) => Padding(
+    var cards = Provider.of<Cards>(context);
+    return Container(
+      color: Colors.white,
+      child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -17,7 +21,10 @@ class CardDeckSelectionTabView extends StatelessWidget {
             Text(
               "Heute möchte ich...",
               style: TextStyle(
+                color: Colors.black,
                 decoration: TextDecoration.underline,
+                decorationColor: Colors.black,
+                decorationStyle: TextDecorationStyle.solid,
                 fontWeight: FontWeight.w700,
                 fontSize: 18,
               ),
@@ -25,7 +32,7 @@ class CardDeckSelectionTabView extends StatelessWidget {
             SizedBox(height: 10),
             Flexible(
               child: ListView.builder(
-                itemCount: model.cardDetails.length,
+                itemCount: cards.cardDeck.length,
                 itemBuilder: (BuildContext ctxt, int index) => Column(
                   children: <Widget>[
                     LayoutBuilder(
@@ -34,31 +41,48 @@ class CardDeckSelectionTabView extends StatelessWidget {
                               Container(
                         width: constraints.maxWidth,
                         child: Text(
-                          model.cardDetails[index].headline,
+                          cards.cardDeck[index].headline,
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
+                            decoration: TextDecoration.none,
+                            color: Colors.black,
                             fontSize: 15,
                           ),
                         ),
                       ),
                     ),
                     SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Card(
-                          size: 170,
-                          text: model.cardDetails[index].titleLeft,
-                          color: model.cardDetails[index].color,
-                          icon: model.cardDetails[index].iconLeft,
-                        ),
-                        Card(
-                          size: 170,
-                          text: model.cardDetails[index].titleRight,
-                          color: model.cardDetails[index].color,
-                          icon: model.cardDetails[index].iconRight,
-                        ),
-                      ],
+                    LayoutBuilder(
+                      builder: (context, constraints) => Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          DisplayCard(
+                            elevation: 0,
+                            width: constraints.maxWidth/2-15,
+                            text: cards.cardDeck[index].titleLeft,
+                            color: cards.cardDeck[index].color,
+                            icon: cards.cardDeck[index].iconLeft,
+                            onTap: () =>
+                                CardDeckSelectionTabViewModel.displayCardsFor(
+                              context: context,
+                              category: cards.cardDeck[index].titleLeft,
+                            ),
+                          ),
+                          SizedBox(width: 20),
+                          DisplayCard(
+                            elevation: 0,
+                            width: constraints.maxWidth/2-15,
+                            text: cards.cardDeck[index].titleRight,
+                            color: cards.cardDeck[index].color,
+                            icon: cards.cardDeck[index].iconRight,
+                            onTap: () =>
+                                CardDeckSelectionTabViewModel.displayCardsFor(
+                              context: context,
+                              category: cards.cardDeck[index].titleRight,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(height: 20),
                   ],
@@ -67,46 +91,6 @@ class CardDeckSelectionTabView extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class Card extends StatelessWidget {
-  final double size;
-  final String text;
-  final IconData icon;
-  final Color color;
-  Card({@required this.size, this.text, this.icon, this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: size,
-      width: size,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            text,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
-              fontSize: 15,
-            ),
-          ),
-          SizedBox(height: 10),
-          Icon(
-            icon,
-            size: 80,
-            color: Colors.white,
-          ),
-        ],
       ),
     );
   }
