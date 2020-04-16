@@ -32,7 +32,7 @@ class CardDeckSelectionTabView extends StatelessWidget {
             SizedBox(height: 10),
             Flexible(
               child: ListView.builder(
-                itemCount: cards.cardDeck.length,
+                itemCount: cards.cardCategories.length,
                 itemBuilder: (BuildContext ctxt, int index) => Column(
                   children: <Widget>[
                     LayoutBuilder(
@@ -41,7 +41,7 @@ class CardDeckSelectionTabView extends StatelessWidget {
                               Container(
                         width: constraints.maxWidth,
                         child: Text(
-                          cards.cardDeck[index].headline,
+                          cards.cardCategories[index].first.section,
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             decoration: TextDecoration.none,
@@ -58,27 +58,67 @@ class CardDeckSelectionTabView extends StatelessWidget {
                         children: <Widget>[
                           DisplayCard(
                             elevation: 0,
-                            width: constraints.maxWidth/2-15,
-                            text: cards.cardDeck[index].titleLeft,
-                            color: cards.cardDeck[index].color,
-                            icon: cards.cardDeck[index].iconLeft,
+                            width: constraints.maxWidth / 2 - 15,
+                            color: cards.cardCategories[index].first.color,
                             onTap: () =>
                                 CardDeckSelectionTabViewModel.displayCardsFor(
                               context: context,
-                              category: cards.cardDeck[index].titleLeft,
+                              category: cards.cardCategories[index].first.category,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  cards.cardCategories[index].first.category,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                    decoration: TextDecoration.none,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                Icon(
+                                  cards.cardCategories[index].first.icon,
+                                  size: 80,
+                                  color: Colors.white,
+                                )
+                              ],
                             ),
                           ),
                           SizedBox(width: 20),
                           DisplayCard(
                             elevation: 0,
-                            width: constraints.maxWidth/2-15,
-                            text: cards.cardDeck[index].titleRight,
-                            color: cards.cardDeck[index].color,
-                            icon: cards.cardDeck[index].iconRight,
+                            width: constraints.maxWidth / 2 - 15,
+                            color: cards.cardCategories[index].last.color,
                             onTap: () =>
                                 CardDeckSelectionTabViewModel.displayCardsFor(
                               context: context,
-                              category: cards.cardDeck[index].titleRight,
+                              category: cards.cardCategories[index].last.category,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  cards.cardCategories[index].last.category,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                    decoration: TextDecoration.none,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                Icon(
+                                  cards.cardCategories[index].last.icon,
+                                  size: 80,
+                                  color: Colors.white,
+                                )
+                              ],
                             ),
                           ),
                         ],

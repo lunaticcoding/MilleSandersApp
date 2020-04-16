@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 
 class DisplayCard extends StatelessWidget {
+  DisplayCard(
+      {@required this.width,
+        this.height,
+        this.color,
+        this.onTap,
+        this.elevation = 5,
+        this.iconSize = 80,
+        this.child});
+
   final double width;
   final double height;
-  final String text;
-  final IconData icon;
   final Color color;
   final onTap;
   final double elevation;
   final double iconSize;
-
-  DisplayCard(
-      {@required this.width,
-      this.height,
-      this.text,
-      this.icon,
-      this.color,
-      this.onTap,
-      this.elevation = 5,
-      this.iconSize = 80});
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +36,14 @@ class DisplayCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Column(
+        child: child,
+      ),
+    );
+  }
+}
+
+/*
+Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -64,7 +69,4 @@ class DisplayCard extends StatelessWidget {
                 : null,
           ].where((value) => value != null).toList(),
         ),
-      ),
-    );
-  }
-}
+ */
