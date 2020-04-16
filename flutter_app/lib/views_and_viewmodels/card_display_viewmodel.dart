@@ -1,11 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/scheduler/ticker.dart';
-import 'package:flutter_app/constants/k_colors.dart';
 import 'package:flutter_app/locator.dart';
 import 'package:flutter_app/models/CardDetails.dart';
 import 'package:flutter_app/models/Cards.dart';
 import 'package:flutter_app/views_and_viewmodels/card_display_view.dart';
-import 'package:provider/provider.dart';
 
 class CardDisplayViewmodel extends ChangeNotifier {
   Cards cards = locator<Cards>();

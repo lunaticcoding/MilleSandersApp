@@ -6,9 +6,9 @@ import 'package:flutter_app/views_and_viewmodels/card_display_viewmodel.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 
 class CardDisplayView extends StatefulWidget {
-  final String category;
+  CardDisplayView({this.category});
 
-  CardDisplayView({Key key, this.category}) : super(key: key);
+  final String category;
 
   @override
   _CardDisplayViewState createState() => _CardDisplayViewState();
@@ -17,12 +17,13 @@ class CardDisplayView extends StatefulWidget {
 class _CardDisplayViewState extends State<CardDisplayView>
     with SingleTickerProviderStateMixin {
   AnimationController _animationController;
-  Animation<Offset> _animationTranslation;
-  Animation<double> _animationRotation;
+
+  String category;
 
   @override
   void initState() {
     super.initState();
+    category = widget.category;
     _animationController = AnimationController(
       duration: Duration(milliseconds: 500),
       vsync: this,
@@ -37,6 +38,14 @@ class _CardDisplayViewState extends State<CardDisplayView>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Text(
+                category,
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              SizedBox(height: 10),
               Stack(
                 overflow: Overflow.visible,
                 children: model.getCardDeck(),
