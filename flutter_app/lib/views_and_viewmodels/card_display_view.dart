@@ -111,6 +111,12 @@ class _CardDisplayViewState extends State<CardDisplayView>
           ),
         ),
       );
+
+  @override
+  void dispose() {
+    super.dispose();
+    _animationController.dispose();
+  }
 }
 
 class SecondCard extends StatelessWidget {
@@ -344,6 +350,12 @@ class _FirstCardState extends State<FirstCard> {
         ),
       ),
     );
+  }
+  @override
+  void dispose() {
+    super.dispose();
+    _animationTranslation = null;
+    _animationRotation = null;
   }
 }
 
