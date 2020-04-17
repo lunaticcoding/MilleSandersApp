@@ -1,5 +1,5 @@
 # MilleSandersApp
-A productivity card deck implemented in Flutter and Natively in Swift and Kotlin.
+A productivity card deck implemented in Flutter and Native in Swift and Kotlin.
 
 # Flutter App
 Contains the flutter app including a Readme.md with the documentation.
