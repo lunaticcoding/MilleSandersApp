@@ -123,8 +123,26 @@ class _CardDisplayViewState extends State<CardDisplayView>
                         ],
                       ),
                     ),
+                    SizedBox(height: 30),
                     FlatButton(
-                        child: Text("back"),
+                        child: Container(
+                          width: 150,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: kColors.gold,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "back",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ),
                         onPressed: Navigator.of(context).pop)
                   ],
                 ),
