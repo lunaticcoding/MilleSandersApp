@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/constants/k_colors.dart';
+import 'package:flutter_app/models/Cards.dart';
 import 'package:flutter_app/views_and_viewmodels/card_display_view.dart';
 
 class CardDisplayViewmodel extends ChangeNotifier {
@@ -11,16 +12,11 @@ class CardDisplayViewmodel extends ChangeNotifier {
 
   dynamic cardDeck;
   int index = 0;
-  List<Color> _colors = [
-    kColors.brown,
-    kColors.grey,
-    kColors.beige,
-    kColors.gold
-  ];
 
   CardDisplayViewmodel(this._animationController, this._animationTranslation,
       this._animationRotation, this.cardDeck);
 
+  // TODO split this method up!!!
   List<Widget> getCardDeck() {
     List<Widget> list = List<Widget>();
 
@@ -30,39 +26,39 @@ class CardDisplayViewmodel extends ChangeNotifier {
         list.insert(
             0,
             FirstCard(
-              text: card["html"],
-              color: _colors[i % _colors.length],
+              text: card["text"],
+              color: Cards.colorFromHex(card["color"]),
               onDragEnd: (_) => _removeCard(),
               animationRotation: _animationRotation,
               animationTranslation: _animationTranslation,
             ));
       } else {
         list.insert(
-            0,
-            SecondCard(
-              text: card["html"],
-              color: _colors[i % _colors.length],
-              elevation: i == cardDeck["cards"].length - 1 ? 6 : 0,
-            ));
+          0,
+          SecondCard(
+            text: card["text"],
+            color: Cards.colorFromHex(card["color"]),
+            elevation: i == cardDeck["cards"].length - 1 ? 6 : 0,
+          ),
+        );
       }
     }
     if (list.length < 2) {
       list.insert(
         0,
         LastCard(
-          onTap: _resetIndex,
+          onTap: () {
+            index = 0;
+            notifyListeners();
+          },
         ),
       );
     }
     return list;
   }
 
-  void _resetIndex() {
-    index = 0;
-    notifyListeners();
-  }
 
-  void lastCard() async {
+  void prevCard() async {
     if (index == 0) {
       return;
     }

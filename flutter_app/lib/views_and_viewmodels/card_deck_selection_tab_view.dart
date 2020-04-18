@@ -10,72 +10,88 @@ class CardDeckSelectionTabView extends StatelessWidget {
     return ViewModelProvider.withConsumer(
       viewModel: CardDeckSelectionTabViewModel(context),
       builder: (context, model, widget) => model.cards != null
-          ? Container(
-              color: Colors.white,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(height: 20),
-                    Text(
-                      "Heute möchte ich...",
-                      style: TextStyle(
-                        color: Colors.black,
-                        decoration: TextDecoration.underline,
-                        decorationColor: Colors.black,
-                        decorationStyle: TextDecorationStyle.solid,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Flexible(
-                      child: ListView.builder(
-                        itemCount: model.cards.length,
-                        itemBuilder: (BuildContext ctxt, int index) => Column(
-                          children: <Widget>[
-                            LayoutBuilder(
-                              builder: (BuildContext context,
-                                      BoxConstraints constraints) =>
-                                  Container(
-                                width: constraints.maxWidth,
-                                child: Text(
-                                  model.cards[index]["sectionName"],
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    decoration: TextDecoration.none,
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 5),
-                            LayoutBuilder(
-                              builder: (context, constraints) => Container(
-                                width: constraints.maxWidth,
-                                child: Container(
-                                  width: constraints.maxWidth,
-                                  height: constraints.maxWidth/2-10,
-                                  child: ListView(
-                                    scrollDirection: Axis.horizontal,
-                                    children: model.getRowCards(
-                                        model.cards[index]["decks"], constraints),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                          ],
+          ? model.error == null
+              ? Container(
+                  color: Colors.white,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(height: 20),
+                        Text(
+                          "Heute möchte ich...",
+                          style: TextStyle(
+                            color: Colors.black,
+                            decoration: TextDecoration.underline,
+                            decorationColor: Colors.black,
+                            decorationStyle: TextDecorationStyle.solid,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                          ),
                         ),
+                        SizedBox(height: 10),
+                        Flexible(
+                          child: ListView.builder(
+                            itemCount: model.cards.length,
+                            itemBuilder: (BuildContext ctxt, int index) =>
+                                Column(
+                              children: <Widget>[
+                                LayoutBuilder(
+                                  builder: (BuildContext context,
+                                          BoxConstraints constraints) =>
+                                      Container(
+                                    width: constraints.maxWidth,
+                                    child: Text(
+                                      model.cards[index]["sectionName"],
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        decoration: TextDecoration.none,
+                                        color: Colors.black,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                LayoutBuilder(
+                                  builder: (context, constraints) => Container(
+                                    width: constraints.maxWidth,
+                                    child: Container(
+                                      width: constraints.maxWidth,
+                                      height: constraints.maxWidth / 2 - 10,
+                                      child: ListView(
+                                        scrollDirection: Axis.horizontal,
+                                        children: model.getRowCards(
+                                            model.cards[index]["decks"],
+                                            constraints),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 20),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              : Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(40.0),
+                    child: Text(
+                      model.error,
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 15,
                       ),
                     ),
-                  ],
-                ),
-              ),
-            )
+                  ),
+                )
           : Center(
               child: CircularProgressIndicator(),
             ),

@@ -75,7 +75,7 @@ class _CardDisplayViewState extends State<CardDisplayView>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           GestureDetector(
-                            onTap: model.lastCard,
+                            onTap: model.prevCard,
                             child: DisplayCard(
                               width: 60,
                               elevation: 0,
@@ -87,14 +87,17 @@ class _CardDisplayViewState extends State<CardDisplayView>
                               ),
                             ),
                           ),
-                          DisplayCard(
-                            width: 60,
-                            elevation: 0,
-                            color: kColors.grey,
-                            child: Icon(
-                              TheNounProjectIcons.noun_bookmark,
-                              size: 40,
-                              color: Colors.white,
+                          GestureDetector(
+                            onTap: Navigator.of(context).pop,
+                            child: DisplayCard(
+                              width: 60,
+                              elevation: 0,
+                              color: kColors.grey,
+                              child: Icon(
+                                TheNounProjectIcons.noun_overview,
+                                size: 35,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                           DisplayCard(
@@ -123,27 +126,6 @@ class _CardDisplayViewState extends State<CardDisplayView>
                         ],
                       ),
                     ),
-                    SizedBox(height: 30),
-                    FlatButton(
-                        child: Container(
-                          width: 150,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: kColors.gold,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "back",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                        ),
-                        onPressed: Navigator.of(context).pop)
                   ],
                 ),
               )

@@ -22,7 +22,7 @@ class LocalStorageService extends ChangeNotifier {
     if (_prefs.containsKey("version")) {
       return _prefs.getDouble("version");
     }
-    return -1;
+    return null;
   }
 
   Future<void> setVersion(double version) async {
