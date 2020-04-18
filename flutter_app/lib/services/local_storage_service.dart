@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:convert' as convert;
 import 'dart:io';
 import 'dart:async';
 
@@ -32,10 +32,10 @@ class LocalStorageService extends ChangeNotifier {
   Future<dynamic> getFile(String fileName) async {
     String contents =
         await File('${_directory.path}/$fileName.txt').readAsString();
-    return json.decode(contents);
+    return convert.jsonDecode(contents);
   }
 
-  Future<void> writeFile(String fileName, dynamic file) async {
-    await File('${_directory.path}/$fileName.txt').writeAsString(file.toString());
+  Future<void> writeFile(String fileName, dynamic json) async {
+    await File('${_directory.path}/$fileName.txt').writeAsString(convert.jsonEncode(json));
   }
 }

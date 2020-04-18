@@ -5,6 +5,7 @@ import 'package:flutter_app/constants/k_colors.dart';
 import 'package:flutter_app/locator.dart';
 import 'package:flutter_app/services/http_service.dart';
 import 'package:flutter_app/services/local_storage_service.dart';
+import 'dart:convert' as convert;
 
 class Cards extends ChangeNotifier {
   final String _fileName = "cardContent";
@@ -25,16 +26,20 @@ class Cards extends ChangeNotifier {
 
     if ((localVersion == newestVersion) ||
         (localVersion > 0 && newestVersion < 0)) {
-      data = await _localStorageService.getFile(_fileName);
+      print(localVersion);
+      try{
+        data = await _localStorageService.getFile(_fileName);
+      } catch (e) {
+        reloadData(newestVersion);
+      }
     } else {
-      data = await HttpService.getJson("data");
-//      await reloadData(newestVersion);
+      await reloadData(newestVersion);
     }
   }
 
   Future<void> reloadData(double newestVersion) async {
-    dynamic data = await HttpService.getJson("url");
-    _localStorageService.writeFile(_fileName, data.toString());
+    data = await HttpService.getJson("data");
+    _localStorageService.writeFile(_fileName, data);
     _localStorageService.setVersion(newestVersion);
     notifyListeners();
   }
