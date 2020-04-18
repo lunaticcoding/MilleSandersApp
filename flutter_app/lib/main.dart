@@ -13,8 +13,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
-        title: 'Mille Sanders',
-        home: MilleSandersTabBarView(),
+      title: 'Mille Sanders',
+      home: MilleSandersTabBarView(),
     );
   }
 }

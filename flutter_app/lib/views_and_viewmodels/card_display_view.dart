@@ -6,9 +6,8 @@ import 'package:flutter_app/views_and_viewmodels/card_display_viewmodel.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 
 class CardDisplayView extends StatefulWidget {
-  CardDisplayView({this.category});
-
-  final String category;
+  CardDisplayView({this.deck});
+  final dynamic deck;
 
   @override
   _CardDisplayViewState createState() => _CardDisplayViewState();
@@ -17,199 +16,20 @@ class CardDisplayView extends StatefulWidget {
 class _CardDisplayViewState extends State<CardDisplayView>
     with SingleTickerProviderStateMixin {
   AnimationController _animationController;
-
-  String category;
+  Animation _animationTranslation;
+  Animation _animationRotation;
 
   @override
   void initState() {
     super.initState();
-    category = widget.category;
     _animationController = AnimationController(
       duration: Duration(milliseconds: 500),
       vsync: this,
     );
-  }
-
-  @override
-  Widget build(BuildContext context) => ViewModelProvider.withConsumer(
-        viewModel: CardDisplayViewmodel(_animationController),
-        builder: (context, model, widget) => Container(
-          color: Colors.white,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                category,
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              SizedBox(height: 10),
-              Stack(
-                overflow: Overflow.visible,
-                children: model.getCardDeck(),
-              ),
-              SizedBox(height: 30),
-              Container(
-                width: 300,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: model.lastCard,
-                      child: DisplayCard(
-                        width: 60,
-                        elevation: 0,
-                        color: kColors.brown,
-                        child: Icon(
-                          TheNounProjectIcons.noun_arrows_left,
-                          size: 40,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    DisplayCard(
-                      width: 60,
-                      elevation: 0,
-                      color: kColors.grey,
-                      child: Icon(
-                        TheNounProjectIcons.noun_bookmark,
-                        size: 40,
-                        color: Colors.white,
-                      ),
-                    ),
-                    DisplayCard(
-                      width: 60,
-                      elevation: 0,
-                      color: kColors.beige,
-                      child: Icon(
-                        TheNounProjectIcons.noun_bookmark,
-                        size: 40,
-                        color: Colors.white,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: model.nextCard,
-                      child: DisplayCard(
-                        width: 60,
-                        elevation: 0,
-                        color: kColors.gold,
-                        child: Icon(
-                          TheNounProjectIcons.noun_arrows_right,
-                          size: 40,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              FlatButton(
-                  child: Text("back"), onPressed: Navigator.of(context).pop)
-            ],
-          ),
-        ),
-      );
-
-  @override
-  void dispose() {
-    super.dispose();
-    _animationController.dispose();
-  }
-}
-
-class SecondCard extends StatelessWidget {
-  const SecondCard({this.color, this.text, this.author, this.elevation});
-
-  final color;
-  final text;
-  final author;
-  final double elevation;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(15, 15, 0, 15),
-      child: DisplayCard(
-        width: 300,
-        height: 370,
-        color: color,
-        elevation: elevation,
-        child: Stack(
-          alignment: Alignment.bottomRight,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Icon(
-                TheNounProjectIcons.noun_share,
-                color: Colors.white,
-                size: 30,
-              ),
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      text,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 19,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "- $author",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 19,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class FirstCard extends StatefulWidget {
-  FirstCard(
-      {this.onDragEnd,
-      this.color,
-      this.text,
-      this.author,
-      this.animationController});
-
-  final onDragEnd;
-  final color;
-  final text;
-  final author;
-  final animationController;
-
-  @override
-  _FirstCardState createState() => _FirstCardState();
-}
-
-class _FirstCardState extends State<FirstCard> {
-  Animation _animationTranslation;
-  Animation _animationRotation;
-  @override
-  void initState() {
-    super.initState();
-
     _animationTranslation = new Tween<Offset>(
       begin: Offset(0, 0),
       end: Offset(200, 50),
-    ).animate(widget.animationController)
+    ).animate(_animationController)
       ..addListener(
         () {
           setState(() {});
@@ -218,7 +38,7 @@ class _FirstCardState extends State<FirstCard> {
     _animationRotation = new Tween<double>(
       begin: 0,
       end: 0.2,
-    ).animate(widget.animationController)
+    ).animate(_animationController)
       ..addListener(
         () {
           setState(() {});
@@ -227,12 +47,126 @@ class _FirstCardState extends State<FirstCard> {
   }
 
   @override
+  Widget build(BuildContext context) => ViewModelProvider.withConsumer(
+        viewModel: CardDisplayViewmodel(_animationController,
+            _animationTranslation, _animationRotation, widget.deck),
+        builder: (context, model, widget) => model.cardDeck != null
+            ? Container(
+                color: Colors.white,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      model.cardDeck["deckName"],
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Stack(
+                      overflow: Overflow.visible,
+                      children: model.getCardDeck(),
+                    ),
+                    SizedBox(height: 30),
+                    Container(
+                      width: 300,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: model.lastCard,
+                            child: DisplayCard(
+                              width: 60,
+                              elevation: 0,
+                              color: kColors.brown,
+                              child: Icon(
+                                TheNounProjectIcons.noun_arrows_left,
+                                size: 40,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          DisplayCard(
+                            width: 60,
+                            elevation: 0,
+                            color: kColors.grey,
+                            child: Icon(
+                              TheNounProjectIcons.noun_bookmark,
+                              size: 40,
+                              color: Colors.white,
+                            ),
+                          ),
+                          DisplayCard(
+                            width: 60,
+                            elevation: 0,
+                            color: kColors.beige,
+                            child: Icon(
+                              TheNounProjectIcons.noun_bookmark,
+                              size: 40,
+                              color: Colors.white,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: model.nextCard,
+                            child: DisplayCard(
+                              width: 60,
+                              elevation: 0,
+                              color: kColors.gold,
+                              child: Icon(
+                                TheNounProjectIcons.noun_arrows_right,
+                                size: 40,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    FlatButton(
+                        child: Text("back"),
+                        onPressed: Navigator.of(context).pop)
+                  ],
+                ),
+              )
+            : Center(
+                child: CircularProgressIndicator(),
+              ),
+      );
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+}
+
+class FirstCard extends StatefulWidget {
+  FirstCard(
+      {this.onDragEnd,
+      this.color,
+      this.text,
+      this.animationTranslation,
+      this.animationRotation});
+
+  final onDragEnd;
+  final color;
+  final text;
+  final animationTranslation;
+  final animationRotation;
+
+  @override
+  _FirstCardState createState() => _FirstCardState();
+}
+
+class _FirstCardState extends State<FirstCard> {
+  @override
   Widget build(BuildContext context) {
     return Positioned(
-      left: _animationTranslation.value.dx,
-      bottom: _animationTranslation.value.dy,
+      left: widget.animationTranslation.value.dx,
+      bottom: widget.animationTranslation.value.dy,
       child: Transform.rotate(
-        angle: _animationRotation.value,
+        angle: widget.animationRotation.value,
         child: Draggable(
           onDragEnd: widget.onDragEnd,
           childWhenDragging: Container(
@@ -273,14 +207,6 @@ class _FirstCardState extends State<FirstCard> {
                               color: Colors.white,
                               fontSize: 19,
                               fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            "- ${widget.author}",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 19,
                             ),
                           ),
                         ],
@@ -330,14 +256,6 @@ class _FirstCardState extends State<FirstCard> {
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            SizedBox(height: 10),
-                            Text(
-                              "- ${widget.author}",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 19,
-                              ),
-                            ),
                           ],
                         ),
                       ),
@@ -351,11 +269,58 @@ class _FirstCardState extends State<FirstCard> {
       ),
     );
   }
+}
+
+class SecondCard extends StatelessWidget {
+  const SecondCard({this.color, this.text, this.elevation});
+
+  final color;
+  final text;
+  final double elevation;
+
   @override
-  void dispose() {
-    super.dispose();
-    _animationTranslation = null;
-    _animationRotation = null;
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(15, 15, 0, 15),
+      child: DisplayCard(
+        width: 300,
+        height: 370,
+        color: color,
+        elevation: elevation,
+        child: Stack(
+          alignment: Alignment.bottomRight,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Icon(
+                TheNounProjectIcons.noun_share,
+                color: Colors.white,
+                size: 30,
+              ),
+            ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      text,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 19,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

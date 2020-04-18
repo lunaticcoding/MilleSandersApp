@@ -1,22 +1,23 @@
-import 'package:flutter_app/services/url_launcher_service.dart';
+
+import 'package:flutter_app/services/http_service.dart';
 
 class MilleSandersTabBarViewModel {
 
   static void launchFacebook() {
-    UrlLauncherService.launchURL(
+    HttpService.launchURL(
         "https://www.facebook.com/millesandersaustria/");
   }
 
   static void launchLinkedin() {
-    UrlLauncherService.launchURL(
+    HttpService.launchURL(
         "https://www.linkedin.com/company/millesanders-com");
   }
 
   static void launchInstagram() {
-    UrlLauncherService.launchURL("https://www.instagram.com/mille_sanders/");
+    HttpService.launchURL("https://www.instagram.com/mille_sanders/");
   }
 
   static void launchPinterest() {
-    UrlLauncherService.launchURL("https://www.pinterest.at/millesanders/");
+    HttpService.launchURL("https://www.pinterest.at/millesanders/");
   }
 }

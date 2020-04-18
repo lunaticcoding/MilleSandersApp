@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/models/Cards.dart';
 import 'package:flutter_app/custom_widgets/card.dart';
-import 'package:provider/provider.dart';
 import 'package:provider_architecture/viewmodel_provider.dart';
 
 import 'card_deck_selection_tab_viewmodel.dart';
@@ -10,7 +8,7 @@ class CardDeckSelectionTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider.withConsumer(
-      viewModel: CardDeckSelectionTabViewModel(),
+      viewModel: CardDeckSelectionTabViewModel(context),
       builder: (context, model, widget) => model.cards != null
           ? Container(
               color: Colors.white,
@@ -35,7 +33,7 @@ class CardDeckSelectionTabView extends StatelessWidget {
                     SizedBox(height: 10),
                     Flexible(
                       child: ListView.builder(
-                        itemCount: model.cards.cardCategories.length,
+                        itemCount: model.cards.length,
                         itemBuilder: (BuildContext ctxt, int index) => Column(
                           children: <Widget>[
                             LayoutBuilder(
@@ -44,8 +42,7 @@ class CardDeckSelectionTabView extends StatelessWidget {
                                   Container(
                                 width: constraints.maxWidth,
                                 child: Text(
-                                  model.cards.cardCategories[index].first
-                                      .section,
+                                  model.cards[index]["sectionName"],
                                   style: TextStyle(
                                     fontWeight: FontWeight.w700,
                                     decoration: TextDecoration.none,
@@ -57,85 +54,17 @@ class CardDeckSelectionTabView extends StatelessWidget {
                             ),
                             SizedBox(height: 5),
                             LayoutBuilder(
-                              builder: (context, constraints) => Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  DisplayCard(
-                                    elevation: 0,
-                                    width: constraints.maxWidth / 2 - 15,
-                                    color: model.cards.cardCategories[index]
-                                        .first.color,
-                                    onTap: () => model.displayCardsFor(
-                                      context: context,
-                                      category: model.cards
-                                          .cardCategories[index].first.category,
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          model.cards.cardCategories[index]
-                                              .first.category,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500,
-                                            decoration: TextDecoration.none,
-                                            fontSize: 15,
-                                          ),
-                                        ),
-                                        SizedBox(height: 10),
-                                        Icon(
-                                          model.cards.cardCategories[index]
-                                              .first.icon,
-                                          size: 80,
-                                          color: Colors.white,
-                                        )
-                                      ],
-                                    ),
+                              builder: (context, constraints) => Container(
+                                width: constraints.maxWidth,
+                                child: Container(
+                                  width: constraints.maxWidth,
+                                  height: constraints.maxWidth/2-10,
+                                  child: ListView(
+                                    scrollDirection: Axis.horizontal,
+                                    children: model.getRowCards(
+                                        model.cards[index]["decks"], constraints),
                                   ),
-                                  SizedBox(width: 20),
-                                  DisplayCard(
-                                    elevation: 0,
-                                    width: constraints.maxWidth / 2 - 15,
-                                    color: model
-                                        .cards.cardCategories[index].last.color,
-                                    onTap: () => model.displayCardsFor(
-                                      context: context,
-                                      category: model.cards
-                                          .cardCategories[index].last.category,
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          model.cards.cardCategories[index].last
-                                              .category,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500,
-                                            decoration: TextDecoration.none,
-                                            fontSize: 15,
-                                          ),
-                                        ),
-                                        SizedBox(height: 10),
-                                        Icon(
-                                          model.cards.cardCategories[index].last
-                                              .icon,
-                                          size: 80,
-                                          color: Colors.white,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
                             SizedBox(height: 20),
@@ -147,7 +76,51 @@ class CardDeckSelectionTabView extends StatelessWidget {
                 ),
               ),
             )
-          : Container(),
+          : Center(
+              child: CircularProgressIndicator(),
+            ),
+    );
+  }
+}
+
+class DeckCard extends StatelessWidget {
+  DeckCard(
+      {this.constraints, this.color, this.onTap, this.text, this.iconData});
+  final BoxConstraints constraints;
+  final Color color;
+  final Function onTap;
+  final String text;
+  final IconData iconData;
+
+  @override
+  Widget build(BuildContext context) {
+    return DisplayCard(
+      elevation: 0,
+      width: constraints.maxWidth / 2 - 10,
+      color: color,
+      onTap: onTap,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            text,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+              decoration: TextDecoration.none,
+              fontSize: 15,
+            ),
+          ),
+          SizedBox(height: 10),
+          Icon(
+            iconData,
+            size: 80,
+            color: Colors.white,
+          )
+        ],
+      ),
     );
   }
 }
