@@ -73,45 +73,49 @@ class _CardDisplayViewState extends State<CardDisplayView>
                       ),
                     ),
                     SizedBox(height: 10),
-                    Stack(
-                      overflow: Overflow.visible,
-                      children: () {
-                        List<dynamic> list = List<Widget>();
-                        for (var card in model.cards) {
-                          if (card == model.cards.first()) {
-                            list.insert(
-                              0,
-                              ActiveCard(
-                                text: card["text"],
-                                color: Cards.colorFromHex(card["color"]),
-                                onDragEnd: (_) => model.removeCard(),
-                                animationRotation: _animationRotation,
-                                animationTranslation: _animationTranslation,
-                              ),
-                            );
-                          } else {
-                            list.insert(
-                              0,
-                              OtherCard(
-                                text: card["text"],
-                                color: Cards.colorFromHex(card["color"]),
-                                elevation:
-                                    card == model.cards.elementAt(1) ? 6 : 0,
-                              ),
-                            );
-                          }
-                        }
-                        list.add(
-                          NoCard(
-                            onTap: () {
-                              setState(() {
-                                model.index = 0;
-                              });
-                            },
-                          ),
-                        );
-                        return list;
-                      }(),
+                    Container(
+                      width: 300,
+                      height: 400,
+                      child: Stack(
+                        overflow: Overflow.visible,
+                        children: model.index < model.cards.length
+                            ? () {
+                                List<dynamic> list = List<Widget>();
+                                for (var card in model.cards) {
+                                  if (card == model.cards.first) {
+                                    list.insert(
+                                      0,
+                                      ActiveCard(
+                                        text: card["text"],
+                                        color:
+                                            Cards.colorFromHex(card["color"]),
+                                        onDragEnd: (_) => model.removeCard(),
+                                        animationRotation: _animationRotation,
+                                        animationTranslation:
+                                            _animationTranslation,
+                                      ),
+                                    );
+                                  } else {
+                                    list.insert(
+                                      0,
+                                      OtherCard(
+                                        text: card["text"],
+                                        color:
+                                            Cards.colorFromHex(card["color"]),
+                                        elevation:
+                                            card == model.cards.elementAt(1)
+                                                ? 6
+                                                : 0,
+                                      ),
+                                    );
+                                  }
+                                }
+                                return list;
+                              }()
+                            : <Widget>[
+                                NoCard(onTap: model.updateFilter),
+                              ],
+                      ),
                     ),
                     SizedBox(height: 30),
                     Container(

@@ -18,13 +18,17 @@ class CardDisplayViewmodel extends ChangeNotifier {
   }
 
   void addCard() {
-    index--;
-    notifyListeners();
+    if(index > 0) {
+      index--;
+      notifyListeners();
+    }
   }
 
   void removeCard() {
-    index++;
-    notifyListeners();
+    if (index < cards.length) {
+      index++;
+      notifyListeners();
+    }
   }
 
   void updateFilter() {
