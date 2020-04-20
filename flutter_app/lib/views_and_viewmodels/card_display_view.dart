@@ -58,8 +58,7 @@ class _CardDisplayViewState extends State<CardDisplayView>
 
   @override
   Widget build(BuildContext context) => ViewModelProvider.withConsumer(
-        viewModel: CardDisplayViewmodel(_animationController,
-            _animationTranslation, _animationRotation, widget.deck),
+        viewModel: CardDisplayViewmodel(widget.deck),
         builder: (context, model, widget) => model.cards != null
             ? Container(
                 color: Colors.white,
@@ -76,7 +75,43 @@ class _CardDisplayViewState extends State<CardDisplayView>
                     SizedBox(height: 10),
                     Stack(
                       overflow: Overflow.visible,
-                      children: model.getCardDeck(),
+                      children: () {
+                        List<dynamic> list = List<Widget>();
+                        for (var card in model.cards) {
+                          if (card == model.cards.first()) {
+                            list.insert(
+                              0,
+                              ActiveCard(
+                                text: card["text"],
+                                color: Cards.colorFromHex(card["color"]),
+                                onDragEnd: (_) => model.removeCard(),
+                                animationRotation: _animationRotation,
+                                animationTranslation: _animationTranslation,
+                              ),
+                            );
+                          } else {
+                            list.insert(
+                              0,
+                              OtherCard(
+                                text: card["text"],
+                                color: Cards.colorFromHex(card["color"]),
+                                elevation:
+                                    card == model.cards.elementAt(1) ? 6 : 0,
+                              ),
+                            );
+                          }
+                        }
+                        list.add(
+                          NoCard(
+                            onTap: () {
+                              setState(() {
+                                model.index = 0;
+                              });
+                            },
+                          ),
+                        );
+                        return list;
+                      }(),
                     ),
                     SizedBox(height: 30),
                     Container(
@@ -85,7 +120,13 @@ class _CardDisplayViewState extends State<CardDisplayView>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           GestureDetector(
-                            onTap: model.prevCard,
+                            onTap: () async {
+                              if (model.index == 0) {
+                                return;
+                              }
+                              model.addCard();
+                              await _animationController.reverse(from: 1.0);
+                            },
                             child: DisplayCard(
                               width: 60,
                               elevation: 0,
@@ -202,7 +243,13 @@ class _CardDisplayViewState extends State<CardDisplayView>
                             ),
                           ),
                           GestureDetector(
-                            onTap: model.nextCard,
+                            onTap: () async {
+                              if (model.index < model.cards.length) {
+                                await _animationController.forward();
+                                model.removeCard();
+                                _animationController.reset();
+                              }
+                            },
                             child: DisplayCard(
                               width: 60,
                               elevation: 0,
@@ -238,13 +285,14 @@ class _CardDisplayViewState extends State<CardDisplayView>
   }
 }
 
-class FirstCard extends StatefulWidget {
-  FirstCard(
-      {this.onDragEnd,
-      this.color,
-      this.text,
-      this.animationTranslation,
-      this.animationRotation});
+class ActiveCard extends StatefulWidget {
+  ActiveCard({
+    this.onDragEnd,
+    this.color,
+    this.text,
+    this.animationTranslation,
+    this.animationRotation,
+  });
 
   final onDragEnd;
   final color;
@@ -253,10 +301,10 @@ class FirstCard extends StatefulWidget {
   final animationRotation;
 
   @override
-  _FirstCardState createState() => _FirstCardState();
+  _ActiveCardState createState() => _ActiveCardState();
 }
 
-class _FirstCardState extends State<FirstCard> {
+class _ActiveCardState extends State<ActiveCard> {
   GlobalKey key = GlobalKey();
 
   @override
@@ -383,8 +431,8 @@ class _FirstCardState extends State<FirstCard> {
   }
 }
 
-class SecondCard extends StatelessWidget {
-  const SecondCard({this.color, this.text, this.elevation});
+class OtherCard extends StatelessWidget {
+  const OtherCard({this.color, this.text, this.elevation});
 
   final color;
   final text;
@@ -436,8 +484,8 @@ class SecondCard extends StatelessWidget {
   }
 }
 
-class LastCard extends StatelessWidget {
-  const LastCard({this.onTap});
+class NoCard extends StatelessWidget {
+  const NoCard({this.onTap});
   final onTap;
 
   @override
