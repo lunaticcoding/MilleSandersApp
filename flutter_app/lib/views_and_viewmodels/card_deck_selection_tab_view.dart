@@ -4,6 +4,7 @@ import 'package:flutter_app/custom_widgets/card.dart';
 import 'package:flutter_app/locator.dart';
 import 'package:flutter_app/models/Cards.dart';
 import 'package:provider_architecture/viewmodel_provider.dart';
+import 'package:flutter_app/constants/k_colors.dart';
 
 import 'card_deck_selection_tab_viewmodel.dart';
 import 'card_display_view.dart';
@@ -17,12 +18,10 @@ class CardDeckSelectionTabView extends StatefulWidget {
 class _CardDeckSelectionTabViewState extends State<CardDeckSelectionTabView> {
   List<ScrollController> _scrollControllerList;
   List<int> _indices;
-  ScrollController _scrollController;
   double width = 0;
 
   @override
   void initState() {
-    _scrollController = ScrollController();
     _scrollControllerList = List<ScrollController>();
     _indices = List<int>();
     locator.isReady<Cards>().then((_) {
@@ -98,35 +97,41 @@ class _CardDeckSelectionTabViewState extends State<CardDeckSelectionTabView> {
                                               if (notification
                                                   is ScrollEndNotification) {
                                                 Future.delayed(
-                                                    Duration(milliseconds: 1),
+                                                    Duration(microseconds: 1),
                                                     () {
                                                   double cardSize =
                                                       constraints.maxWidth / 2 +
                                                           10;
                                                   double offset =
-                                                      _scrollControllerList[index].offset;
+                                                      _scrollControllerList[
+                                                              index]
+                                                          .offset;
                                                   int cardIndex = offset ~/
-                                                      cardSize + ((offset % cardSize >
-                                                      (cardSize /
-                                                          2))
-                                                      ? 1
-                                                      : 0);
+                                                          cardSize +
+                                                      ((offset % cardSize >
+                                                              (cardSize / 2))
+                                                          ? 1
+                                                          : 0);
                                                   setState(() {
                                                     _indices[index] = cardIndex;
                                                   });
-                                                  double target = cardIndex * cardSize;
-                                                  _scrollControllerList[index].animateTo(
-                                                      target,
-                                                      duration: Duration(
-                                                          milliseconds: 300),
-                                                      curve: Curves.easeOut);
+                                                  double target =
+                                                      cardIndex * cardSize;
+                                                  _scrollControllerList[index]
+                                                      .animateTo(target,
+                                                          duration: Duration(
+                                                              milliseconds:
+                                                                  300),
+                                                          curve:
+                                                              Curves.easeOut);
                                                 });
                                               }
                                               return true;
                                             },
                                             child: ListView(
                                               scrollDirection: Axis.horizontal,
-                                              controller: _scrollControllerList[index],
+                                              controller:
+                                                  _scrollControllerList[index],
                                               children: model.getRowCards(
                                                   model.cards[index]["decks"],
                                                   constraints),
@@ -143,7 +148,8 @@ class _CardDeckSelectionTabViewState extends State<CardDeckSelectionTabView> {
                                                           .length -
                                                       1)
                                               .map<Widget>((card) {
-                                                int i = model.cards[index]["decks"].indexOf(card);
+                                            int i = model.cards[index]["decks"]
+                                                .indexOf(card);
                                             return Container(
                                               width: 8.0,
                                               height: 8.0,
@@ -189,8 +195,13 @@ class _CardDeckSelectionTabViewState extends State<CardDeckSelectionTabView> {
                       ),
                     ),
                   )
-            : Center(
-                child: CircularProgressIndicator(),
+            : Container(
+                color: Colors.white,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(kColors.gold),
+                  ),
+                ),
               );
       },
     );

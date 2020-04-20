@@ -10,18 +10,29 @@ class CardDisplayViewmodel extends ChangeNotifier {
   final Animation _animationTranslation;
   final Animation _animationRotation;
 
-  dynamic cardDeck;
+  Map<String, bool> filters;
+  dynamic _cardDeck;
+  List<dynamic> cards;
+  String deckName;
   int index = 0;
 
   CardDisplayViewmodel(this._animationController, this._animationTranslation,
-      this._animationRotation, this.cardDeck);
+      this._animationRotation, cardDeck) {
+    _cardDeck = cardDeck;
+    deckName = _cardDeck["deckName"];
+
+    filters = Map.fromIterable(cardDeck["filterIcons"],
+        key: (v) => v.toString(), value: (v) => false);
+    cards = cardDeck["cards"].map((elem) => elem).toList();
+  }
 
   // TODO split this method up!!!
   List<Widget> getCardDeck() {
     List<Widget> list = List<Widget>();
 
-    for (int i = index; i < cardDeck["cards"].length; i++) {
-      dynamic card = cardDeck["cards"][i];
+    for (int i = index; i < cards.length; i++) {
+      dynamic card = cards[i];
+      // TODO apply filters ;D
       if (i == index) {
         list.insert(
             0,
@@ -38,7 +49,7 @@ class CardDisplayViewmodel extends ChangeNotifier {
           SecondCard(
             text: card["text"],
             color: Cards.colorFromHex(card["color"]),
-            elevation: i == cardDeck["cards"].length - 1 ? 6 : 0,
+            elevation: i == cards.length - 1 ? 6 : 0,
           ),
         );
       }
@@ -57,7 +68,6 @@ class CardDisplayViewmodel extends ChangeNotifier {
     return list;
   }
 
-
   void prevCard() async {
     if (index == 0) {
       return;
@@ -72,7 +82,7 @@ class CardDisplayViewmodel extends ChangeNotifier {
   }
 
   void nextCard() async {
-    if (index < cardDeck["cards"].length) {
+    if (index < cards.length) {
       await _animationController.forward();
       _removeCard();
       _animationController.reset();
@@ -83,4 +93,28 @@ class CardDisplayViewmodel extends ChangeNotifier {
     index++;
     notifyListeners();
   }
+
+  void updateFilter() {
+    index = 0;
+    cards = _cardDeck["cards"];
+
+    bool applyFilters = filters.values.reduce((val, elem) => val || elem);
+    if (applyFilters) {
+      cards = cards.where(
+        (card) {
+          for (var entry in filters.entries) {
+            if (entry.value) {
+              for (var filter in card["filter"]) {
+                if (filter == entry.key) {
+                  return true;
+                }
+              }
+            }
+          }
+          return false;
+        },
+      ).toList();
+    }
+  }
+  notifyListeners();
 }
