@@ -94,29 +94,40 @@ class _CardDeckSelectionTabViewState extends State<CardDeckSelectionTabView> {
                                           child: NotificationListener<
                                               ScrollNotification>(
                                             onNotification: (notification) {
+                                              double cardSize =
+                                                  constraints.maxWidth / 2 + 10;
                                               if (notification
-                                                  is ScrollEndNotification) {
-                                                Future.delayed(
-                                                    Duration(microseconds: 1),
-                                                    () {
-                                                  double cardSize =
-                                                      constraints.maxWidth / 2 +
-                                                          10;
+                                                  is ScrollUpdateNotification) {
+                                                int cardIndex;
+                                                if (_scrollControllerList[index]
+                                                        .offset <
+                                                    0) {
+                                                  cardIndex = 0;
+                                                } else {
                                                   double offset =
                                                       _scrollControllerList[
                                                               index]
                                                           .offset;
-                                                  int cardIndex = offset ~/
+                                                  cardIndex = offset ~/
                                                           cardSize +
                                                       ((offset % cardSize >
                                                               (cardSize / 2))
                                                           ? 1
                                                           : 0);
-                                                  setState(() {
-                                                    _indices[index] = cardIndex;
-                                                  });
+                                                }
+
+                                                setState(() {
+                                                  _indices[index] = cardIndex;
+                                                });
+                                              }
+                                              if (notification
+                                                  is ScrollEndNotification) {
+                                                Future.delayed(
+                                                    Duration(microseconds: 1),
+                                                    () {
                                                   double target =
-                                                      cardIndex * cardSize;
+                                                      _indices[index] *
+                                                          cardSize;
                                                   _scrollControllerList[index]
                                                       .animateTo(target,
                                                           duration: Duration(
