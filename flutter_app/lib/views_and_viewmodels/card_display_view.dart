@@ -75,7 +75,7 @@ class _CardDisplayViewState extends State<CardDisplayView>
                     SizedBox(height: 10),
                     Container(
                       width: 300,
-                      height: 400,
+                      height: 380,
                       child: Stack(
                         overflow: Overflow.visible,
                         children: model.index < model.cards.length
@@ -322,14 +322,14 @@ class _ActiveCardState extends State<ActiveCard> {
           onDragEnd: widget.onDragEnd,
           childWhenDragging: Container(
             width: 300,
-            height: 400,
+            height: 380,
           ),
           feedback: TweenAnimationBuilder(
             tween: Tween<double>(begin: 10, end: 0),
             duration: Duration(milliseconds: 400),
             builder: (context, value, child) => DisplayCard(
               width: 300,
-              height: 400,
+              height: 380,
               color: widget.color,
               child: Stack(
                 alignment: Alignment.bottomRight,
@@ -375,7 +375,7 @@ class _ActiveCardState extends State<ActiveCard> {
                 key: key,
                 child: DisplayCard(
                   width: 300,
-                  height: 400 - 2 * value,
+                  height: 380 - 2 * value,
                   color: widget.color,
                   child: Stack(
                     alignment: Alignment.bottomRight,
@@ -448,7 +448,7 @@ class OtherCard extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(15, 15, 0, 15),
       child: DisplayCard(
         width: 300,
-        height: 370,
+        height: 350,
         color: color,
         elevation: elevation,
         child: Stack(
@@ -498,7 +498,7 @@ class NoCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: 300,
-        height: 400,
+        height: 380,
         child: Center(
           child: Text(
             "Tap to shuffle the deck.",
