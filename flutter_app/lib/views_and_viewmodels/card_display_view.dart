@@ -10,7 +10,7 @@ import 'package:flutter_app/custom_widgets/TrianglePainter.dart';
 import 'package:flutter_app/custom_widgets/card.dart';
 import 'package:flutter_app/models/Cards.dart';
 import 'package:flutter_app/views_and_viewmodels/card_display_viewmodel.dart';
-import 'package:provider_architecture/provider_architecture.dart';
+import 'package:provider/provider.dart';
 import 'package:wc_flutter_share/wc_flutter_share.dart';
 
 class CardDisplayView extends StatefulWidget {
@@ -32,10 +32,12 @@ class _CardDisplayViewState extends State<CardDisplayView>
   void initState() {
     super.initState();
     filterKey = GlobalKey();
+
     _animationController = AnimationController(
       duration: Duration(milliseconds: 500),
       vsync: this,
     );
+
     _animationTranslation = new Tween<Offset>(
       begin: Offset(0, 0),
       end: Offset(200, 50),
@@ -57,229 +59,263 @@ class _CardDisplayViewState extends State<CardDisplayView>
   }
 
   @override
-  Widget build(BuildContext context) => ViewModelProvider.withConsumer(
-        viewModel: CardDisplayViewmodel(widget.deck),
-        builder: (context, model, widget) => model.cards != null
-            ? Container(
-                color: Colors.white,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      model.deckName,
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      width: 300,
-                      height: 380,
-                      child: Stack(
-                        overflow: Overflow.visible,
-                        children: model.index < model.cards.length
-                            ? () {
-                                List<dynamic> list = List<Widget>();
-                                for (var card in model.cards) {
-                                  if (card == model.cards.first) {
-                                    list.insert(
-                                      0,
-                                      ActiveCard(
-                                        text: card["text"],
-                                        color:
-                                            Cards.colorFromHex(card["color"]),
-                                        onDragEnd: (_) => model.removeCard(),
-                                        animationRotation: _animationRotation,
-                                        animationTranslation:
-                                            _animationTranslation,
-                                      ),
-                                    );
-                                  } else {
-                                    list.insert(
-                                      0,
-                                      OtherCard(
-                                        text: card["text"],
-                                        color:
-                                            Cards.colorFromHex(card["color"]),
-                                        elevation:
-                                            card == model.cards.elementAt(1)
-                                                ? 6
-                                                : 0,
-                                      ),
-                                    );
-                                  }
-                                }
-                                return list;
-                              }()
-                            : <Widget>[
-                                NoCard(onTap: model.updateFilter),
-                              ],
-                      ),
-                    ),
-                    SizedBox(height: 30),
-                    Container(
-                      width: 300,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          GestureDetector(
-                            onTap: () async {
-                              if (model.index == 0) {
-                                return;
-                              }
-                              model.addCard();
-                              await _animationController.reverse(from: 1.0);
-                            },
-                            child: DisplayCard(
-                              width: 60,
-                              elevation: 0,
-                              color: kColors.brown,
-                              child: Icon(
-                                TheNounProjectIcons.noun_arrows_left,
-                                size: 40,
-                                color: Colors.white,
+  Widget build(BuildContext context) => ChangeNotifierProvider(
+        create: (context) => CardDisplayViewmodel(widget.deck),
+        child: Consumer<CardDisplayViewmodel>(
+          builder: (BuildContext context, CardDisplayViewmodel model,
+                  Widget child) =>
+              model.cards != null
+                  ? Center(
+                      child: Container(
+                        width: 280,
+                        color: Colors.white,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              model.deckName,
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: Navigator.of(context).pop,
-                            child: DisplayCard(
-                              width: 60,
-                              elevation: 0,
-                              color: kColors.grey,
-                              child: Icon(
-                                TheNounProjectIcons.noun_overview,
-                                size: 35,
-                                color: Colors.white,
+                            SizedBox(height: 10),
+                            Container(
+                              width: 280,
+                              height: 350,
+                              child: Stack(
+                                overflow: Overflow.visible,
+                                children: model.index < model.cards.length
+                                    ? () {
+                                        List<dynamic> list = List<Widget>();
+                                        for (int i = model.index;
+                                            i < model.cards.length;
+                                            i++) {
+                                          var card = model.cards[i];
+                                          if (i == model.index) {
+                                            list.insert(
+                                              0,
+                                              ActiveCard(
+                                                text: card["text"],
+                                                color: Cards.colorFromHex(
+                                                    card["color"]),
+                                                onDragEnd: (_) {
+                                                  model.removeCard();
+                                                  setState(() {});
+                                                },
+                                                animationRotation:
+                                                    _animationRotation,
+                                                animationTranslation:
+                                                    _animationTranslation,
+                                              ),
+                                            );
+                                          } else {
+                                            list.insert(
+                                              0,
+                                              OtherCard(
+                                                text: card["text"],
+                                                color: Cards.colorFromHex(
+                                                    card["color"]),
+                                                elevation: card ==
+                                                        model.cards.elementAt(1)
+                                                    ? 6
+                                                    : 0,
+                                              ),
+                                            );
+                                          }
+                                        }
+                                        return list;
+                                      }()
+                                    : <Widget>[
+                                        NoCard(onTap: () {
+                                          model.updateFilter();
+                                          setState(() {});
+                                        }),
+                                      ],
                               ),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () => showCupertinoModalPopup(
-                              context: context,
-                              builder: (context) => StatefulBuilder(
-                                builder: (context, setState) => Padding(
-                                  padding: EdgeInsets.fromLTRB(
-                                      0,
-                                      0,
-                                      0,
-                                      MediaQuery.of(context).size.height -
-                                          (filterKey.currentContext
-                                                      .findRenderObject()
-                                                  as RenderBox)
-                                              .localToGlobal(Offset.zero)
-                                              .dy),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          color: Colors.white,
-                                        ),
-                                        width: 300,
-                                        height: 55,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: model.filters.entries
-                                              .map<Widget>(
-                                                (filter) => GestureDetector(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      model.filters[filter
-                                                          .key] = !filter.value;
-                                                      model.updateFilter();
-                                                    });
-                                                  },
-                                                  child: Icon(
-                                                    Cards.getIcon(filter.key),
-                                                    color: model
-                                                            .filters[filter.key]
-                                                        ? kColors.gold
-                                                        : kColors.grey,
+                            SizedBox(height: 30),
+                            Container(
+                              width: 300,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  GestureDetector(
+                                    onTap: () async {
+                                      if (model.index == 0) {
+                                        return;
+                                      }
+                                      model.addCard();
+                                      await _animationController.reverse(
+                                          from: 1.0);
+                                      setState(() {});
+                                    },
+                                    child: DisplayCard(
+                                      width: 60,
+                                      elevation: 0,
+                                      color: kColors.brown,
+                                      child: Icon(
+                                        TheNounProjectIcons.noun_arrows_left,
+                                        size: 40,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: Navigator.of(context).pop,
+                                    child: DisplayCard(
+                                      width: 60,
+                                      elevation: 0,
+                                      color: kColors.grey,
+                                      child: Icon(
+                                        TheNounProjectIcons.noun_overview,
+                                        size: 35,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () => showCupertinoModalPopup(
+                                      context: context,
+                                      builder: (context) => StatefulBuilder(
+                                        builder: (context, setState) => Padding(
+                                          padding: EdgeInsets.fromLTRB(
+                                              0,
+                                              0,
+                                              0,
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .height -
+                                                  (filterKey.currentContext
+                                                              .findRenderObject()
+                                                          as RenderBox)
+                                                      .localToGlobal(
+                                                          Offset.zero)
+                                                      .dy),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(10)),
+                                                  color: Colors.white,
+                                                ),
+                                                width: 300,
+                                                height: 55,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: model
+                                                      .filters.entries
+                                                      .map<Widget>(
+                                                        (filter) =>
+                                                            GestureDetector(
+                                                          onTap: () {
+                                                            model.filters[filter
+                                                                    .key] =
+                                                                !filter.value;
+                                                            model
+                                                                .updateFilter();
+                                                            setState(() {});
+                                                          },
+                                                          child: Icon(
+                                                            Cards.getIcon(
+                                                                filter.key),
+                                                            color: model.filters[
+                                                                    filter.key]
+                                                                ? kColors.gold
+                                                                : kColors.grey,
+                                                          ),
+                                                        ),
+                                                      )
+                                                      .toList(),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                height: 15,
+                                                child: CustomPaint(
+                                                  painter: TrianglePainter(
+                                                    x: (filterKey.currentContext
+                                                                .findRenderObject()
+                                                            as RenderBox)
+                                                        .localToGlobal(
+                                                            Offset.zero)
+                                                        .dx,
+                                                    y: 0,
+                                                    width: (filterKey
+                                                                .currentContext
+                                                                .findRenderObject()
+                                                            as RenderBox)
+                                                        .size
+                                                        .width,
+                                                    height: 15,
                                                   ),
                                                 ),
-                                              )
-                                              .toList(),
-                                        ),
-                                      ),
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        height: 15,
-                                        child: CustomPaint(
-                                          painter: TrianglePainter(
-                                            x: (filterKey.currentContext
-                                                        .findRenderObject()
-                                                    as RenderBox)
-                                                .localToGlobal(Offset.zero)
-                                                .dx,
-                                            y: 0,
-                                            width: (filterKey.currentContext
-                                                        .findRenderObject()
-                                                    as RenderBox)
-                                                .size
-                                                .width,
-                                            height: 15,
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
-                                    ],
+                                    ),
+                                    child: Container(
+                                      key: filterKey,
+                                      child: DisplayCard(
+                                        width: 60,
+                                        elevation: 0,
+                                        color: kColors.beige,
+                                        child: Icon(
+                                          TheNounProjectIcons.noun_bookmark,
+                                          size: 40,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      if (model.index < model.cards.length) {
+                                        await _animationController.forward();
+                                        model.removeCard();
+                                        _animationController.reset();
+                                        setState(() {});
+                                      }
+                                    },
+                                    child: DisplayCard(
+                                      width: 60,
+                                      elevation: 0,
+                                      color: kColors.gold,
+                                      child: Icon(
+                                        TheNounProjectIcons.noun_arrows_right,
+                                        size: 40,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            child: Container(
-                              key: filterKey,
-                              child: DisplayCard(
-                                width: 60,
-                                elevation: 0,
-                                color: kColors.beige,
-                                child: Icon(
-                                  TheNounProjectIcons.noun_bookmark,
-                                  size: 40,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () async {
-                              if (model.index < model.cards.length) {
-                                await _animationController.forward();
-                                model.removeCard();
-                                _animationController.reset();
-                              }
-                            },
-                            child: DisplayCard(
-                              width: 60,
-                              elevation: 0,
-                              color: kColors.gold,
-                              child: Icon(
-                                TheNounProjectIcons.noun_arrows_right,
-                                size: 40,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
+                      ),
+                    )
+                  : Container(
+                      color: Colors.white,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(kColors.gold),
+                          backgroundColor: Colors.white,
+                        ),
                       ),
                     ),
-                  ],
-                ),
-              )
-            : Container(
-                color: Colors.white,
-                child: Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(kColors.gold),
-                    backgroundColor: Colors.white,
-                  ),
-                ),
-              ),
+        ),
       );
 
   @override
@@ -321,15 +357,15 @@ class _ActiveCardState extends State<ActiveCard> {
         child: Draggable(
           onDragEnd: widget.onDragEnd,
           childWhenDragging: Container(
-            width: 300,
-            height: 380,
+            width: 265,
+            height: 350,
           ),
           feedback: TweenAnimationBuilder(
             tween: Tween<double>(begin: 10, end: 0),
             duration: Duration(milliseconds: 400),
             builder: (context, value, child) => DisplayCard(
-              width: 300,
-              height: 380,
+              width: 265,
+              height: 350,
               color: widget.color,
               child: Stack(
                 alignment: Alignment.bottomRight,
@@ -374,8 +410,8 @@ class _ActiveCardState extends State<ActiveCard> {
               child: RepaintBoundary(
                 key: key,
                 child: DisplayCard(
-                  width: 300,
-                  height: 380 - 2 * value,
+                  width: 265,
+                  height: 350 - 2 * value,
                   color: widget.color,
                   child: Stack(
                     alignment: Alignment.bottomRight,
@@ -447,8 +483,8 @@ class OtherCard extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.fromLTRB(15, 15, 0, 15),
       child: DisplayCard(
-        width: 300,
-        height: 350,
+        width: 265,
+        height: 320,
         color: color,
         elevation: elevation,
         child: Stack(
@@ -497,8 +533,8 @@ class NoCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 300,
-        height: 380,
+        width: 265,
+        height: 350,
         child: Center(
           child: Text(
             "Tap to shuffle the deck.",

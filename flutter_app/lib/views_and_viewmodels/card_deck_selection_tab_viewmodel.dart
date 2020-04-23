@@ -7,23 +7,34 @@ import 'card_deck_selection_tab_view.dart';
 
 class CardDeckSelectionTabViewModel extends ChangeNotifier {
   List<dynamic> cards;
+  List<int> indices;
+  List<ScrollController> scrollControllerList;
   String error;
 
   CardDeckSelectionTabViewModel() {
     locator.allReady().then((_) {
       cards = locator<Cards>().data;
       error = locator<Cards>().error;
+
+      indices = List<int>();
+      scrollControllerList = List<ScrollController>();
+
+      for (var _ in locator<Cards>().data) {
+        scrollControllerList.add(ScrollController());
+        indices.add(0);
+      }
       notifyListeners();
     });
   }
 
-  void reloadDeck() {
+  void refreshDeck() {
     locator<Cards>().reloadData();
     cards = locator<Cards>().data;
     error = locator<Cards>().error;
     notifyListeners();
   }
 
+  // TODO move into view (is ui code)
   List<Widget> getRowCards(dynamic cards, BoxConstraints constraints) {
     List<Widget> list = List<Widget>();
     for (int i = 0; i < cards.length; i++) {

@@ -20,14 +20,12 @@ class CardDisplayViewmodel extends ChangeNotifier {
   void addCard() {
     if(index > 0) {
       index--;
-      notifyListeners();
     }
   }
 
   void removeCard() {
     if (index < cards.length) {
       index++;
-      notifyListeners();
     }
   }
 
@@ -52,6 +50,5 @@ class CardDisplayViewmodel extends ChangeNotifier {
         },
       ).toList();
     }
-    notifyListeners();
   }
 }
