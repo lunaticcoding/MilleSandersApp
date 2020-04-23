@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/constants/constants.dart';
-import 'package:flutter_app/constants/the_noun_project_icons_icons.dart';
+import 'package:flutter_app/constants/mille_sanders_icons.dart';
 import 'package:flutter_app/locator.dart';
 import 'package:flutter_app/services/http_service.dart';
 import 'package:flutter_app/services/local_storage_service.dart';
@@ -68,19 +68,19 @@ class Cards extends ChangeNotifier {
   static IconData getIcon(String icon) {
     switch (icon) {
       case "quotes":
-        return TheNounProjectIcons.noun_quotes;
+        return MilleSanders.noun_quotes;
       case "tips":
-        return TheNounProjectIcons.noun_tips;
+        return MilleSanders.noun_tips;
       case "exit":
-        return TheNounProjectIcons.noun_exit;
+        return MilleSanders.noun_exit;
       case "peak":
-        return TheNounProjectIcons.noun_peak;
+        return MilleSanders.noun_peak;
       case "business idea":
-        return TheNounProjectIcons.noun_business_idea;
+        return MilleSanders.noun_business_idea;
       case "book":
-        return TheNounProjectIcons.noun_write;
+        return MilleSanders.noun_write;
       default:
-        return TheNounProjectIcons.noun_idea;
+        return MilleSanders.noun_idea;
     }
   }
 }
