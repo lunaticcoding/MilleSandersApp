@@ -46,7 +46,6 @@ class CardDisplayViewmodel extends ChangeNotifier {
     for (int i = _index; i < _cards.length; i++) {
       list.insert(0, function(i == _index, _cards[i]));
     }
-    print(list.toString());
     return list;
   }
 
