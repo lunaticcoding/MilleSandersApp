@@ -1,17 +1,15 @@
-import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_app/constants/k_colors.dart';
-import 'package:flutter_app/constants/the_noun_project_icons_icons.dart';
+import 'package:flutter_app/constants/mille_sanders_icons.dart';
 import 'package:flutter_app/custom_widgets/TrianglePainter.dart';
 import 'package:flutter_app/custom_widgets/card.dart';
 import 'package:flutter_app/models/Cards.dart';
 import 'package:flutter_app/views_and_viewmodels/card_display_viewmodel.dart';
 import 'package:provider/provider.dart';
-import 'package:wc_flutter_share/wc_flutter_share.dart';
 
 class CardDisplayView extends StatefulWidget {
   CardDisplayView({this.deck});
@@ -64,7 +62,7 @@ class _CardDisplayViewState extends State<CardDisplayView>
         child: Consumer<CardDisplayViewmodel>(
           builder: (BuildContext context, CardDisplayViewmodel model,
                   Widget child) =>
-              model.cards != null
+              model.isReady
                   ? Center(
                       child: Container(
                         width: 280,
@@ -85,51 +83,36 @@ class _CardDisplayViewState extends State<CardDisplayView>
                               height: 350,
                               child: Stack(
                                 overflow: Overflow.visible,
-                                children: model.index < model.cards.length
-                                    ? () {
-                                        List<dynamic> list = List<Widget>();
-                                        for (int i = model.index;
-                                            i < model.cards.length;
-                                            i++) {
-                                          var card = model.cards[i];
-                                          if (i == model.index) {
-                                            list.insert(
-                                              0,
-                                              ActiveCard(
-                                                text: card["text"],
-                                                color: Cards.colorFromHex(
-                                                    card["color"]),
-                                                onDragEnd: (_) {
-                                                  model.removeCard();
-                                                  setState(() {});
-                                                },
-                                                animationRotation:
-                                                    _animationRotation,
-                                                animationTranslation:
-                                                    _animationTranslation,
-                                              ),
+                                children: model.getNrValidCards() > 0
+                                    ? model.forEachCard(
+                                        (isFirstCard, card) {
+                                          if (isFirstCard) {
+                                            return ActiveCard(
+                                              text: card["text"],
+                                              color: Cards.colorFromHex(
+                                                  card["color"]),
+                                              onDragEnd: (_) {
+                                                model.removeCard();
+                                                setState(() {});
+                                              },
+                                              animationRotation:
+                                                  _animationRotation,
+                                              animationTranslation:
+                                                  _animationTranslation,
                                             );
                                           } else {
-                                            list.insert(
-                                              0,
-                                              OtherCard(
-                                                text: card["text"],
-                                                color: Cards.colorFromHex(
-                                                    card["color"]),
-                                                elevation: card ==
-                                                        model.cards.elementAt(1)
-                                                    ? 6
-                                                    : 0,
-                                              ),
+                                            return OtherCard(
+                                              text: card["text"],
+                                              color: Cards.colorFromHex(
+                                                  card["color"]),
+                                              elevation: isFirstCard ? 6 : 0,
                                             );
                                           }
-                                        }
-                                        return list;
-                                      }()
+                                        },
+                                      )
                                     : <Widget>[
                                         NoCard(onTap: () {
                                           model.updateFilter();
-                                          setState(() {});
                                         }),
                                       ],
                               ),
@@ -143,20 +126,17 @@ class _CardDisplayViewState extends State<CardDisplayView>
                                 children: <Widget>[
                                   GestureDetector(
                                     onTap: () async {
-                                      if (model.index == 0) {
-                                        return;
+                                      if (model.addCard()) {
+                                        await _animationController.reverse(
+                                            from: 1.0);
                                       }
-                                      model.addCard();
-                                      await _animationController.reverse(
-                                          from: 1.0);
-                                      setState(() {});
                                     },
                                     child: DisplayCard(
                                       width: 60,
                                       elevation: 0,
                                       color: kColors.brown,
                                       child: Icon(
-                                        TheNounProjectIcons.noun_arrows_left,
+                                        MilleSanders.arrowleft,
                                         size: 40,
                                         color: Colors.white,
                                       ),
@@ -169,7 +149,7 @@ class _CardDisplayViewState extends State<CardDisplayView>
                                       elevation: 0,
                                       color: kColors.grey,
                                       child: Icon(
-                                        TheNounProjectIcons.noun_overview,
+                                        MilleSanders.noun_overview,
                                         size: 35,
                                         color: Colors.white,
                                       ),
@@ -215,12 +195,14 @@ class _CardDisplayViewState extends State<CardDisplayView>
                                                         (filter) =>
                                                             GestureDetector(
                                                           onTap: () {
-                                                            model.filters[filter
-                                                                    .key] =
-                                                                !filter.value;
+                                                            setState(() {
+                                                              model.filters[
+                                                                      filter
+                                                                          .key] =
+                                                                  !filter.value;
+                                                            });
                                                             model
                                                                 .updateFilter();
-                                                            setState(() {});
                                                           },
                                                           child: Icon(
                                                             Cards.getIcon(
@@ -271,7 +253,7 @@ class _CardDisplayViewState extends State<CardDisplayView>
                                         elevation: 0,
                                         color: kColors.beige,
                                         child: Icon(
-                                          TheNounProjectIcons.noun_bookmark,
+                                          MilleSanders.noun_filters,
                                           size: 40,
                                           color: Colors.white,
                                         ),
@@ -280,11 +262,9 @@ class _CardDisplayViewState extends State<CardDisplayView>
                                   ),
                                   GestureDetector(
                                     onTap: () async {
-                                      if (model.index < model.cards.length) {
+                                      if (model.removeCard()) {
                                         await _animationController.forward();
-                                        model.removeCard();
                                         _animationController.reset();
-                                        setState(() {});
                                       }
                                     },
                                     child: DisplayCard(
@@ -292,7 +272,7 @@ class _CardDisplayViewState extends State<CardDisplayView>
                                       elevation: 0,
                                       color: kColors.gold,
                                       child: Icon(
-                                        TheNounProjectIcons.noun_arrows_right,
+                                        MilleSanders.arrowright,
                                         size: 40,
                                         color: Colors.white,
                                       ),
@@ -367,18 +347,40 @@ class _ActiveCardState extends State<ActiveCard> {
               width: 265,
               height: 350,
               color: widget.color,
-              child: Stack(
-                alignment: Alignment.bottomRight,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Icon(
-                      TheNounProjectIcons.noun_share,
-                      color: Colors.white,
-                      size: 30,
-                    ),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        widget.text,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 19,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
                   ),
-                  Center(
+                ),
+              ),
+            ),
+          ),
+          child: TweenAnimationBuilder(
+            tween: Tween<double>(begin: 15, end: 0),
+            duration: Duration(milliseconds: 400),
+            builder: (BuildContext context, double value, Widget child) =>
+                Padding(
+              padding: EdgeInsets.fromLTRB(value, value, 0, value),
+              child: RepaintBoundary(
+                key: key,
+                child: DisplayCard(
+                  width: 265,
+                  height: 350 - 2 * value,
+                  color: widget.color,
+                  child: Center(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40.0),
                       child: Column(
@@ -396,70 +398,6 @@ class _ActiveCardState extends State<ActiveCard> {
                         ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          child: TweenAnimationBuilder(
-            tween: Tween<double>(begin: 15, end: 0),
-            duration: Duration(milliseconds: 400),
-            builder: (BuildContext context, double value, Widget child) =>
-                Padding(
-              padding: EdgeInsets.fromLTRB(value, value, 0, value),
-              child: RepaintBoundary(
-                key: key,
-                child: DisplayCard(
-                  width: 265,
-                  height: 350 - 2 * value,
-                  color: widget.color,
-                  child: Stack(
-                    alignment: Alignment.bottomRight,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: GestureDetector(
-                          onTap: () async {
-                            RenderRepaintBoundary boundary =
-                                key.currentContext.findRenderObject();
-                            final Uint8List image = (await (await boundary
-                                        .toImage(pixelRatio: 3.0))
-                                    .toByteData(format: ImageByteFormat.png))
-                                .buffer
-                                .asUint8List();
-                            await WcFlutterShare.share(
-                                sharePopupTitle: 'share',
-                                fileName: 'share.png',
-                                mimeType: 'image/png',
-                                bytesOfFile: image);
-                          },
-                          child: Icon(
-                            TheNounProjectIcons.noun_share,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                widget.text,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
                   ),
                 ),
               ),
@@ -487,37 +425,24 @@ class OtherCard extends StatelessWidget {
         height: 320,
         color: color,
         elevation: elevation,
-        child: Stack(
-          alignment: Alignment.bottomRight,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Icon(
-                TheNounProjectIcons.noun_share,
-                color: Colors.white,
-                size: 30,
-              ),
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      text,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 19,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  text,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 19,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/constants/mille_sanders_icons.dart';
 import 'package:flutter_app/views_and_viewmodels/card_deck_selection_tab_view.dart';
 import 'package:flutter_app/views_and_viewmodels/mille_sanders_tabbar_viewmodel.dart';
 import 'package:flutter_app/constants/k_colors.dart';
-import 'package:flutter_app/constants/the_noun_project_icons_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MilleSandersTabBarView extends StatelessWidget {
@@ -33,7 +33,7 @@ class MilleSandersTabBarView extends StatelessWidget {
             GestureDetector(
               onTap: MilleSandersTabBarViewModel.launchFacebook,
               child: Icon(
-                TheNounProjectIcons.facebook,
+                MilleSanders.facebook,
                 color: Colors.black,
                 size: 33,
               ),
@@ -41,7 +41,7 @@ class MilleSandersTabBarView extends StatelessWidget {
             GestureDetector(
               onTap: MilleSandersTabBarViewModel.launchLinkedin,
               child: Icon(
-                TheNounProjectIcons.linkedin,
+                MilleSanders.linkedin,
                 color: Colors.black,
                 size: 33,
               ),
@@ -49,7 +49,7 @@ class MilleSandersTabBarView extends StatelessWidget {
             GestureDetector(
               onTap: MilleSandersTabBarViewModel.launchPinterest,
               child: Icon(
-                TheNounProjectIcons.pinterest,
+                MilleSanders.pinterest,
                 color: Colors.black,
                 size: 33,
               ),
@@ -57,7 +57,7 @@ class MilleSandersTabBarView extends StatelessWidget {
             GestureDetector(
               onTap: MilleSandersTabBarViewModel.launchInstagram,
               child: Icon(
-                TheNounProjectIcons.instagram,
+                MilleSanders.instagram,
                 color: Colors.black,
                 size: 33,
               ),
@@ -91,31 +91,31 @@ class MilleSandersTabBarView extends StatelessWidget {
           iconSize: 25,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(TheNounProjectIcons.logo_millesanders),
+              icon: Icon(MilleSanders.logo_millesanders),
               title: Container(
                 height: 0,
               ),
             ),
             BottomNavigationBarItem(
-              icon: Icon(TheNounProjectIcons.noun_hub),
+              icon: Icon(MilleSanders.noun_hub),
               title: Container(
                 height: 0,
               ),
             ),
             BottomNavigationBarItem(
-              icon: Icon(TheNounProjectIcons.noun_overview),
+              icon: Icon(MilleSanders.noun_overview),
               title: Container(
                 height: 0,
               ),
             ),
             BottomNavigationBarItem(
-              icon: Icon(TheNounProjectIcons.noun_unlock),
+              icon: Icon(MilleSanders.noun_unlock),
               title: Container(
                 height: 0,
               ),
             ),
             BottomNavigationBarItem(
-              icon: Icon(TheNounProjectIcons.noun_authorization),
+              icon: Icon(MilleSanders.noun_authorization),
               title: Container(
                 height: 0,
               ),
