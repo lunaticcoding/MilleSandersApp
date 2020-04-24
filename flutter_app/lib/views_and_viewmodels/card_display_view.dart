@@ -3,12 +3,12 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_app/constants/k_colors.dart';
-import 'package:flutter_app/constants/mille_sanders_icons.dart';
-import 'package:flutter_app/custom_widgets/TrianglePainter.dart';
-import 'package:flutter_app/custom_widgets/card.dart';
-import 'package:flutter_app/models/Cards.dart';
-import 'package:flutter_app/views_and_viewmodels/card_display_viewmodel.dart';
+import 'package:growthdeck/constants/k_colors.dart';
+import 'package:growthdeck/constants/mille_sanders_icons.dart';
+import 'package:growthdeck/custom_widgets/TrianglePainter.dart';
+import 'package:growthdeck/custom_widgets/card.dart';
+import 'package:growthdeck/models/Cards.dart';
+import 'package:growthdeck/views_and_viewmodels/card_display_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class CardDisplayView extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/locator.dart';
-import 'package:flutter_app/models/Cards.dart';
+import 'package:growthdeck/locator.dart';
+import 'package:growthdeck/models/Cards.dart';
 
 import 'card_deck_selection_tab_view.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/locator.dart';
+import 'package:growthdeck/locator.dart';
 import 'views_and_viewmodels/mille_sanders_tabbar_view.dart';
 
 void main() {
