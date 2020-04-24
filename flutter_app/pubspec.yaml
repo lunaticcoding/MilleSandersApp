@@ -24,9 +24,13 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   google_fonts: ^0.4.0
+  provider: ^4.0.5
+  get_it: ^4.0.1
   path_provider: ^1.6.5
   url_launcher: ^5.4.2
-  provider_architecture: ^1.0.6
+  http: ^0.12.0+4
+  shared_preferences: ^0.5.6+3
+  wc_flutter_share: ^0.2.0
 
 dev_dependencies:
   flutter_test:
@@ -60,9 +64,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: TheNounProjectIcons
+    - family: MilleSanders
       fonts:
-      - asset: assets/fonts/TheNounProjectIcons.ttf
+      - asset: assets/fonts/MilleSanders.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

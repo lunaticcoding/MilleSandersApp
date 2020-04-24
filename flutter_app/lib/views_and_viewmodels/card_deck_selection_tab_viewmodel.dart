@@ -1,35 +1,57 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/Models/card_detail.dart';
-import 'package:flutter_app/constants/k_colors.dart';
-import 'package:flutter_app/constants/the_noun_project_icons_icons.dart';
+import 'package:flutter_app/locator.dart';
+import 'package:flutter_app/models/Cards.dart';
+
+import 'card_deck_selection_tab_view.dart';
 
 class CardDeckSelectionTabViewModel extends ChangeNotifier {
-  final cardDetails = [
-    CardDetail(
-      headline: "motiviert werden",
-      titleLeft: "Zitate",
-      iconLeft: TheNounProjectIcons.noun_quotes,
-      titleRight: "Tipps",
-      iconRight: TheNounProjectIcons.noun_tips,
-      color: kColors.gold,
-    ),
-    CardDetail(
-      headline: "wachsen",
-      titleLeft: "Komfortzone verlassen",
-      iconLeft: TheNounProjectIcons.noun_exit,
-      titleRight: "Challenges",
-      iconRight: TheNounProjectIcons.noun_peak,
-      color: kColors.beige,
-    ),
-    CardDetail(
-      headline: "Ideen bekommen",
-      titleLeft: "Business Ideen",
-      iconLeft: TheNounProjectIcons.noun_business_idea,
-      titleRight: "Journaling Prompts",
-      iconRight: TheNounProjectIcons.noun_write,
-      color: kColors.grey,
-    ),
-  ];
+  List<dynamic> cards;
+  List<int> indices;
+  List<ScrollController> scrollControllerList;
+  String error;
 
+  CardDeckSelectionTabViewModel() {
+    locator.allReady().then((_) {
+      cards = locator<Cards>().data;
+      error = locator<Cards>().error;
+
+      indices = List<int>();
+      scrollControllerList = List<ScrollController>();
+
+      for (var _ in locator<Cards>().data) {
+        scrollControllerList.add(ScrollController());
+        indices.add(0);
+      }
+      notifyListeners();
+    });
+  }
+
+  void refreshDeck() {
+    locator<Cards>().reloadData();
+    cards = locator<Cards>().data;
+    error = locator<Cards>().error;
+    notifyListeners();
+  }
+
+  // TODO move into view (is ui code)
+  List<Widget> getRowCards(dynamic cards, BoxConstraints constraints) {
+    List<Widget> list = List<Widget>();
+    for (int i = 0; i < cards.length; i++) {
+      var card = cards[i];
+      if (list.isNotEmpty) {
+        list.add(SizedBox(width: 20));
+      }
+      list.add(
+        DeckCard(
+          constraints: constraints,
+          color: Cards.colorFromHex(card["color"]),
+          text: card["deckName"],
+          iconData: Cards.getIcon(card["icon"]),
+          deck: card,
+        ),
+      );
+    }
+    return list;
+  }
 }
-

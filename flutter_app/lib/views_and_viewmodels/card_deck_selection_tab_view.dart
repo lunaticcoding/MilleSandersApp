@@ -1,92 +1,254 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/views_and_viewmodels/card_deck_selection_tab_viewmodel.dart';
-import 'package:provider_architecture/viewmodel_provider.dart';
+import 'package:flutter_app/custom_widgets/card.dart';
+import 'package:flutter_app/locator.dart';
+import 'package:flutter_app/models/Cards.dart';
+import 'package:flutter_app/constants/k_colors.dart';
+import 'package:provider/provider.dart';
 
-class CardDeckSelectionTabView extends StatelessWidget {
+import 'card_deck_selection_tab_viewmodel.dart';
+import 'card_display_view.dart';
+
+class CardDeckSelectionTabView extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return ViewModelProvider.withConsumer(
-      viewModel: CardDeckSelectionTabViewModel(),
-      builder: (context, model, child) => Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(height: 20),
-            Text(
-              "Heute möchte ich...",
-              style: TextStyle(
-                decoration: TextDecoration.underline,
-                fontWeight: FontWeight.w700,
-                fontSize: 18,
-              ),
-            ),
-            SizedBox(height: 10),
-            Flexible(
-              child: ListView.builder(
-                itemCount: model.cardDetails.length,
-                itemBuilder: (BuildContext ctxt, int index) => Column(
-                  children: <Widget>[
-                    LayoutBuilder(
-                      builder:
-                          (BuildContext context, BoxConstraints constraints) =>
-                              Container(
-                        width: constraints.maxWidth,
-                        child: Text(
-                          model.cardDetails[index].headline,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 15,
+  _CardDeckSelectionTabViewState createState() =>
+      _CardDeckSelectionTabViewState();
+}
+
+class _CardDeckSelectionTabViewState extends State<CardDeckSelectionTabView> {
+  @override
+  Widget build(BuildContext context) => ChangeNotifierProvider(
+        create: (context) => CardDeckSelectionTabViewModel(),
+        child: Consumer<CardDeckSelectionTabViewModel>(
+          builder: (BuildContext context, CardDeckSelectionTabViewModel model,
+                  Widget child) =>
+              model.cards != null
+                  ? model.error == null
+                      ? Container(
+                          color: Colors.white,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                SizedBox(height: 20),
+                                Text(
+                                  "Heute möchte ich...",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.black,
+                                    decorationStyle: TextDecorationStyle.solid,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                Flexible(
+                                  child: ListView.builder(
+                                    itemCount: model.cards.length,
+                                    itemBuilder:
+                                        (BuildContext ctxt, int index) =>
+                                            Column(
+                                      children: <Widget>[
+                                        LayoutBuilder(
+                                          builder: (BuildContext context,
+                                                  BoxConstraints constraints) =>
+                                              Container(
+                                            width: constraints.maxWidth,
+                                            child: Text(
+                                              model.cards[index]["sectionName"],
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                decoration: TextDecoration.none,
+                                                color: Colors.black,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 5),
+                                        LayoutBuilder(
+                                          builder: (context, constraints) =>
+                                              Column(
+                                            children: <Widget>[
+                                              Container(
+                                                width: constraints.maxWidth,
+                                                height:
+                                                    constraints.maxWidth / 2 -
+                                                        10,
+                                                child: NotificationListener<
+                                                    ScrollNotification>(
+                                                  onNotification:
+                                                      (notification) {
+                                                    double cardSize =
+                                                        constraints.maxWidth /
+                                                                2 +
+                                                            10;
+                                                    if (notification
+                                                        is ScrollUpdateNotification) {
+                                                      int cardIndex;
+                                                      if (model
+                                                              .scrollControllerList[
+                                                                  index]
+                                                              .offset <
+                                                          0) {
+                                                        cardIndex = 0;
+                                                      } else {
+                                                        double offset = model
+                                                            .scrollControllerList[
+                                                                index]
+                                                            .offset;
+                                                        cardIndex = offset ~/
+                                                                cardSize +
+                                                            ((offset % cardSize >
+                                                                    (cardSize /
+                                                                        2))
+                                                                ? 1
+                                                                : 0);
+                                                      }
+                                                      model.indices[index] =
+                                                          cardIndex;
+                                                      setState(() {});
+                                                    }
+                                                    if (notification
+                                                        is ScrollEndNotification) {
+                                                      Future.delayed(
+                                                          Duration(
+                                                              microseconds: 1),
+                                                          () {
+                                                        double target =
+                                                            model.indices[
+                                                                    index] *
+                                                                cardSize;
+                                                        model
+                                                            .scrollControllerList[
+                                                                index]
+                                                            .animateTo(
+                                                                target,
+                                                                duration: Duration(
+                                                                    milliseconds:
+                                                                        300),
+                                                                curve: Curves
+                                                                    .easeOut);
+                                                      });
+                                                    }
+                                                    return true;
+                                                  },
+                                                  child: ListView(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    controller: model
+                                                            .scrollControllerList[
+                                                        index],
+                                                    children: model.getRowCards(
+                                                        model.cards[index]
+                                                            ["decks"],
+                                                        constraints),
+                                                  ),
+                                                ),
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: model.cards[index]
+                                                        ["decks"]
+                                                    .sublist(
+                                                        0,
+                                                        model
+                                                                .cards[index]
+                                                                    ["decks"]
+                                                                .length -
+                                                            1)
+                                                    .map<Widget>((card) {
+                                                  int i = model.cards[index]
+                                                          ["decks"]
+                                                      .indexOf(card);
+                                                  return Container(
+                                                    width: 8.0,
+                                                    height: 8.0,
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 10.0,
+                                                            horizontal: 2.0),
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: i ==
+                                                              model.indices[
+                                                                  index]
+                                                          ? Color.fromRGBO(
+                                                              0, 0, 0, 0.9)
+                                                          : Color.fromRGBO(
+                                                              0, 0, 0, 0.4),
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(height: 20),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
+                        )
+                      : GestureDetector(
+                          onTap: () {
+                            model.refreshDeck();
+                            setState(() {});
+                          },
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(40.0),
+                              child: Text(
+                                model.error,
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                  : Container(
+                      color: Colors.white,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(kColors.gold),
                         ),
                       ),
                     ),
-                    SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Card(
-                          size: 170,
-                          text: model.cardDetails[index].titleLeft,
-                          color: model.cardDetails[index].color,
-                          icon: model.cardDetails[index].iconLeft,
-                        ),
-                        Card(
-                          size: 170,
-                          text: model.cardDetails[index].titleRight,
-                          color: model.cardDetails[index].color,
-                          icon: model.cardDetails[index].iconRight,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                  ],
-                ),
-              ),
-            ),
-          ],
         ),
-      ),
-    );
-  }
+      );
 }
 
-class Card extends StatelessWidget {
-  final double size;
-  final String text;
-  final IconData icon;
+class DeckCard extends StatelessWidget {
+  DeckCard({this.constraints, this.color, this.deck, this.text, this.iconData});
+  final BoxConstraints constraints;
   final Color color;
-  Card({@required this.size, this.text, this.icon, this.color});
+  final String text;
+  final IconData iconData;
+  final dynamic deck;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: size,
-      width: size,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(20),
+    return DisplayCard(
+      elevation: 0,
+      width: constraints.maxWidth / 2 - 10,
+      color: color,
+      onTap: () => Navigator.of(context).push(
+        CupertinoPageRoute(
+          builder: (context) => CardDisplayView(
+            deck: deck,
+          ),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -94,18 +256,20 @@ class Card extends StatelessWidget {
         children: <Widget>[
           Text(
             text,
+            textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w500,
+              decoration: TextDecoration.none,
               fontSize: 15,
             ),
           ),
           SizedBox(height: 10),
           Icon(
-            icon,
+            iconData,
             size: 80,
             color: Colors.white,
-          ),
+          )
         ],
       ),
     );
