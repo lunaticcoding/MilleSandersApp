@@ -2,18 +2,28 @@
   "images" : [
     {
       "filename" : "growthdecks_logo_white.png",
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "scale" : "1x"
     },
     {
-      "filename" : "growthdecks_logo_white-1.png",
-      "idiom" : "universal",
+      "filename" : "growthdecks_logo_white-2.png",
+      "idiom" : "iphone",
       "scale" : "2x"
     },
     {
-      "filename" : "growthdecks_logo_white-2.png",
-      "idiom" : "universal",
+      "filename" : "growthdecks_logo_white-1.png",
+      "idiom" : "iphone",
       "scale" : "3x"
+    },
+    {
+      "filename" : "growthdecks_logo_white-3.png",
+      "idiom" : "ipad",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "growthdecks_logo_white-4.png",
+      "idiom" : "ipad",
+      "scale" : "2x"
     }
   ],
   "info" : {
