@@ -2,16 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:growthdeck/services/http_service.dart';
 
 class IntroductionViewModel extends ChangeNotifier {
-  static void launchEmail() {
+  static void launchEmail() async {
     try {
-      HttpService.launchURL(
+      await HttpService.launchURL(
           'mailto:m.papula@gmx.at?subject="hello"&body="body"');
     } catch (e) {}
   }
 
-  static void launchFacebookMessenger() {
+  static void launchFacebookMessenger() async {
     try {
-      HttpService.launchURL('m.me/millesanders');
+      await HttpService.launchURL('m.me/millesanders');
     } catch (e) {}
   }
 }
