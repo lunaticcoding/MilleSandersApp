@@ -1,4 +1,4 @@
-package com.example.flutter_app
+package com.lunaticcoding.growthdeck
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

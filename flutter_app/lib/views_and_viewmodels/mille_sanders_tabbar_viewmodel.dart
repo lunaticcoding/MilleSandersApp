@@ -1,5 +1,5 @@
 
-import 'package:flutter_app/services/http_service.dart';
+import 'package:growthdeck/services/http_service.dart';
 
 class MilleSandersTabBarViewModel {
 

@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/constants/constants.dart';
-import 'package:flutter_app/constants/mille_sanders_icons.dart';
-import 'package:flutter_app/locator.dart';
-import 'package:flutter_app/services/http_service.dart';
-import 'package:flutter_app/services/local_storage_service.dart';
+import 'package:growthdeck/constants/constants.dart';
+import 'package:growthdeck/constants/mille_sanders_icons.dart';
+import 'package:growthdeck/locator.dart';
+import 'package:growthdeck/services/http_service.dart';
+import 'package:growthdeck/services/local_storage_service.dart';
 
 class Cards extends ChangeNotifier {
   String error;

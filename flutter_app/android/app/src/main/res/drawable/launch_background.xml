@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Modify this file to customize your launch splash screen -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@android:color/white" />
-
-    <!-- You can insert your own image assets here -->
-    <!-- <item>
-        <bitmap
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+               android:shape="rectangle">
+            <gradient
+                    android:startColor="@color/lightBrown"
+                    android:endColor="@color/darkerBrown"
+                    android:angle="90" />
+        </shape>
+    </item>
+    <item
             android:gravity="center"
-            android:src="@mipmap/launch_image" />
-    </item> -->
+            android:width="170dp"
+            android:height="170dp"
+            android:bottom="30dp">
+        <bitmap
+                android:gravity="fill_horizontal|fill_vertical"
+                android:src="@drawable/growthdecks_logo_white" />
+    </item>
+    <item
+            android:gravity="bottom|center_horizontal"
+            android:width="115dp"
+            android:height="26dp"
+            android:bottom="30dp">
+        <bitmap
+                android:gravity="fill_horizontal|fill_vertical"
+                android:src="@drawable/millesanders_logo_white" />
+    </item>
 </layer-list>

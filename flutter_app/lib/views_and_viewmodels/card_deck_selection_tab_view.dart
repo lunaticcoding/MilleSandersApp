@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/custom_widgets/card.dart';
-import 'package:flutter_app/locator.dart';
-import 'package:flutter_app/models/Cards.dart';
-import 'package:flutter_app/constants/k_colors.dart';
+import 'package:growthdeck/custom_widgets/card.dart';
+import 'package:growthdeck/locator.dart';
+import 'package:growthdeck/models/Cards.dart';
+import 'package:growthdeck/constants/k_colors.dart';
 import 'package:provider/provider.dart';
 
 import 'card_deck_selection_tab_viewmodel.dart';

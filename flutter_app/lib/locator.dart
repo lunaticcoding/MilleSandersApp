@@ -1,5 +1,5 @@
 
-import 'package:flutter_app/services/local_storage_service.dart';
+import 'package:growthdeck/services/local_storage_service.dart';
 import 'package:get_it/get_it.dart';
 
 import 'models/Cards.dart';
