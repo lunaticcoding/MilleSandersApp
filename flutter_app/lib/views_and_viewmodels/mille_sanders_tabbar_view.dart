@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:growthdeck/constants/mille_sanders_icons.dart';
+import 'package:growthdeck/views_and_viewmodels/MilleSandersWebView.dart';
 import 'package:growthdeck/views_and_viewmodels/card_deck_selection_tab_view.dart';
 import 'package:growthdeck/views_and_viewmodels/mille_sanders_tabbar_viewmodel.dart';
 import 'package:growthdeck/constants/k_colors.dart';
@@ -72,9 +73,9 @@ class MilleSandersTabBarView extends StatelessWidget {
           tabBuilder: (BuildContext context, int index) => CupertinoTabView(
             builder: (BuildContext context) => [
               Container(child: Text("1")),
-              Container(child: Text("2")),
+              MilleSandersWebView('https://millesanders.com/blogs/tipps'),
               CardDeckSelectionTabView(),
-              Container(child: Text("4")),
+              MilleSandersWebView('https://millesanders.com/'),
               Container(child: Text("5")),
             ][index],
           ),
@@ -99,7 +100,7 @@ class MilleSandersTabBarView extends StatelessWidget {
                 ),
               ),
               BottomNavigationBarItem(
-                icon: Icon(MilleSanders.noun_hub),
+                icon: Icon(MilleSanders.noun_blog),
                 title: Container(
                   height: 0,
                 ),
@@ -111,7 +112,7 @@ class MilleSandersTabBarView extends StatelessWidget {
                 ),
               ),
               BottomNavigationBarItem(
-                icon: Icon(MilleSanders.noun_unlock),
+                icon: Icon(MilleSanders.noun_shop),
                 title: Container(
                   height: 0,
                 ),
