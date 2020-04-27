@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:growthdeck/constants/mille_sanders_icons.dart';
-import 'package:growthdeck/views_and_viewmodels/IntroductionViewModel.dart';
+import 'package:growthdeck/views_and_viewmodels/introduction_viewmodel.dart';
 
 class IntroductionView extends StatelessWidget {
   @override

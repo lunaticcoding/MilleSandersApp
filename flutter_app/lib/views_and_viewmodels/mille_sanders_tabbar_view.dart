@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:growthdeck/constants/mille_sanders_icons.dart';
-import 'package:growthdeck/views_and_viewmodels/IntroductionView.dart';
+import 'package:growthdeck/views_and_viewmodels/introduction_view.dart';
 import 'package:growthdeck/views_and_viewmodels/card_deck_selection_tab_view.dart';
 import 'package:growthdeck/views_and_viewmodels/mille_sanders_tabbar_viewmodel.dart';
 import 'package:growthdeck/constants/k_colors.dart';
