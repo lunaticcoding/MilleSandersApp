@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:growthdeck/constants/mille_sanders_icons.dart';
+import 'package:growthdeck/views_and_viewmodels/impressum_view.dart';
 import 'package:growthdeck/views_and_viewmodels/MilleSandersWebView.dart';
 import 'package:growthdeck/views_and_viewmodels/card_deck_selection_tab_view.dart';
 import 'package:growthdeck/views_and_viewmodels/mille_sanders_tabbar_viewmodel.dart';
@@ -76,7 +77,7 @@ class MilleSandersTabBarView extends StatelessWidget {
               MilleSandersWebView('https://millesanders.com/blogs/tipps'),
               CardDeckSelectionTabView(),
               MilleSandersWebView('https://millesanders.com/'),
-              Container(child: Text("5")),
+              ImpressumView(),
             ][index],
           ),
           tabBar: CupertinoTabBar(
@@ -118,7 +119,7 @@ class MilleSandersTabBarView extends StatelessWidget {
                 ),
               ),
               BottomNavigationBarItem(
-                icon: Icon(MilleSanders.noun_authorization),
+                icon: Icon(MilleSanders.noun_info),
                 title: Container(
                   height: 0,
                 ),
