@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:growthdeck/constants/mille_sanders_icons.dart';
 import 'package:growthdeck/views_and_viewmodels/introduction_view.dart';
+import 'package:growthdeck/views_and_viewmodels/impressum_view.dart';
+import 'package:growthdeck/views_and_viewmodels/MilleSandersWebView.dart';
 import 'package:growthdeck/views_and_viewmodels/card_deck_selection_tab_view.dart';
 import 'package:growthdeck/views_and_viewmodels/mille_sanders_tabbar_viewmodel.dart';
 import 'package:growthdeck/constants/k_colors.dart';
@@ -72,11 +74,11 @@ class MilleSandersTabBarView extends StatelessWidget {
         child: CupertinoTabScaffold(
           tabBuilder: (BuildContext context, int index) => CupertinoTabView(
             builder: (BuildContext context) => [
-              IntroductionView(),
-              Container(child: Text("2")),
+              IntroductionView(),,
+              MilleSandersWebView('https://millesanders.com/blogs/tipps'),
               CardDeckSelectionTabView(),
-              Container(child: Text("4")),
-              Container(child: Text("5")),
+              MilleSandersWebView('https://millesanders.com/'),
+              ImpressumView(),
             ][index],
           ),
           tabBar: CupertinoTabBar(
@@ -100,7 +102,7 @@ class MilleSandersTabBarView extends StatelessWidget {
                 ),
               ),
               BottomNavigationBarItem(
-                icon: Icon(MilleSanders.noun_hub),
+                icon: Icon(MilleSanders.noun_blog),
                 title: Container(
                   height: 0,
                 ),
@@ -112,13 +114,13 @@ class MilleSandersTabBarView extends StatelessWidget {
                 ),
               ),
               BottomNavigationBarItem(
-                icon: Icon(MilleSanders.noun_unlock),
+                icon: Icon(MilleSanders.noun_shop),
                 title: Container(
                   height: 0,
                 ),
               ),
               BottomNavigationBarItem(
-                icon: Icon(MilleSanders.noun_authorization),
+                icon: Icon(MilleSanders.noun_info),
                 title: Container(
                   height: 0,
                 ),
