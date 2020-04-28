@@ -114,7 +114,7 @@ class IntroductionView extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 50),
+                  SizedBox(height: 30),
                 ],
               ),
             )
