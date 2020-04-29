@@ -48,25 +48,11 @@ class CardDisplayViewModel extends ChangeNotifier {
   }
 
   int getNrValidCards() => _cards.length - _index;
-  bool isDeckEmpty() => !(_cards.length - _index > 0);
-  bool isDeckFull() => _index >= _cards.length;
+  bool isDeckEmpty() => _index >= _cards.length ;
+  bool isDeckFull() => _index == 0;
 
   void animateToNextCard() async {
-    if (!isDeckFull()) {
-      await animationController.reverse(from: 1.0);
-      _addCard();
-    }
-  }
-
-  void _addCard() {
-    if (_index > 0) {
-      _index--;
-      notifyListeners();
-    }
-  }
-
-  void animateToPrevCard() async {
-    if (isDeckEmpty()) {
+    if (!isDeckEmpty()) {
       await animationController.forward();
       animationController.reset();
       removeCard();
@@ -80,10 +66,24 @@ class CardDisplayViewModel extends ChangeNotifier {
     }
   }
 
+  void animateToPrevCard() async {
+    if (!isDeckFull()) {
+      await animationController.reverse(from: 1.0);
+      _addCard();
+    }
+  }
+
+  void _addCard() {
+    if (_index > 0) {
+      _index--;
+      notifyListeners();
+    }
+  }
+
   List<Widget> forEachCard(Function function) {
     List<dynamic> list = List<Widget>();
     for (int i = _index; i < _cards.length; i++) {
-      list.insert(0, function(i == _index, _cards[i]));
+      list.insert(0, function(i - _index, _cards[i]));
     }
     return list;
   }

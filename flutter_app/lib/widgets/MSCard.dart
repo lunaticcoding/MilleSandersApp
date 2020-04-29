@@ -8,11 +8,13 @@ class MSCard extends StatelessWidget {
     this.color,
     this.width = 265,
     this.height = 350,
+    this.elevation = 6,
   });
   final double width;
   final double height;
   final Color color;
   final String text;
+  final double elevation;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,7 @@ class MSCard extends StatelessWidget {
       width: width,
       height: height,
       color: color,
+      elevation: elevation,
       child: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40.0),
@@ -30,6 +33,7 @@ class MSCard extends StatelessWidget {
               Text(
                 text,
                 style: TextStyle(
+                  decoration: TextDecoration.none,
                   color: Colors.white,
                   fontSize: 19,
                   fontWeight: FontWeight.w700,

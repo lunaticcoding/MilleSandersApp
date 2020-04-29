@@ -4,31 +4,17 @@ import 'package:growthdeck/models/Cards.dart';
 import 'package:growthdeck/services/navigation_service.dart';
 import 'package:growthdeck/widgets/MSProgressIndicator.dart';
 import 'package:growthdeck/widgets/MSRoundedSquare.dart';
+import 'package:growthdeck/widgets/MSSliderIndicator.dart';
 import 'package:provider/provider.dart';
+
+import 'deck_selection_viewmodel.dart';
 
 class DeckSelectionView extends StatefulWidget {
   @override
-  _DeckSelectionViewState createState() =>
-      _DeckSelectionViewState();
+  _DeckSelectionViewState createState() => _DeckSelectionViewState();
 }
 
 class _DeckSelectionViewState extends State<DeckSelectionView> {
-  List<int> indices;
-  List<ScrollController> scrollControllerList;
-
-  @override
-  void initState() {
-    indices = List<int>();
-    scrollControllerList = List<ScrollController>();
-
-//    for (var _ in Provider.of<Cards>(context, listen: false).cardSections) {
-    for (int i = 0; i < 2; i++) {
-      scrollControllerList.add(ScrollController());
-      indices.add(0);
-    }
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) => Consumer2<NavigationService, Cards>(
         builder: (context, navigationService, cards, child) =>
@@ -58,13 +44,13 @@ class _DeckSelectionViewState extends State<DeckSelectionView> {
                               SizedBox(height: 10),
                               _SectionList(
                                   sectionNames: cards.cardSections
-                                      .map((section) => section.name)),
+                                      .map((section) => section.name)
+                                      .toList()),
                             ],
                           ),
                         ),
                       )
                     : GestureDetector(
-                        onTap: cards.reloadData,
                         child: Center(
                           child: Padding(
                             padding: const EdgeInsets.all(40.0),
@@ -129,90 +115,61 @@ class _CardDeckList extends StatefulWidget {
 class __CardDeckListState extends State<_CardDeckList> {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<DeckSelectionViewModel>(
+    return ChangeNotifierProxyProvider<Cards, DeckSelectionViewModel>(
       create: (BuildContext context) => DeckSelectionViewModel(),
-      child: Consumer2<NavigationService, Cards>(
-        builder: (context, navigationService, cards, child) => LayoutBuilder(
-          builder: (context, constraints) => Column(
-            children: <Widget>[
-              Container(
-                width: constraints.maxWidth,
-                height: constraints.maxWidth / 2 - 10,
-                child: NotificationListener<ScrollNotification>(
-                  onNotification: (notification) {
-                    double cardSize = constraints.maxWidth / 2 + 10;
-                    if (notification is ScrollUpdateNotification) {
-                      int cardIndex;
-                      if (scrollControllerList[index].offset < 0) {
-                        cardIndex = 0;
-                      } else {
-                        double offset = scrollControllerList[index].offset;
-                        cardIndex = offset ~/ cardSize +
-                            ((offset % cardSize > (cardSize / 2)) ? 1 : 0);
-                      }
-                      indices[index] = cardIndex;
-                      setState(() {});
-                    }
-                    if (notification is ScrollEndNotification) {
-                      Future.delayed(Duration(microseconds: 1), () {
-                        double target = indices[index] * cardSize;
-                        scrollControllerList[index].animateTo(target,
-                            duration: Duration(milliseconds: 300),
-                            curve: Curves.easeOut);
-                      });
-                    }
-                    return true;
-                  },
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    controller: scrollControllerList[index],
-                    itemCount: cards.cardSections[index].cardDecks.length,
-                    separatorBuilder: (context, index) => SizedBox(width: 20),
-                    itemBuilder: (context, i) {
-                      CardDeck cardDeck = cards.cardSections[index].cardDecks[i];
-                      return DeckCard(
-                        constraints: constraints,
-                        color: cardDeck.color,
-                        text: cardDeck.name,
-                        iconData: cardDeck.icon,
-                        onTap: () {
-                          cards.setSelectedDeck(cardDeck);
-                          navigationService.jumpToPage(5);
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: cards.cardSections[index].cardDecks
-                    .sublist(0, cards.cardSections[index].cardDecks.length - 1)
-                    .map<Widget>((card) {
-                  int i = cards.cardSections[index].cardDecks.indexOf(card);
-                  return Container(
-                    width: 8.0,
-                    height: 8.0,
-                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: i == indices[index]
-                          ? Color.fromRGBO(0, 0, 0, 0.9)
-                          : Color.fromRGBO(0, 0, 0, 0.4),
+      update: (BuildContext context, cards, model) =>
+          model..initWithSections(cards?.cardSections),
+      child: Consumer3<NavigationService, DeckSelectionViewModel, Cards>(
+        builder: (context, navigationService, model, cards, child) =>
+            LayoutBuilder(
+          builder: (context, constraints) => model.isLoading
+              ? MSProgressIndicator()
+              : Column(
+                  children: <Widget>[
+                    Container(
+                      width: constraints.maxWidth,
+                      height: constraints.maxWidth / 2 - 10,
+                      child: NotificationListener<ScrollNotification>(
+                        onNotification: (notification) => model.onNotification(
+                            notification, constraints, widget.index),
+                        child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          controller: model.scrollControllers[widget.index],
+                          itemCount:
+                              model.cardSections[widget.index].cardDecks.length,
+                          separatorBuilder: (context, index) =>
+                              SizedBox(width: 20),
+                          itemBuilder: (context, i) {
+                            CardDeck cardDeck =
+                                model.cardSections[widget.index].cardDecks[i];
+                            return _DeckCard(
+                              constraints: constraints,
+                              color: cardDeck.color,
+                              text: cardDeck.name,
+                              iconData: cardDeck.icon,
+                              onTap: () {
+                                cards.setSelectedDeck(cardDeck);
+                                navigationService.jumpToPage(5);
+                              },
+                            );
+                          },
+                        ),
+                      ),
                     ),
-                  );
-                }).toList(),
-              ),
-            ],
-          ),
+                    MSSliderIndicator(
+                      cardDecks: model.cardSections[widget.index].cardDecks,
+                      selectedIndex: model.indices[widget.index],
+                    ),
+                  ],
+                ),
         ),
       ),
     );
   }
 }
 
-class DeckCard extends StatelessWidget {
-  DeckCard(
+class _DeckCard extends StatelessWidget {
+  _DeckCard(
       {this.constraints, this.color, this.text, this.iconData, this.onTap});
   final BoxConstraints constraints;
   final Color color;

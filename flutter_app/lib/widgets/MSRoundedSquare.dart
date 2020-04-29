@@ -6,7 +6,7 @@ class MSRoundedSquare extends StatelessWidget {
         this.height,
         this.color,
         this.onTap,
-        this.elevation = 5,
+        this.elevation = 6,
         this.iconSize = 80,
         this.child});
 
