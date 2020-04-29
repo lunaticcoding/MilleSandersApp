@@ -5,16 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:growthdeck/constants/k_colors.dart';
 import 'package:growthdeck/constants/mille_sanders_icons.dart';
-import 'package:growthdeck/custom_widgets/TrianglePainter.dart';
-import 'package:growthdeck/custom_widgets/card.dart';
+import 'package:growthdeck/widgets/MSCard.dart';
+import 'package:growthdeck/widgets/MSRoundedIconButton.dart';
+import 'package:growthdeck/widgets/MSProgressIndicator.dart';
+import 'package:growthdeck/widgets/MSSpeechBubbleTick.dart';
 import 'package:growthdeck/models/Cards.dart';
 import 'package:growthdeck/views_and_viewmodels/card_display_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-class CardDisplayView extends StatefulWidget {
-  CardDisplayView({this.deck});
-  final dynamic deck;
+import 'card_display_viewmodel.dart';
 
+class CardDisplayView extends StatefulWidget {
   @override
   _CardDisplayViewState createState() => _CardDisplayViewState();
 }
@@ -22,318 +23,215 @@ class CardDisplayView extends StatefulWidget {
 class _CardDisplayViewState extends State<CardDisplayView>
     with SingleTickerProviderStateMixin {
   GlobalKey filterKey;
-  AnimationController _animationController;
-  Animation _animationTranslation;
-  Animation _animationRotation;
 
   @override
   void initState() {
     super.initState();
     filterKey = GlobalKey();
-
-    _animationController = AnimationController(
-      duration: Duration(milliseconds: 500),
-      vsync: this,
-    );
-
-    _animationTranslation = new Tween<Offset>(
-      begin: Offset(0, 0),
-      end: Offset(200, 50),
-    ).animate(_animationController)
-      ..addListener(
-        () {
-          setState(() {});
-        },
-      );
-    _animationRotation = new Tween<double>(
-      begin: 0,
-      end: 0.2,
-    ).animate(_animationController)
-      ..addListener(
-        () {
-          setState(() {});
-        },
-      );
   }
 
   @override
-  Widget build(BuildContext context) => ChangeNotifierProvider(
-        create: (context) => CardDisplayViewmodel(widget.deck),
-        child: Consumer<CardDisplayViewmodel>(
-          builder: (BuildContext context, CardDisplayViewmodel model,
-                  Widget child) =>
-              model.isReady
-                  ? Container(
-                      color: Colors.white,
-                      child: Center(
-                        child: Container(
-                          width: 280,
-                          color: Colors.white,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+  Widget build(BuildContext context) =>
+      ChangeNotifierProxyProvider<Cards, CardDisplayViewModel>(
+        create: (context) => CardDisplayViewModel(this),
+        update: (context, cards, model) =>
+            model..initWithSelectedDeck(cards.selectedDeck),
+        child: Consumer<CardDisplayViewModel>(
+          builder: (context, model, child) => model.isReady
+              ? Container(
+                  color: Colors.white,
+                  child: Center(
+                    child: Container(
+                      width: 280,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            model.deckName,
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          _MSCardStack(),
+                          SizedBox(height: 30),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text(
-                                model.deckName,
-                                style: TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w700,
+                              MSRoundedIconButton(
+                                icon: MilleSanders.arrowleft,
+                                color: kColors.brown,
+                                onTap: model.animateToPrevCard,
+                              ),
+                              SizedBox(width: 20),
+                              Container(
+                                key: filterKey,
+                                child: MSRoundedIconButton(
+                                  icon: MilleSanders.noun_filters,
+                                  color: kColors.grey,
+                                  onTap: () => _showModalPopup(model),
                                 ),
                               ),
-                              SizedBox(height: 10),
-                              Container(
-                                width: 280,
-                                height: 350,
-                                child: Stack(
-                                  overflow: Overflow.visible,
-                                  children: model.getNrValidCards() > 0
-                                      ? model.forEachCard(
-                                          (isFirstCard, card) {
-                                            if (isFirstCard) {
-                                              return ActiveCard(
-                                                text: card["text"],
-                                                color: Cards.colorFromHex(
-                                                    card["color"]),
-                                                onDragEnd: (_) {
-                                                  model.removeCard();
-                                                  setState(() {});
-                                                },
-                                                animationRotation:
-                                                    _animationRotation,
-                                                animationTranslation:
-                                                    _animationTranslation,
-                                              );
-                                            } else {
-                                              return OtherCard(
-                                                text: card["text"],
-                                                color: Cards.colorFromHex(
-                                                    card["color"]),
-                                                elevation: isFirstCard ? 6 : 0,
-                                              );
-                                            }
-                                          },
-                                        )
-                                      : <Widget>[
-                                          NoCard(onTap: () {
-                                            model.updateFilter();
-                                          }),
-                                        ],
-                                ),
-                              ),
-                              SizedBox(height: 30),
-                              Container(
-                                width: 300,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    GestureDetector(
-                                      onTap: () async {
-                                        if (model.addCard()) {
-                                          await _animationController.reverse(
-                                              from: 1.0);
-                                        }
-                                      },
-                                      child: DisplayCard(
-                                        width: 60,
-                                        elevation: 0,
-                                        color: kColors.brown,
-                                        child: Icon(
-                                          MilleSanders.arrowleft,
-                                          size: 40,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: Navigator.of(context).pop,
-                                      child: DisplayCard(
-                                        width: 60,
-                                        elevation: 0,
-                                        color: kColors.grey,
-                                        child: Icon(
-                                          MilleSanders.noun_overview,
-                                          size: 35,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () => showCupertinoModalPopup(
-                                        context: context,
-                                        builder: (context) => StatefulBuilder(
-                                          builder: (context, setState) =>
-                                              Padding(
-                                            padding: EdgeInsets.fromLTRB(
-                                                0,
-                                                0,
-                                                0,
-                                                MediaQuery.of(context)
-                                                        .size
-                                                        .height -
-                                                    (filterKey.currentContext
-                                                                .findRenderObject()
-                                                            as RenderBox)
-                                                        .localToGlobal(
-                                                            Offset.zero)
-                                                        .dy),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: <Widget>[
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                10)),
-                                                    color: Colors.white,
-                                                  ),
-                                                  width: 300,
-                                                  height: 55,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    children: model
-                                                        .filters.entries
-                                                        .map<Widget>(
-                                                          (filter) =>
-                                                              GestureDetector(
-                                                            onTap: () {
-                                                              setState(() {
-                                                                model.filters[
-                                                                        filter
-                                                                            .key] =
-                                                                    !filter
-                                                                        .value;
-                                                              });
-                                                              model
-                                                                  .updateFilter();
-                                                            },
-                                                            child: Icon(
-                                                              Cards.getIcon(
-                                                                  filter.key),
-                                                              color: model.filters[
-                                                                      filter
-                                                                          .key]
-                                                                  ? kColors.gold
-                                                                  : kColors
-                                                                      .grey,
-                                                            ),
-                                                          ),
-                                                        )
-                                                        .toList(),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  width: MediaQuery.of(context)
-                                                      .size
-                                                      .width,
-                                                  height: 15,
-                                                  child: CustomPaint(
-                                                    painter: TrianglePainter(
-                                                      x: (filterKey
-                                                                  .currentContext
-                                                                  .findRenderObject()
-                                                              as RenderBox)
-                                                          .localToGlobal(
-                                                              Offset.zero)
-                                                          .dx,
-                                                      y: 0,
-                                                      width: (filterKey
-                                                                  .currentContext
-                                                                  .findRenderObject()
-                                                              as RenderBox)
-                                                          .size
-                                                          .width,
-                                                      height: 15,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      child: Container(
-                                        key: filterKey,
-                                        child: DisplayCard(
-                                          width: 60,
-                                          elevation: 0,
-                                          color: kColors.beige,
-                                          child: Icon(
-                                            MilleSanders.noun_filters,
-                                            size: 40,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () async {
-                                        if (model.removeCard()) {
-                                          await _animationController.forward();
-                                          _animationController.reset();
-                                        }
-                                      },
-                                      child: DisplayCard(
-                                        width: 60,
-                                        elevation: 0,
-                                        color: kColors.gold,
-                                        child: Icon(
-                                          MilleSanders.arrowright,
-                                          size: 40,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              SizedBox(width: 20),
+                              MSRoundedIconButton(
+                                icon: MilleSanders.arrowright,
+                                color: kColors.gold,
+                                onTap: model.animateToNextCard,
                               ),
                             ],
                           ),
-                        ),
-                      ),
-                    )
-                  : Container(
-                      color: Colors.white,
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(kColors.gold),
-                          backgroundColor: Colors.white,
-                        ),
+                        ],
                       ),
                     ),
+                  ),
+                )
+              : MSProgressIndicator(),
         ),
       );
 
+  Future _showModalPopup(CardDisplayViewModel model) => showCupertinoModalPopup(
+        context: context,
+        builder: (context) => StatefulBuilder(
+          builder: (context, setState) => Padding(
+            padding: EdgeInsets.fromLTRB(
+                0,
+                0,
+                0,
+                MediaQuery.of(context).size.height -
+                    (filterKey.currentContext.findRenderObject() as RenderBox)
+                        .localToGlobal(Offset.zero)
+                        .dy),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Colors.white,
+                  ),
+                  width: 300,
+                  height: 55,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: model.filters.entries
+                        .map<Widget>(
+                          (filter) => GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                model.filters[filter.key] = !filter.value;
+                              });
+                              model.updateFilter();
+                            },
+                            child: Icon(
+                              Cards.getIcon(filter.key),
+                              color: model.filters[filter.key]
+                                  ? kColors.gold
+                                  : kColors.grey,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 15,
+                  child: CustomPaint(
+                    painter: MSSpeechBubbleTick(
+                      x: (filterKey.currentContext.findRenderObject()
+                              as RenderBox)
+                          .localToGlobal(Offset.zero)
+                          .dx,
+                      y: 0,
+                      width: (filterKey.currentContext.findRenderObject()
+                              as RenderBox)
+                          .size
+                          .width,
+                      height: 15,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+}
+
+class _MSCardStack extends StatefulWidget {
+  _MSCardStack({this.width = 280, this.height = 350});
+
+  final double width;
+  final double height;
+
   @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
+  _MSCardStackState createState() => _MSCardStackState();
+}
+
+class _MSCardStackState extends State<_MSCardStack> {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<CardDisplayViewModel>(
+      builder: (context, model, child) => Container(
+        width: widget.width,
+        height: widget.height,
+        child: Stack(
+          overflow: Overflow.visible,
+          children: model.getNrValidCards() > 0
+              ? model.forEachCard(
+                  (index, card) {
+                    if (index == 0) {
+                      return _ActiveCard(
+                        text: card.text,
+                        color: card.color,
+                        onDragEnd: (_) => model.removeCard(),
+                        animationRotation: model.animationRotation,
+                        animationTranslation: model.animationTranslation,
+                        elevation: 6,
+                      );
+                    } else {
+                      return _StaticCard(
+                        text: card.text,
+                        color: card.color,
+                        elevation: index == model.getNrValidCards() - 1 ? 6 : 0,
+                      );
+                    }
+                  },
+                )
+              : <Widget>[
+                  _NoCard(
+                    onTap: model.updateFilter,
+                  ),
+                ],
+        ),
+      ),
+    );
   }
 }
 
-class ActiveCard extends StatefulWidget {
-  ActiveCard({
+class _ActiveCard extends StatefulWidget {
+  _ActiveCard({
     this.onDragEnd,
     this.color,
     this.text,
     this.animationTranslation,
     this.animationRotation,
+    this.elevation = 6,
   });
 
-  final onDragEnd;
-  final color;
-  final text;
-  final animationTranslation;
-  final animationRotation;
+  final Function onDragEnd;
+  final Color color;
+  final String text;
+  final Animation animationTranslation;
+  final Animation animationRotation;
+  final double elevation;
 
   @override
   _ActiveCardState createState() => _ActiveCardState();
 }
 
-class _ActiveCardState extends State<ActiveCard> {
+class _ActiveCardState extends State<_ActiveCard> {
   GlobalKey key = GlobalKey();
 
   @override
@@ -352,29 +250,9 @@ class _ActiveCardState extends State<ActiveCard> {
           feedback: TweenAnimationBuilder(
             tween: Tween<double>(begin: 10, end: 0),
             duration: Duration(milliseconds: 400),
-            builder: (context, value, child) => DisplayCard(
-              width: 265,
-              height: 350,
+            builder: (context, value, child) => MSCard(
+              text: widget.text,
               color: widget.color,
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        widget.text,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 19,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
             ),
           ),
           child: TweenAnimationBuilder(
@@ -385,29 +263,10 @@ class _ActiveCardState extends State<ActiveCard> {
               padding: EdgeInsets.fromLTRB(value, value, 0, value),
               child: RepaintBoundary(
                 key: key,
-                child: DisplayCard(
-                  width: 265,
-                  height: 350 - 2 * value,
+                child: MSCard(
+                  text: widget.text,
                   color: widget.color,
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            widget.text,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 19,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  height: 350 - 2 * value,
                 ),
               ),
             ),
@@ -418,8 +277,8 @@ class _ActiveCardState extends State<ActiveCard> {
   }
 }
 
-class OtherCard extends StatelessWidget {
-  const OtherCard({this.color, this.text, this.elevation});
+class _StaticCard extends StatelessWidget {
+  const _StaticCard({this.color, this.text, this.elevation});
 
   final color;
   final text;
@@ -428,38 +287,17 @@ class OtherCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(15, 15, 0, 15),
-      child: DisplayCard(
-        width: 265,
-        height: 320,
-        color: color,
-        elevation: elevation,
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  text,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 19,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+        padding: EdgeInsets.fromLTRB(15, 15, 0, 15),
+        child: MSCard(
+          text: text,
+          color: color,
+          elevation: elevation,
+        ));
   }
 }
 
-class NoCard extends StatelessWidget {
-  const NoCard({this.onTap});
+class _NoCard extends StatelessWidget {
+  const _NoCard({this.onTap});
   final onTap;
 
   @override

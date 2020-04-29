@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:growthdeck/constants/k_colors.dart';
 
-class MilleSandersWebView extends StatefulWidget {
-  MilleSandersWebView(this.url);
+class MSWebView extends StatefulWidget {
+  MSWebView(this.url);
   final String url;
 
   @override
-  _MilleSandersWebViewState createState() => _MilleSandersWebViewState();
+  _MSWebViewState createState() => _MSWebViewState();
 }
 
-class _MilleSandersWebViewState extends State<MilleSandersWebView> {
+class _MSWebViewState extends State<MSWebView> {
   bool isLoading = true;
   @override
   Widget build(BuildContext context) {

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class DisplayCard extends StatelessWidget {
-  DisplayCard(
+class MSRoundedSquare extends StatelessWidget {
+  MSRoundedSquare(
       {@required this.width,
         this.height,
         this.color,
         this.onTap,
-        this.elevation = 5,
+        this.elevation = 6,
         this.iconSize = 80,
         this.child});
 

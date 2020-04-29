@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:growthdeck/constants/mille_sanders_icons.dart';
-import 'package:growthdeck/views_and_viewmodels/introduction_viewmodel.dart';
+import 'package:growthdeck/services/http_service.dart';
 
 class IntroductionView extends StatelessWidget {
   @override
@@ -67,22 +67,22 @@ class IntroductionView extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        BulletPoint(
+                        _BulletPoint(
                           icon: MilleSanders.noun_choose,
                           text: 'handverlesenes Sortiment',
                         ),
                         SizedBox(height: 10),
-                        BulletPoint(
+                        _BulletPoint(
                           icon: MilleSanders.noun_talk,
                           text: 'persöhnliche Beratung',
                         ),
                         SizedBox(height: 10),
-                        BulletPoint(
+                        _BulletPoint(
                           icon: MilleSanders.noun_shipping,
                           text: 'Versand nach DE und AT',
                         ),
                         SizedBox(height: 10),
-                        BulletPoint(
+                        _BulletPoint(
                           icon: MilleSanders.noun_environment,
                           text: 'klein & nachhaltig',
                         ),
@@ -97,7 +97,8 @@ class IntroductionView extends StatelessWidget {
                         Text('Kontakt'),
                         SizedBox(width: 10),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () => HttpService.launchURL(
+                              'http://m.me/millesandersaustria'),
                           child: Icon(
                             MilleSanders.iconfinder_facebook_messenger,
                             color: Colors.black,
@@ -105,7 +106,8 @@ class IntroductionView extends StatelessWidget {
                         ),
                         SizedBox(width: 10),
                         GestureDetector(
-                          onTap: IntroductionViewModel.launchEmail,
+                          onTap: () => HttpService.launchURL(
+                              'mailto:contact@millesanders.com'),
                           child: Icon(
                             MilleSanders.iconfinder_mail,
                             color: Colors.black,
@@ -114,7 +116,7 @@ class IntroductionView extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 50),
+                  SizedBox(height: 30),
                 ],
               ),
             )
@@ -125,8 +127,8 @@ class IntroductionView extends StatelessWidget {
   }
 }
 
-class BulletPoint extends StatelessWidget {
-  BulletPoint({this.icon, this.text});
+class _BulletPoint extends StatelessWidget {
+  _BulletPoint({this.icon, this.text});
   final IconData icon;
   final String text;
 

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:growthdeck/constants/k_colors.dart';
-import 'package:growthdeck/views_and_viewmodels/impressum_viewmodel.dart';
+import 'package:growthdeck/services/http_service.dart';
 
 class ImpressumView extends StatelessWidget {
   @override
@@ -33,11 +33,13 @@ class ImpressumView extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   YellowButton(
-                      onTap: ImpressumViewModel.launchNewsletter,
+                      onTap: () => HttpService.launchURL(
+                          'https://millesanders.com/pages/newsletter'),
                       label: 'zum Newsletter anmelden'),
                   SizedBox(height: 20),
                   YellowButton(
-                      onTap: ImpressumViewModel.launchImpressum,
+                      onTap: () => HttpService.launchURL(
+                          'https://millesanders.com/pages/impressum-growth-decks'),
                       label: 'Impressum|Datenschutz'),
                   SizedBox(height: 30),
                   Center(
