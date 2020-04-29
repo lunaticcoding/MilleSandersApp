@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class TrianglePainter extends CustomPainter {
+class MSSpeechBubbleTick extends CustomPainter {
   final double x;
   final double y;
   final double width;
   final double height;
   final Color fillColor;
 
-  TrianglePainter({
+  MSSpeechBubbleTick({
     @required this.x,
     @required this.y,
     this.width = 10,
@@ -32,7 +32,7 @@ class TrianglePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(TrianglePainter oldDelegate) {
+  bool shouldRepaint(MSSpeechBubbleTick oldDelegate) {
     return oldDelegate.fillColor != fillColor;
   }
 }

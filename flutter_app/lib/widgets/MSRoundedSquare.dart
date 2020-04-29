@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class DisplayCard extends StatelessWidget {
-  DisplayCard(
+class MSRoundedSquare extends StatelessWidget {
+  MSRoundedSquare(
       {@required this.width,
         this.height,
         this.color,

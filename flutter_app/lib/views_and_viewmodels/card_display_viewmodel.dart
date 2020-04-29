@@ -1,44 +1,83 @@
 import 'package:flutter/cupertino.dart';
+import 'package:growthdeck/models/Cards.dart';
 
-class CardDisplayViewmodel extends ChangeNotifier {
-  dynamic _unfilteredCards;
-  List<dynamic> _cards;
-
-  bool isReady = false;
-  Map<String, bool> filters;
-
+class CardDisplayViewModel extends ChangeNotifier {
   String deckName;
+  Map<String, bool> filters;
+  bool isReady = false;
+
+  CardDeck _unfilteredCards;
+  List<Card> _cards;
   int _index = 0;
 
-  CardDisplayViewmodel(cardDeck) {
-    _unfilteredCards = cardDeck;
-    deckName = _unfilteredCards["deckName"];
+  AnimationController animationController;
+  Animation animationTranslation;
+  Animation animationRotation;
 
-    filters = Map.fromIterable(cardDeck["filterIcons"],
+  CardDisplayViewModel(TickerProvider tickerProvider) {
+    animationController = AnimationController(
+      duration: Duration(milliseconds: 500),
+      vsync: tickerProvider,
+    );
+
+    animationTranslation = new Tween<Offset>(
+      begin: Offset(0, 0),
+      end: Offset(200, 50),
+    ).animate(animationController)
+      ..addListener(notifyListeners);
+
+    animationRotation = new Tween<double>(
+      begin: 0,
+      end: 0.2,
+    ).animate(animationController)
+      ..addListener(notifyListeners);
+  }
+
+  void initWithSelectedDeck(CardDeck cardDeck) {
+    if (cardDeck == null) {
+      return;
+    }
+    _unfilteredCards = cardDeck;
+    deckName = cardDeck.name;
+
+    filters = Map.fromIterable(_unfilteredCards.filters,
         key: (v) => v.toString(), value: (v) => false);
-    _cards = cardDeck["cards"].map((elem) => elem).toList();
+    _cards = _unfilteredCards.cards.map((elem) => elem).toList();
     isReady = true;
     notifyListeners();
   }
 
   int getNrValidCards() => _cards.length - _index;
+  bool isDeckEmpty() => !(_cards.length - _index > 0);
+  bool isDeckFull() => _index >= _cards.length;
 
-  bool addCard() {
+  void animateToNextCard() async {
+    if (!isDeckFull()) {
+      await animationController.reverse(from: 1.0);
+      _addCard();
+    }
+  }
+
+  void _addCard() {
     if (_index > 0) {
       _index--;
       notifyListeners();
-      return true;
     }
-    return false;
   }
 
-  bool removeCard() {
+  void animateToPrevCard() async {
+    if (isDeckEmpty()) {
+      await animationController.forward();
+      animationController.reset();
+      removeCard();
+    }
+  }
+
+  void removeCard() {
     if (_index < _cards.length) {
       _index++;
       notifyListeners();
-      return true;
     }
-    return false;
   }
 
   List<Widget> forEachCard(Function function) {
@@ -51,7 +90,7 @@ class CardDisplayViewmodel extends ChangeNotifier {
 
   void updateFilter() {
     _index = 0;
-    _cards = _unfilteredCards["cards"];
+    _cards = _unfilteredCards.cards;
 
     bool applyFilters = filters.values.reduce((val, elem) => val || elem);
     if (applyFilters) {
@@ -59,7 +98,7 @@ class CardDisplayViewmodel extends ChangeNotifier {
         (card) {
           for (var entry in filters.entries) {
             if (entry.value) {
-              for (var filter in card["filter"]) {
+              for (var filter in card.filters) {
                 if (filter == entry.key) {
                   return true;
                 }
@@ -71,5 +110,11 @@ class CardDisplayViewmodel extends ChangeNotifier {
       ).toList();
     }
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
   }
 }

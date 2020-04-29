@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LocalStorageService extends ChangeNotifier {
+class LocalStorageService {
   SharedPreferences _prefs;
   Directory _directory;
 
