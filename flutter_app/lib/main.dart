@@ -4,7 +4,7 @@ import 'package:growthdeck/services/local_storage_service.dart';
 import 'package:growthdeck/services/navigation_service.dart';
 import 'package:provider/provider.dart';
 import 'models/Cards.dart';
-import 'views_and_viewmodels/mille_sanders_tabbar_view.dart';
+import 'views_and_viewmodels/navigation_view.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
               update: (context, localStorageService, card) =>
                   card..loadData(localStorageService)),
         ],
-        child: MilleSandersTabBarView(),
+        child: NavigationView(),
       ),
     );
   }

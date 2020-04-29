@@ -12,7 +12,7 @@ import 'package:growthdeck/constants/k_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class MilleSandersTabBarView extends StatelessWidget {
+class NavigationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     NavigationService navigationService =
