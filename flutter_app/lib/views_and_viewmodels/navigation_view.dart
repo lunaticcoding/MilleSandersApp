@@ -86,6 +86,7 @@ class NavigationView extends StatelessWidget {
         ),
       ),
       body: PageView(
+        physics: NeverScrollableScrollPhysics(),
         controller: navigationService.getPageController(),
         children: <Widget>[
           IntroductionView(),
