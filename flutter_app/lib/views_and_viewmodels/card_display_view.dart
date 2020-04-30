@@ -64,7 +64,13 @@ class _CardDisplayViewState extends State<CardDisplayView>
                                 color: kColors.brown,
                                 onTap: model.animateToPrevCard,
                               ),
-                              SizedBox(width: 20),
+                              Container(
+                                child: MSRoundedIconButton(
+                                  icon: MilleSanders.random,
+                                  color: kColors.beige,
+                                  onTap: model.shuffleDeck,
+                                ),
+                              ),
                               Container(
                                 key: filterKey,
                                 child: MSRoundedIconButton(
@@ -73,7 +79,6 @@ class _CardDisplayViewState extends State<CardDisplayView>
                                   onTap: () => _showModalPopup(model),
                                 ),
                               ),
-                              SizedBox(width: 20),
                               MSRoundedIconButton(
                                 icon: MilleSanders.arrowright,
                                 color: kColors.gold,
@@ -201,7 +206,7 @@ class _MSCardStackState extends State<_MSCardStack> {
                 )
               : <Widget>[
                   _NoCard(
-                    onTap: model.updateFilter,
+                    onTap: model.shuffleDeck,
                   ),
                 ],
         ),
