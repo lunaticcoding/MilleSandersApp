@@ -16,8 +16,8 @@ void main() {
   HttpService mockHttpService;
 
   setUp(() {
-    mockLocalStorageService = MockLocalStorageService();
-    mockHttpService = MockHttpService();
+    mockLocalStorageService = LocalStorageServiceMock();
+    mockHttpService = HttpServiceMock();
     decks = Decks();
   });
 
