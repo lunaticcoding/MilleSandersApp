@@ -80,6 +80,12 @@ class CardDisplayViewModel extends ChangeNotifier {
     }
   }
 
+  void shuffleDeck() {
+    _cards.shuffle();
+    _index = 0;
+    notifyListeners();
+  }
+
   List<Widget> forEachCard(Function function) {
     List<dynamic> list = List<Widget>();
     for (int i = _index; i < _cards.length; i++) {
