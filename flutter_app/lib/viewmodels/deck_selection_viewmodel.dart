@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:growthdeck/models/Cards.dart';
+import 'package:growthdeck/models/Decks.dart';
 
 class DeckSelectionViewModel extends ChangeNotifier {
   bool isLoading = true;

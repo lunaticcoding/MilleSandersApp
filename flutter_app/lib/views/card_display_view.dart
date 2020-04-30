@@ -9,11 +9,11 @@ import 'package:growthdeck/widgets/MSCard.dart';
 import 'package:growthdeck/widgets/MSRoundedIconButton.dart';
 import 'package:growthdeck/widgets/MSProgressIndicator.dart';
 import 'package:growthdeck/widgets/MSSpeechBubbleTick.dart';
-import 'package:growthdeck/models/Cards.dart';
-import 'package:growthdeck/views_and_viewmodels/card_display_viewmodel.dart';
+import 'package:growthdeck/models/Decks.dart';
+import 'package:growthdeck/viewmodels/card_display_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-import 'card_display_viewmodel.dart';
+import '../viewmodels/card_display_viewmodel.dart';
 
 class CardDisplayView extends StatefulWidget {
   @override
@@ -32,10 +32,10 @@ class _CardDisplayViewState extends State<CardDisplayView>
 
   @override
   Widget build(BuildContext context) =>
-      ChangeNotifierProxyProvider<Cards, CardDisplayViewModel>(
+      ChangeNotifierProxyProvider<Decks, CardDisplayViewModel>(
         create: (context) => CardDisplayViewModel(this),
-        update: (context, cards, model) =>
-            model..initWithSelectedDeck(cards.selectedDeck),
+        update: (context, decks, model) =>
+            model..initWithSelectedDeck(decks.selectedDeck),
         child: Consumer<CardDisplayViewModel>(
           builder: (context, model, child) => model.isReady
               ? Container(
@@ -129,7 +129,7 @@ class _CardDisplayViewState extends State<CardDisplayView>
                               model.updateFilter();
                             },
                             child: Icon(
-                              Cards.getIcon(filter.key),
+                              Decks.getIcon(filter.key),
                               color: model.filters[filter.key]
                                   ? kColors.gold
                                   : kColors.grey,

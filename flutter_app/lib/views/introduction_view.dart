@@ -2,10 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:growthdeck/constants/mille_sanders_icons.dart';
 import 'package:growthdeck/services/http_service.dart';
+import 'package:provider/provider.dart';
 
 class IntroductionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    HttpService httpService = Provider.of<HttpService>(context);
+
     return Container(
       color: Colors.white,
       child: SingleChildScrollView(
@@ -97,7 +100,7 @@ class IntroductionView extends StatelessWidget {
                         Text('Kontakt'),
                         SizedBox(width: 10),
                         GestureDetector(
-                          onTap: () => HttpService.launchURL(
+                          onTap: () => httpService.launchURL(
                               'http://m.me/millesandersaustria'),
                           child: Icon(
                             MilleSanders.iconfinder_facebook_messenger,
@@ -106,7 +109,7 @@ class IntroductionView extends StatelessWidget {
                         ),
                         SizedBox(width: 10),
                         GestureDetector(
-                          onTap: () => HttpService.launchURL(
+                          onTap: () => httpService.launchURL(
                               'mailto:contact@millesanders.com'),
                           child: Icon(
                             MilleSanders.iconfinder_mail,

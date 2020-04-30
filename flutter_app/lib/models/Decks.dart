@@ -6,37 +6,45 @@ import 'package:growthdeck/constants/mille_sanders_icons.dart';
 import 'package:growthdeck/services/http_service.dart';
 import 'package:growthdeck/services/local_storage_service.dart';
 
-class Cards extends ChangeNotifier {
+class Decks extends ChangeNotifier {
   String error;
   LocalStorageService _localStorageService;
+  HttpService _httpService;
+
   List<CardSection> cardSections;
   CardDeck selectedDeck;
-  bool isLoading = true;
+  bool isDoneLoading = false;
 
   void setSelectedDeck(CardDeck cardDeck) {
     selectedDeck = cardDeck;
     notifyListeners();
   }
 
-  Future<void> loadData(LocalStorageService localStorageService) async {
-    if (_localStorageService != null || localStorageService == null) {
+  Future<void> loadData(
+    LocalStorageService localStorageService,
+    HttpService httpService,
+  ) async {
+    if (localStorageService == null ||
+        httpService == null ||
+        (_httpService != null && _localStorageService == null)) {
       return;
     }
     _localStorageService = localStorageService;
+    _httpService = httpService;
+
     double localVersion = await _localStorageService.getVersion();
     double newestVersion;
     try {
-      try {
-        newestVersion = (await HttpService.getJson(kVersionUrl))["version"];
-      } catch (e) {
-        dynamic data = await _localStorageService.getFile(kFileName);
-        cardSections =
-            List.generate(data.length, (i) => CardSection.fromJson(data[i]));
-        isLoading = false;
-        notifyListeners();
-        return;
-      }
-
+      newestVersion = (await _httpService.getJson(kVersionUrl))["version"];
+    } catch (e) {
+      dynamic data = await _localStorageService.getFile(kFileName);
+      cardSections =
+          List.generate(data.length, (i) => CardSection.fromJson(data[i]));
+      isDoneLoading = true;
+      notifyListeners();
+      return;
+    }
+    try {
       if (localVersion != null && localVersion == newestVersion) {
         dynamic data = await _localStorageService.getFile(kFileName);
         cardSections =
@@ -48,27 +56,28 @@ class Cards extends ChangeNotifier {
     } catch (e) {
       await reloadData();
     }
-    isLoading = false;
+    isDoneLoading = true;
     notifyListeners();
   }
 
   Future<void> reloadData() async {
     error = null;
-    isLoading = true;
+    isDoneLoading = false;
     notifyListeners();
     try {
       double newestVersion =
-          (await HttpService.getJson(kVersionUrl))["version"];
-      dynamic data = await HttpService.getJson(kDataUrl);
+          (await _httpService.getJson(kVersionUrl))["version"];
+      dynamic data = await _httpService.getJson(kDataUrl);
       cardSections =
           List.generate(data.length, (i) => CardSection.fromJson(data[i]));
       _localStorageService.writeFile(kFileName, data);
       _localStorageService.setVersion(newestVersion);
     } catch (e) {
+      print(e);
       error =
           "Make sure you are connected to the internet. If the error persists, contact the us at email.";
     }
-    isLoading = false;
+    isDoneLoading = true;
     notifyListeners();
   }
 
@@ -99,82 +108,6 @@ class Cards extends ChangeNotifier {
   }
 }
 
-/*
-class CardDisplayViewmodel extends ChangeNotifier {
-  dynamic _unfilteredCards;
-  List<dynamic> _cards;
-
-  bool isReady = false;
-  Map<String, bool> filters;
-
-  String deckName;
-  int _index = 0;
-
-  CardDisplayViewmodel(cardDeck) {
-    _unfilteredCards = cardDeck;
-    deckName = _unfilteredCards["deckName"];
-
-    filters = Map.fromIterable(_unfilteredCards["filterIcons"],
-        key: (v) => v.toString(), value: (v) => false);
-    _cards = _unfilteredCards["cards"].map((elem) => elem).toList();
-    isReady = true;
-    notifyListeners();
-  }
-
-  int getNrValidCards() => _cards.length - _index;
-
-  bool addCard() {
-    if (_index > 0) {
-      _index--;
-      notifyListeners();
-      return true;
-    }
-    return false;
-  }
-
-  bool removeCard() {
-    if (_index < _cards.length) {
-      _index++;
-      notifyListeners();
-      return true;
-    }
-    return false;
-  }
-
-  List<Widget> forEachCard(Function function) {
-    List<dynamic> list = List<Widget>();
-    for (int i = _index; i < _cards.length; i++) {
-      list.insert(0, function(i == _index, _cards[i]));
-    }
-    return list;
-  }
-
-  void updateFilter() {
-    _index = 0;
-    _cards = _unfilteredCards["cards"];
-
-    bool applyFilters = filters.values.reduce((val, elem) => val || elem);
-    if (applyFilters) {
-      _cards = _cards.where(
-        (card) {
-          for (var entry in filters.entries) {
-            if (entry.value) {
-              for (var filter in card["filter"]) {
-                if (filter == entry.key) {
-                  return true;
-                }
-              }
-            }
-          }
-          return false;
-        },
-      ).toList();
-    }
-    notifyListeners();
-  }
-}
- */
-
 class CardSection {
   String name;
   List<CardDeck> cardDecks;
@@ -196,8 +129,8 @@ class CardDeck {
   CardDeck.fromJson(dynamic json) {
     name = json['deckName'] as String;
     filters = json['filterIcons'].cast<String>() as List<String>;
-    icon = Cards.getIcon(json['icon'] as String);
-    color = Cards.colorFromHex(json['color'] as String);
+    icon = Decks.getIcon(json['icon'] as String);
+    color = Decks.colorFromHex(json['color'] as String);
     cards = List<Card>();
     json['cards']
         .forEach((dynamic cardDeck) => cards.add(Card.fromJson(cardDeck)));
@@ -211,7 +144,7 @@ class Card {
 
   Card.fromJson(dynamic json) {
     text = json['text'] as String;
-    color = Cards.colorFromHex(json['color']);
+    color = Decks.colorFromHex(json['color']);
     filters = json['filter'].cast<String>() as List<String>;
   }
 }

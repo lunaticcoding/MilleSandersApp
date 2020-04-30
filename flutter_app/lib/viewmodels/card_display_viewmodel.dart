@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:growthdeck/models/Cards.dart';
+import 'package:growthdeck/models/Decks.dart';
 
 class CardDisplayViewModel extends ChangeNotifier {
   String deckName;
