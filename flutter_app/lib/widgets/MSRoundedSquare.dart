@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 class MSRoundedSquare extends StatelessWidget {
   MSRoundedSquare(
       {@required this.width,
-        this.height,
-        this.color,
-        this.onTap,
-        this.elevation = 6,
-        this.iconSize = 80,
-        this.child});
+      this.height,
+      this.color,
+      this.onTap,
+      this.elevation = 6,
+      this.iconSize = 80,
+      this.child});
 
   final double width;
   final double height;
@@ -31,8 +31,8 @@ class MSRoundedSquare extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Color.fromRGBO(0, 0, 0, 0.6),
-              offset: Offset(elevation, elevation), //(x,y)
-              blurRadius: elevation == 0 ? 0 : 6.0,
+              offset: Offset(elevation, elevation),
+              blurRadius: elevation,
             ),
           ],
         ),
@@ -41,32 +41,3 @@ class MSRoundedSquare extends StatelessWidget {
     );
   }
 }
-
-/*
-Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            text != null
-                ? Text(
-                    text,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                      decoration: TextDecoration.none,
-                      fontSize: 15,
-                    ),
-                  )
-                : null,
-            text != null && icon != null ? SizedBox(height: 10) : null,
-            icon != null
-                ? Icon(
-                    icon,
-                    size: iconSize,
-                    color: Colors.white,
-                  )
-                : null,
-          ].where((value) => value != null).toList(),
-        ),
- */

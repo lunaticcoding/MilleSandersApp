@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
 class MSSliderIndicator extends StatelessWidget {
-  MSSliderIndicator({@required this.cardDecks, @required this.selectedIndex});
+  MSSliderIndicator({@required this.list, @required this.selectedIndex});
 
-  final List<dynamic> cardDecks;
+  final List<dynamic> list;
   final int selectedIndex;
 
   @override
   Widget build(BuildContext context) {
-    return cardDecks.length > 2
+    return list.length > 2
         ? Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: cardDecks
-                .take(cardDecks.length - 1)
+            children: list
+                .take(list.length - 1)
                 .toList()
                 .map<Widget>((card) {
-              int i = cardDecks.indexOf(card);
+              int i = list.indexOf(card);
               return Container(
                 width: 8.0,
                 height: 8.0,

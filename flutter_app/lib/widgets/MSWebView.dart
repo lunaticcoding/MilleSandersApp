@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:growthdeck/widgets/MSProgressIndicator.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:growthdeck/constants/k_colors.dart';
 
@@ -25,16 +26,7 @@ class _MSWebViewState extends State<MSWebView> {
             });
           },
         ),
-        isLoading
-            ? Container(
-                color: Colors.white,
-                child: Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(kColors.gold),
-                  ),
-                ),
-              )
-            : Container(),
+        isLoading ? MSProgressIndicator() : Container(),
       ],
     );
   }

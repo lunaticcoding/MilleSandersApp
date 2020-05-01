@@ -157,7 +157,7 @@ class __CardDeckListState extends State<_CardDeckList> {
                       ),
                     ),
                     MSSliderIndicator(
-                      cardDecks: model.cardSections[widget.index].cardDecks,
+                      list: model.cardSections[widget.index].cardDecks,
                       selectedIndex: model.indices[widget.index],
                     ),
                   ],
