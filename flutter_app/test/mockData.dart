@@ -47,3 +47,44 @@ CardDeck filledCardDeckMock = CardDeck.fromJson({
     }
   ],
 });
+
+List<CardSection> sectionsMockWithDecks = [
+  {
+    "sectionName": "section1",
+    "decks": [
+      {
+        "deckName": "deck1",
+        "filterIcons": [],
+        "icon": "mock",
+        "color": "#ffffffff",
+        "cards": [],
+      },
+      {
+        "deckName": "deck2",
+        "filterIcons": [],
+        "icon": "mock",
+        "color": "#ffffffff",
+        "cards": [],
+      }
+    ],
+  },
+  {
+    "sectionName": "section2",
+    "decks": [
+      {
+        "deckName": "deck1",
+        "filterIcons": [],
+        "icon": "mock",
+        "color": "#ffffffff",
+        "cards": [],
+      },
+      {
+        "deckName": "deck2",
+        "filterIcons": [],
+        "icon": "mock",
+        "color": "#ffffffff",
+        "cards": [],
+      }
+    ],
+  }
+].map<CardSection>((section) => CardSection.fromJson(section)).toList();
