@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:growthdeck/models/Cards.dart';
+import 'package:growthdeck/models/Decks.dart';
 import 'package:growthdeck/services/navigation_service.dart';
 import 'package:growthdeck/widgets/MSProgressIndicator.dart';
 import 'package:growthdeck/widgets/MSRoundedSquare.dart';
 import 'package:growthdeck/widgets/MSSliderIndicator.dart';
 import 'package:provider/provider.dart';
 
-import 'deck_selection_viewmodel.dart';
+import '../viewmodels/deck_selection_viewmodel.dart';
 
 class DeckSelectionView extends StatefulWidget {
   @override
@@ -16,11 +16,10 @@ class DeckSelectionView extends StatefulWidget {
 
 class _DeckSelectionViewState extends State<DeckSelectionView> {
   @override
-  Widget build(BuildContext context) => Consumer2<NavigationService, Cards>(
-        builder: (context, navigationService, cards, child) =>
-            cards?.isLoading ?? true
-                ? MSProgressIndicator()
-                : cards.error == null
+  Widget build(BuildContext context) => Consumer2<NavigationService, Decks>(
+        builder: (context, navigationService, decks, child) =>
+            decks.isDoneLoading
+                ? decks.error == null
                     ? Container(
                         color: Colors.white,
                         child: Padding(
@@ -43,7 +42,7 @@ class _DeckSelectionViewState extends State<DeckSelectionView> {
                               ),
                               SizedBox(height: 10),
                               _SectionList(
-                                  sectionNames: cards.cardSections
+                                  sectionNames: decks.cardSections
                                       .map((section) => section.name)
                                       .toList()),
                             ],
@@ -55,7 +54,7 @@ class _DeckSelectionViewState extends State<DeckSelectionView> {
                           child: Padding(
                             padding: const EdgeInsets.all(40.0),
                             child: Text(
-                              cards.error,
+                              decks.error,
                               style: TextStyle(
                                 color: Colors.black54,
                                 fontWeight: FontWeight.w700,
@@ -64,7 +63,8 @@ class _DeckSelectionViewState extends State<DeckSelectionView> {
                             ),
                           ),
                         ),
-                      ),
+                      )
+                : MSProgressIndicator(),
       );
 }
 
@@ -115,12 +115,12 @@ class _CardDeckList extends StatefulWidget {
 class __CardDeckListState extends State<_CardDeckList> {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProxyProvider<Cards, DeckSelectionViewModel>(
+    return ChangeNotifierProxyProvider<Decks, DeckSelectionViewModel>(
       create: (BuildContext context) => DeckSelectionViewModel(),
-      update: (BuildContext context, cards, model) =>
-          model..initWithSections(cards?.cardSections),
-      child: Consumer3<NavigationService, DeckSelectionViewModel, Cards>(
-        builder: (context, navigationService, model, cards, child) =>
+      update: (BuildContext context, decks, model) =>
+          model..initWithSections(decks?.cardSections),
+      child: Consumer3<NavigationService, DeckSelectionViewModel, Decks>(
+        builder: (context, navigationService, model, decks, child) =>
             LayoutBuilder(
           builder: (context, constraints) => model.isLoading
               ? MSProgressIndicator()
@@ -148,7 +148,7 @@ class __CardDeckListState extends State<_CardDeckList> {
                               text: cardDeck.name,
                               iconData: cardDeck.icon,
                               onTap: () {
-                                cards.setSelectedDeck(cardDeck);
+                                decks.setSelectedDeck(cardDeck);
                                 navigationService.jumpToPage(5);
                               },
                             );
@@ -157,7 +157,7 @@ class __CardDeckListState extends State<_CardDeckList> {
                       ),
                     ),
                     MSSliderIndicator(
-                      cardDecks: model.cardSections[widget.index].cardDecks,
+                      list: model.cardSections[widget.index].cardDecks,
                       selectedIndex: model.indices[widget.index],
                     ),
                   ],

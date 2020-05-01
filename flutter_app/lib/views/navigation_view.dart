@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:growthdeck/constants/mille_sanders_icons.dart';
 import 'package:growthdeck/services/http_service.dart';
 import 'package:growthdeck/services/navigation_service.dart';
-import 'package:growthdeck/views_and_viewmodels/card_display_view.dart';
-import 'package:growthdeck/views_and_viewmodels/introduction_view.dart';
-import 'package:growthdeck/views_and_viewmodels/impressum_view.dart';
+import 'package:growthdeck/views/card_display_view.dart';
+import 'package:growthdeck/views/introduction_view.dart';
+import 'package:growthdeck/views/impressum_view.dart';
 import 'package:growthdeck/widgets/MSWebView.dart';
-import 'package:growthdeck/views_and_viewmodels/deck_selection_view.dart';
+import 'package:growthdeck/views/deck_selection_view.dart';
 import 'package:growthdeck/constants/k_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +17,8 @@ class NavigationView extends StatelessWidget {
   Widget build(BuildContext context) {
     NavigationService navigationService =
         Provider.of<NavigationService>(context);
+    HttpService httpService = Provider.of<HttpService>(context);
+    
     return Scaffold(
       appBar: AppBar(
         bottom: PreferredSize(
@@ -45,7 +47,7 @@ class NavigationView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () => HttpService.launchURL(
+                  onTap: () => httpService.launchURL(
                       'https://www.facebook.com/millesandersaustria/'),
                   child: Icon(
                     MilleSanders.facebook,
@@ -54,7 +56,7 @@ class NavigationView extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => HttpService.launchURL(
+                  onTap: () => httpService.launchURL(
                       'https://www.linkedin.com/company/millesanders-com'),
                   child: Icon(
                     MilleSanders.linkedin,
@@ -63,7 +65,7 @@ class NavigationView extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => HttpService.launchURL(
+                  onTap: () => httpService.launchURL(
                       'https://www.pinterest.at/millesanders/'),
                   child: Icon(
                     MilleSanders.pinterest,
@@ -72,7 +74,7 @@ class NavigationView extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => HttpService.launchURL(
+                  onTap: () => httpService.launchURL(
                       'https://www.instagram.com/mille_sanders/'),
                   child: Icon(
                     MilleSanders.instagram,

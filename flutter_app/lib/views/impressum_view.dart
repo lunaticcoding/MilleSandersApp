@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:growthdeck/constants/k_colors.dart';
 import 'package:growthdeck/services/http_service.dart';
+import 'package:provider/provider.dart';
 
 class ImpressumView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    HttpService httpService = Provider.of<HttpService>(context);
     return Container(
       color: Colors.white,
       child: SingleChildScrollView(
@@ -33,12 +35,12 @@ class ImpressumView extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   YellowButton(
-                      onTap: () => HttpService.launchURL(
+                      onTap: () => httpService.launchURL(
                           'https://millesanders.com/pages/newsletter'),
                       label: 'zum Newsletter anmelden'),
                   SizedBox(height: 20),
                   YellowButton(
-                      onTap: () => HttpService.launchURL(
+                      onTap: () => httpService.launchURL(
                           'https://millesanders.com/pages/impressum-growth-decks'),
                       label: 'Impressum|Datenschutz'),
                   SizedBox(height: 30),

@@ -3,7 +3,9 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 
 class HttpService{
-  static launchURL(String url) async {
+  const HttpService();
+
+  launchURL(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -11,7 +13,7 @@ class HttpService{
     }
   }
 
-  static dynamic getJson(String url) async {
+  dynamic getJson(String url) async {
     var response = await http.get(url);
     if (response.statusCode == 200) {
       List<int> bytes = response.body.toString().codeUnits;
