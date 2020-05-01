@@ -184,7 +184,7 @@ class _MSCardStackState extends State<_MSCardStack> {
         child: Stack(
           overflow: Overflow.visible,
           children: model.getNrValidCards() > 0
-              ? model.forEachCard(
+              ? model.forEachCard<Widget>(
                   (index, card) {
                     if (index == 0) {
                       return _ActiveCard(

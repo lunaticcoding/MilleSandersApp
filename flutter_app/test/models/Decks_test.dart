@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:growthdeck/constants/constants.dart';
 import 'package:growthdeck/models/Decks.dart';
@@ -8,6 +5,7 @@ import 'package:growthdeck/services/http_service.dart';
 import 'package:growthdeck/services/local_storage_service.dart';
 import 'package:mockito/mockito.dart';
 
+import '../mockData.dart';
 import '../mocks.dart';
 
 void main() {
@@ -123,28 +121,15 @@ void main() {
 
   group('test Json constructors', () {
     test('CardSection.fromJson returns correctly for current data model', () {
-      CardSection.fromJson({
-        "sectionName": "mock",
-        "decks": [],
-      });
+      CardSection.fromJson(cardSectionJsonMock);
     });
 
     test('CardDeck.fromJson returns correctly for current data model', () {
-      CardDeck.fromJson({
-        "deckName": "mock",
-        "filterIcons": [],
-        "icon": "mock",
-        "color": "#ffffffff",
-        "cards": [],
-      });
+      CardDeck.fromJson(cardDeckJsonMock);
     });
 
     test('Card.fromJson returns correctly for current data model', () {
-      Card.fromJson({
-        "text": "mock",
-        "color": "#ffffffff",
-        "filter": [],
-      });
+      Card.fromJson(cardJsonMock);
     });
   });
 }

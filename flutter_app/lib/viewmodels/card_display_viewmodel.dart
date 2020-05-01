@@ -14,6 +14,13 @@ class CardDisplayViewModel extends ChangeNotifier {
   Animation animationTranslation;
   Animation animationRotation;
 
+  CardDisplayViewModel.withAnimationMocks(AnimationController controller,
+      Animation translation, Animation rotation) {
+    animationController = controller;
+    animationTranslation = translation;
+    animationRotation = rotation;
+  }
+
   CardDisplayViewModel(TickerProvider tickerProvider) {
     animationController = AnimationController(
       duration: Duration(milliseconds: 500),
@@ -48,10 +55,10 @@ class CardDisplayViewModel extends ChangeNotifier {
   }
 
   int getNrValidCards() => _cards.length - _index;
-  bool isDeckEmpty() => _index >= _cards.length ;
+  bool isDeckEmpty() => _index >= _cards.length;
   bool isDeckFull() => _index == 0;
 
-  void animateToNextCard() async {
+  Future animateToNextCard() async {
     if (!isDeckEmpty()) {
       await animationController.forward();
       animationController.reset();
@@ -66,7 +73,7 @@ class CardDisplayViewModel extends ChangeNotifier {
     }
   }
 
-  void animateToPrevCard() async {
+  Future animateToPrevCard() async {
     if (!isDeckFull()) {
       await animationController.reverse(from: 1.0);
       _addCard();
@@ -86,8 +93,8 @@ class CardDisplayViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<Widget> forEachCard(Function function) {
-    List<dynamic> list = List<Widget>();
+  List forEachCard<T>(Function function) {
+    List<T> list = List<T>();
     for (int i = _index; i < _cards.length; i++) {
       list.insert(0, function(i - _index, _cards[i]));
     }
