@@ -73,7 +73,6 @@ class Decks extends ChangeNotifier {
       _localStorageService.writeFile(kFileName, data);
       _localStorageService.setVersion(newestVersion);
     } catch (e) {
-      print(e);
       error =
           "Make sure you are connected to the internet. If the error persists, contact the us at email.";
     }
