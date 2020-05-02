@@ -14,9 +14,9 @@
 		A4C39918245CF17E00A75F2B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4C39916245CF17E00A75F2B /* Main.storyboard */; };
 		A4C3991B245CF17E00A75F2B /* ios_app.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4C39919245CF17E00A75F2B /* ios_app.xcdatamodeld */; };
 		A4C3991D245CF18300A75F2B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4C3991C245CF18300A75F2B /* Assets.xcassets */; };
-		A4C39920245CF18300A75F2B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4C3991E245CF18300A75F2B /* LaunchScreen.storyboard */; };
 		A4C3992B245CF18300A75F2B /* ios_appTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C3992A245CF18300A75F2B /* ios_appTests.swift */; };
 		A4C39936245CF18300A75F2B /* ios_appUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C39935245CF18300A75F2B /* ios_appUITests.swift */; };
+		A4C39945245CF99F00A75F2B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4C39943245CF99E00A75F2B /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,7 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A4C3990B245CF17E00A75F2B /* ios_app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ios_app.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A4C3990B245CF17E00A75F2B /* Growth Decks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Growth Decks.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4C3990E245CF17E00A75F2B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A4C39910245CF17E00A75F2B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		A4C39912245CF17E00A75F2B /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -45,7 +45,6 @@
 		A4C39917245CF17E00A75F2B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A4C3991A245CF17E00A75F2B /* ios_app.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ios_app.xcdatamodel; sourceTree = "<group>"; };
 		A4C3991C245CF18300A75F2B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A4C3991F245CF18300A75F2B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A4C39921245CF18300A75F2B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A4C39926245CF18300A75F2B /* ios_appTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ios_appTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4C3992A245CF18300A75F2B /* ios_appTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ios_appTests.swift; sourceTree = "<group>"; };
@@ -53,6 +52,7 @@
 		A4C39931245CF18300A75F2B /* ios_appUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ios_appUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4C39935245CF18300A75F2B /* ios_appUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ios_appUITests.swift; sourceTree = "<group>"; };
 		A4C39937245CF18300A75F2B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A4C39944245CF99E00A75F2B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = ../../flutter_app/ios/Runner/Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,7 +93,7 @@
 		A4C3990C245CF17E00A75F2B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A4C3990B245CF17E00A75F2B /* ios_app.app */,
+				A4C3990B245CF17E00A75F2B /* Growth Decks.app */,
 				A4C39926245CF18300A75F2B /* ios_appTests.xctest */,
 				A4C39931245CF18300A75F2B /* ios_appUITests.xctest */,
 			);
@@ -108,8 +108,8 @@
 				A4C39912245CF17E00A75F2B /* FirstViewController.swift */,
 				A4C39914245CF17E00A75F2B /* SecondViewController.swift */,
 				A4C39916245CF17E00A75F2B /* Main.storyboard */,
+				A4C39943245CF99E00A75F2B /* LaunchScreen.storyboard */,
 				A4C3991C245CF18300A75F2B /* Assets.xcassets */,
-				A4C3991E245CF18300A75F2B /* LaunchScreen.storyboard */,
 				A4C39921245CF18300A75F2B /* Info.plist */,
 				A4C39919245CF17E00A75F2B /* ios_app.xcdatamodeld */,
 			);
@@ -151,7 +151,7 @@
 			);
 			name = ios_app;
 			productName = ios_app;
-			productReference = A4C3990B245CF17E00A75F2B /* ios_app.app */;
+			productReference = A4C3990B245CF17E00A75F2B /* Growth Decks.app */;
 			productType = "com.apple.product-type.application";
 		};
 		A4C39925245CF18300A75F2B /* ios_appTests */ = {
@@ -238,7 +238,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A4C39920245CF18300A75F2B /* LaunchScreen.storyboard in Resources */,
+				A4C39945245CF99F00A75F2B /* LaunchScreen.storyboard in Resources */,
 				A4C3991D245CF18300A75F2B /* Assets.xcassets in Resources */,
 				A4C39918245CF17E00A75F2B /* Main.storyboard in Resources */,
 			);
@@ -313,10 +313,10 @@
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		A4C3991E245CF18300A75F2B /* LaunchScreen.storyboard */ = {
+		A4C39943245CF99E00A75F2B /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				A4C3991F245CF18300A75F2B /* Base */,
+				A4C39944245CF99E00A75F2B /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -450,7 +450,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.lunaticcoding.ios-app";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Growth Decks";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -468,7 +468,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.lunaticcoding.ios-app";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Growth Decks";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
