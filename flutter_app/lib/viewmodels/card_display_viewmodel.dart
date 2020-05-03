@@ -14,36 +14,14 @@ class CardDisplayViewModel extends ChangeNotifier {
   Animation animationTranslation;
   Animation animationRotation;
 
-  CardDisplayViewModel.withAnimationMocks(AnimationController controller,
-      Animation translation, Animation rotation) {
-    animationController = controller;
-    animationTranslation = translation;
-    animationRotation = rotation;
-  }
+  CardDisplayViewModel(
+      {this.animationController,
+      this.animationTranslation,
+      this.animationRotation,
+      CardDeck cardDeck}) {
+    animationTranslation.addListener(notifyListeners);
+    animationRotation.addListener(notifyListeners);
 
-  CardDisplayViewModel(TickerProvider tickerProvider) {
-    animationController = AnimationController(
-      duration: Duration(milliseconds: 500),
-      vsync: tickerProvider,
-    );
-
-    animationTranslation = new Tween<Offset>(
-      begin: Offset(0, 0),
-      end: Offset(200, 50),
-    ).animate(animationController)
-      ..addListener(notifyListeners);
-
-    animationRotation = new Tween<double>(
-      begin: 0,
-      end: 0.2,
-    ).animate(animationController)
-      ..addListener(notifyListeners);
-  }
-
-  void initWithSelectedDeck(CardDeck cardDeck) {
-    if (cardDeck == null) {
-      return;
-    }
     _unfilteredCards = cardDeck;
     deckName = cardDeck.name;
 
