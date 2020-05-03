@@ -9,14 +9,17 @@
 /* Begin PBXBuildFile section */
 		A4C3990F245CF17E00A75F2B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C3990E245CF17E00A75F2B /* AppDelegate.swift */; };
 		A4C39911245CF17E00A75F2B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C39910245CF17E00A75F2B /* SceneDelegate.swift */; };
-		A4C39913245CF17E00A75F2B /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C39912245CF17E00A75F2B /* FirstViewController.swift */; };
-		A4C39915245CF17E00A75F2B /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C39914245CF17E00A75F2B /* SecondViewController.swift */; };
+		A4C39913245CF17E00A75F2B /* IntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C39912245CF17E00A75F2B /* IntroductionViewController.swift */; };
+		A4C39915245CF17E00A75F2B /* BlogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C39914245CF17E00A75F2B /* BlogViewController.swift */; };
 		A4C39918245CF17E00A75F2B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4C39916245CF17E00A75F2B /* Main.storyboard */; };
 		A4C3991B245CF17E00A75F2B /* ios_app.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4C39919245CF17E00A75F2B /* ios_app.xcdatamodeld */; };
 		A4C3991D245CF18300A75F2B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4C3991C245CF18300A75F2B /* Assets.xcassets */; };
 		A4C3992B245CF18300A75F2B /* ios_appTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C3992A245CF18300A75F2B /* ios_appTests.swift */; };
 		A4C39936245CF18300A75F2B /* ios_appUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C39935245CF18300A75F2B /* ios_appUITests.swift */; };
 		A4C39945245CF99F00A75F2B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4C39943245CF99E00A75F2B /* LaunchScreen.storyboard */; };
+		A4C39947245E4FC700A75F2B /* CardDeckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C39946245E4FC700A75F2B /* CardDeckViewController.swift */; };
+		A4C39949245E4FD600A75F2B /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C39948245E4FD600A75F2B /* ShopViewController.swift */; };
+		A4C3994B245E4FEA00A75F2B /* ImpressumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C3994A245E4FEA00A75F2B /* ImpressumViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,8 +43,8 @@
 		A4C3990B245CF17E00A75F2B /* Growth Decks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Growth Decks.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4C3990E245CF17E00A75F2B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A4C39910245CF17E00A75F2B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		A4C39912245CF17E00A75F2B /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
-		A4C39914245CF17E00A75F2B /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		A4C39912245CF17E00A75F2B /* IntroductionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroductionViewController.swift; sourceTree = "<group>"; };
+		A4C39914245CF17E00A75F2B /* BlogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogViewController.swift; sourceTree = "<group>"; };
 		A4C39917245CF17E00A75F2B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A4C3991A245CF17E00A75F2B /* ios_app.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ios_app.xcdatamodel; sourceTree = "<group>"; };
 		A4C3991C245CF18300A75F2B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -53,6 +56,9 @@
 		A4C39935245CF18300A75F2B /* ios_appUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ios_appUITests.swift; sourceTree = "<group>"; };
 		A4C39937245CF18300A75F2B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A4C39944245CF99E00A75F2B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = ../../flutter_app/ios/Runner/Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A4C39946245E4FC700A75F2B /* CardDeckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDeckViewController.swift; sourceTree = "<group>"; };
+		A4C39948245E4FD600A75F2B /* ShopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
+		A4C3994A245E4FEA00A75F2B /* ImpressumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImpressumViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,8 +111,11 @@
 			children = (
 				A4C3990E245CF17E00A75F2B /* AppDelegate.swift */,
 				A4C39910245CF17E00A75F2B /* SceneDelegate.swift */,
-				A4C39912245CF17E00A75F2B /* FirstViewController.swift */,
-				A4C39914245CF17E00A75F2B /* SecondViewController.swift */,
+				A4C39912245CF17E00A75F2B /* IntroductionViewController.swift */,
+				A4C39914245CF17E00A75F2B /* BlogViewController.swift */,
+				A4C39946245E4FC700A75F2B /* CardDeckViewController.swift */,
+				A4C39948245E4FD600A75F2B /* ShopViewController.swift */,
+				A4C3994A245E4FEA00A75F2B /* ImpressumViewController.swift */,
 				A4C39916245CF17E00A75F2B /* Main.storyboard */,
 				A4C39943245CF99E00A75F2B /* LaunchScreen.storyboard */,
 				A4C3991C245CF18300A75F2B /* Assets.xcassets */,
@@ -265,11 +274,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A4C39915245CF17E00A75F2B /* SecondViewController.swift in Sources */,
-				A4C39913245CF17E00A75F2B /* FirstViewController.swift in Sources */,
+				A4C39915245CF17E00A75F2B /* BlogViewController.swift in Sources */,
+				A4C39913245CF17E00A75F2B /* IntroductionViewController.swift in Sources */,
 				A4C3990F245CF17E00A75F2B /* AppDelegate.swift in Sources */,
 				A4C39911245CF17E00A75F2B /* SceneDelegate.swift in Sources */,
+				A4C3994B245E4FEA00A75F2B /* ImpressumViewController.swift in Sources */,
 				A4C3991B245CF17E00A75F2B /* ios_app.xcdatamodeld in Sources */,
+				A4C39949245E4FD600A75F2B /* ShopViewController.swift in Sources */,
+				A4C39947245E4FC700A75F2B /* CardDeckViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
