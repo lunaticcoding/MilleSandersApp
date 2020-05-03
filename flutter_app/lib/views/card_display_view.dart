@@ -13,8 +13,6 @@ import 'package:growthdeck/models/Decks.dart';
 import 'package:growthdeck/viewmodels/card_display_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-import '../viewmodels/card_display_viewmodel.dart';
-
 class CardDisplayView extends StatefulWidget {
   @override
   _CardDisplayViewState createState() => _CardDisplayViewState();
