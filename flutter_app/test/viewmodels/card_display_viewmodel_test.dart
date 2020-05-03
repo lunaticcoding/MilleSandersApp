@@ -16,11 +16,11 @@ void main() {
     translationMock = AnimationMock();
     rotationMock = AnimationMock();
 
-    model = CardDisplayViewModel.withAnimationMocks(
-      animationControllerMock,
-      translationMock,
-      rotationMock,
-    )..initWithSelectedDeck(filledCardDeckMock);
+    model = CardDisplayViewModel(
+        animationController: animationControllerMock,
+        animationTranslation: translationMock,
+        animationRotation: rotationMock,
+        cardDeck: filledCardDeckMock);
   });
 
   group('test card deck', () {
