@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:growthdeck/services/http_service.dart';
 import 'package:growthdeck/services/local_storage_service.dart';
 import 'package:growthdeck/services/navigation_service.dart';
@@ -7,9 +8,11 @@ import 'package:provider/provider.dart';
 import 'models/Decks.dart';
 import 'views/navigation_view.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() async => {
+  WidgetsFlutterBinding.ensureInitialized(),
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
+  runApp(MyApp())
+};
 
 class MyApp extends StatelessWidget {
   @override
