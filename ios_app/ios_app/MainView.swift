@@ -54,7 +54,6 @@ struct SocialMediaButton : View {
             .resizable()
             .scaledToFill()
             .frame(height: 15)
-            .foregroundColor(Color.gray)
             .onTapGesture {
                 if let url = URL(string: self.url) {
                     UIApplication.shared.open(url)
