@@ -10,8 +10,32 @@ import SwiftUI
 
 struct MainView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-            .foregroundColor(Color.orange)
+        NavigationView{
+            TabView{
+                
+                IntroductionView()
+                .tabItem {
+                    Image(systemName: "phone.fill")
+                    Text("First Tab")
+                }
+                
+                Text("The content of the second view")
+                .tabItem {
+                    Image(systemName: "phone.fill")
+                    Text("Second Tab")
+                }
+            }
+            .navigationBarItems(leading: Text("Mille Sanders"), trailing: HStack{
+                SocialMediaButton(icon: "facebook", url: "https://www.facebook.com/millesandersaustria/")
+                
+                SocialMediaButton(icon: "linkedin", url: "https://www.linkedin.com/company/millesanders-com")
+                
+                SocialMediaButton(icon: "pinterest", url: "https://www.pinterest.at/millesanders/")
+                
+                SocialMediaButton(icon: "instagram", url: "https://www.instagram.com/mille_sanders/")
+            })
+        }
+        
     }
 }
 
@@ -20,3 +44,23 @@ struct main_Previews: PreviewProvider {
         MainView()
     }
 }
+
+struct SocialMediaButton : View {
+    let icon: String
+    let url: String
+
+    var body: some View{
+        Image(icon)
+            .resizable()
+            .scaledToFill()
+            .frame(height: 15)
+            .foregroundColor(Color.gray)
+            .onTapGesture {
+                if let url = URL(string: self.url) {
+                    UIApplication.shared.open(url)
+                }
+        }
+    }
+    
+}
+
