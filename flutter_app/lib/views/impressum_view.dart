@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 class ImpressumView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    HttpService httpService = Provider.of<HttpService>(context);
     return Container(
       color: Colors.white,
       child: SingleChildScrollView(
@@ -35,12 +34,12 @@ class ImpressumView extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   YellowButton(
-                      onTap: () => httpService.launchURL(
+                      onTap: () => HttpService.launchURL(
                           'https://millesanders.com/pages/newsletter'),
                       label: 'zum Newsletter anmelden'),
                   SizedBox(height: 20),
                   YellowButton(
-                      onTap: () => httpService.launchURL(
+                      onTap: () => HttpService.launchURL(
                           'https://millesanders.com/pages/impressum-growth-decks'),
                       label: 'Impressum|Datenschutz'),
                   SizedBox(height: 30),

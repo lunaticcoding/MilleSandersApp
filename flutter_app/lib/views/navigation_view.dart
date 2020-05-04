@@ -17,8 +17,7 @@ class NavigationView extends StatelessWidget {
   Widget build(BuildContext context) {
     NavigationService navigationService =
         Provider.of<NavigationService>(context);
-    HttpService httpService = Provider.of<HttpService>(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         bottom: PreferredSize(
@@ -47,7 +46,7 @@ class NavigationView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () => httpService.launchURL(
+                  onTap: () => HttpService.launchURL(
                       'https://www.facebook.com/millesandersaustria/'),
                   child: Icon(
                     MilleSanders.facebook,
@@ -56,7 +55,7 @@ class NavigationView extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => httpService.launchURL(
+                  onTap: () => HttpService.launchURL(
                       'https://www.linkedin.com/company/millesanders-com'),
                   child: Icon(
                     MilleSanders.linkedin,
@@ -65,7 +64,7 @@ class NavigationView extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => httpService.launchURL(
+                  onTap: () => HttpService.launchURL(
                       'https://www.pinterest.at/millesanders/'),
                   child: Icon(
                     MilleSanders.pinterest,
@@ -74,7 +73,7 @@ class NavigationView extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => httpService.launchURL(
+                  onTap: () => HttpService.launchURL(
                       'https://www.instagram.com/mille_sanders/'),
                   child: Icon(
                     MilleSanders.instagram,

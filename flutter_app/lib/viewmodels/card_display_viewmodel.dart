@@ -6,56 +6,34 @@ class CardDisplayViewModel extends ChangeNotifier {
   Map<String, bool> filters;
   bool isReady = false;
 
-  CardDeck _unfilteredCards;
-  List<Card> _cards;
+  CardDeck _fullCardDeck;
+  List<Card> _cardDeck;
   int _index = 0;
 
   AnimationController animationController;
   Animation animationTranslation;
   Animation animationRotation;
 
-  CardDisplayViewModel.withAnimationMocks(AnimationController controller,
-      Animation translation, Animation rotation) {
-    animationController = controller;
-    animationTranslation = translation;
-    animationRotation = rotation;
-  }
+  CardDisplayViewModel(
+      {this.animationController,
+      this.animationTranslation,
+      this.animationRotation,
+      CardDeck cardDeck}) {
+    animationTranslation.addListener(notifyListeners);
+    animationRotation.addListener(notifyListeners);
 
-  CardDisplayViewModel(TickerProvider tickerProvider) {
-    animationController = AnimationController(
-      duration: Duration(milliseconds: 500),
-      vsync: tickerProvider,
-    );
-
-    animationTranslation = new Tween<Offset>(
-      begin: Offset(0, 0),
-      end: Offset(200, 50),
-    ).animate(animationController)
-      ..addListener(notifyListeners);
-
-    animationRotation = new Tween<double>(
-      begin: 0,
-      end: 0.2,
-    ).animate(animationController)
-      ..addListener(notifyListeners);
-  }
-
-  void initWithSelectedDeck(CardDeck cardDeck) {
-    if (cardDeck == null) {
-      return;
-    }
-    _unfilteredCards = cardDeck;
+    _fullCardDeck = cardDeck;
     deckName = cardDeck.name;
 
-    filters = Map.fromIterable(_unfilteredCards.filters,
+    filters = Map.fromIterable(_fullCardDeck.filters,
         key: (v) => v.toString(), value: (v) => false);
-    _cards = _unfilteredCards.cards.map((elem) => elem).toList();
+    _cardDeck = _fullCardDeck.cards.map((elem) => elem).toList();
     isReady = true;
     notifyListeners();
   }
 
-  int getNrValidCards() => _cards.length - _index;
-  bool isDeckEmpty() => _index >= _cards.length;
+  int getNrValidCards() => _cardDeck.length - _index;
+  bool isDeckEmpty() => _index >= _cardDeck.length;
   bool isDeckFull() => _index == 0;
 
   Future animateToNextCard() async {
@@ -67,7 +45,7 @@ class CardDisplayViewModel extends ChangeNotifier {
   }
 
   void removeCard() {
-    if (_index < _cards.length) {
+    if (_index < _cardDeck.length) {
       _index++;
       notifyListeners();
     }
@@ -88,26 +66,26 @@ class CardDisplayViewModel extends ChangeNotifier {
   }
 
   void shuffleDeck() {
-    _cards.shuffle();
+    _cardDeck.shuffle();
     _index = 0;
     notifyListeners();
   }
 
   List forEachCard<T>(Function function) {
     List<T> list = List<T>();
-    for (int i = _index; i < _cards.length; i++) {
-      list.insert(0, function(i - _index, _cards[i]));
+    for (int i = _index; i < _cardDeck.length; i++) {
+      list.insert(0, function(i - _index, _cardDeck[i]));
     }
     return list;
   }
 
   void updateFilter() {
     _index = 0;
-    _cards = _unfilteredCards.cards;
+    _cardDeck = _fullCardDeck.cards;
 
     bool applyFilters = filters.values.reduce((val, elem) => val || elem);
     if (applyFilters) {
-      _cards = _cards.where(
+      _cardDeck = _cardDeck.where(
         (card) {
           for (var entry in filters.entries) {
             if (entry.value) {
