@@ -19,7 +19,7 @@ const dynamic cardJsonMock = {
   "filter": [],
 };
 
-CardDeck filledCardDeckMock = CardDeck.fromJson({
+CardDeck filledCardDeckMock = CardDeck.fromData({
   "deckName": "mock",
   "filterIcons": ["filter1", "filter2"],
   "icon": "mock",
@@ -87,4 +87,4 @@ List<CardSection> sectionsMockWithDecks = [
       }
     ],
   }
-].map<CardSection>((section) => CardSection.fromJson(section)).toList();
+].map<CardSection>((section) => CardSection.fromData(section)).toList();

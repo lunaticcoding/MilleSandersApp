@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>414592820091-8g5d3ueumf32clphjld4rh4j33oq7rjq.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.414592820091-8g5d3ueumf32clphjld4rh4j33oq7rjq</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCnhk8HvPeG3FvKC44ufi5r8i9ijMMxXPs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>414592820091</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.lunaticcoding.growthdeck</string>
+	<key>PROJECT_ID</key>
+	<string>mille-sanders-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mille-sanders-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:414592820091:ios:b107757d890f2548ff13de</string>
+	<key>DATABASE_URL</key>
+	<string>https://mille-sanders-app.firebaseio.com</string>
+</dict>
+</plist>

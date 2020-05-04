@@ -13,8 +13,6 @@ import 'package:growthdeck/models/Decks.dart';
 import 'package:growthdeck/viewmodels/card_display_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-import '../viewmodels/card_display_viewmodel.dart';
-
 class CardDisplayView extends StatefulWidget {
   @override
   _CardDisplayViewState createState() => _CardDisplayViewState();
@@ -23,77 +21,102 @@ class CardDisplayView extends StatefulWidget {
 class _CardDisplayViewState extends State<CardDisplayView>
     with SingleTickerProviderStateMixin {
   GlobalKey filterKey;
+  AnimationController animationController;
+  Animation animationTranslation;
+  Animation animationRotation;
 
   @override
   void initState() {
     super.initState();
     filterKey = GlobalKey();
+
+    animationController = AnimationController(
+      duration: Duration(milliseconds: 500),
+      vsync: this,
+    );
+
+    animationTranslation = new Tween<Offset>(
+      begin: Offset(0, 0),
+      end: Offset(200, 50),
+    ).animate(animationController);
+//      ..addListener(notifyListeners);
+
+    animationRotation = new Tween<double>(
+      begin: 0,
+      end: 0.2,
+    ).animate(animationController);
+//      ..addListener(notifyListeners);
   }
 
   @override
-  Widget build(BuildContext context) =>
-      ChangeNotifierProxyProvider<Decks, CardDisplayViewModel>(
-        create: (context) => CardDisplayViewModel(this),
-        update: (context, decks, model) =>
-            model..initWithSelectedDeck(decks.selectedDeck),
-        child: Consumer<CardDisplayViewModel>(
-          builder: (context, model, child) => model.isReady
-              ? Container(
-                  color: Colors.white,
-                  child: Center(
-                    child: Container(
-                      width: 280,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            model.deckName,
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w700,
+  Widget build(BuildContext context) {
+    final decks = Provider.of<Decks>(context);
+    ChangeNotifierProvider<CardDisplayViewModel>(
+      create: (context) => CardDisplayViewModel(
+        animationController: animationController,
+        animationTranslation: animationTranslation,
+        animationRotation: animationRotation,
+        cardDeck: decks.selectedDeck,
+      ),
+      child: Consumer<CardDisplayViewModel>(
+        builder: (context, model, child) => model.isReady
+            ? Container(
+                color: Colors.white,
+                child: Center(
+                  child: Container(
+                    width: 280,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          model.deckName,
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        _MSCardStack(),
+                        SizedBox(height: 30),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            MSRoundedIconButton(
+                              icon: MilleSanders.arrowleft,
+                              color: kColors.brown,
+                              onTap: model.animateToPrevCard,
                             ),
-                          ),
-                          SizedBox(height: 10),
-                          _MSCardStack(),
-                          SizedBox(height: 30),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              MSRoundedIconButton(
-                                icon: MilleSanders.arrowleft,
-                                color: kColors.brown,
-                                onTap: model.animateToPrevCard,
+                            Container(
+                              child: MSRoundedIconButton(
+                                icon: MilleSanders.random,
+                                color: kColors.beige,
+                                onTap: model.shuffleDeck,
                               ),
-                              Container(
-                                child: MSRoundedIconButton(
-                                  icon: MilleSanders.random,
-                                  color: kColors.beige,
-                                  onTap: model.shuffleDeck,
-                                ),
+                            ),
+                            Container(
+                              key: filterKey,
+                              child: MSRoundedIconButton(
+                                icon: MilleSanders.noun_filters,
+                                color: kColors.grey,
+                                onTap: () => _showModalPopup(model),
                               ),
-                              Container(
-                                key: filterKey,
-                                child: MSRoundedIconButton(
-                                  icon: MilleSanders.noun_filters,
-                                  color: kColors.grey,
-                                  onTap: () => _showModalPopup(model),
-                                ),
-                              ),
-                              MSRoundedIconButton(
-                                icon: MilleSanders.arrowright,
-                                color: kColors.gold,
-                                onTap: model.animateToNextCard,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                            MSRoundedIconButton(
+                              icon: MilleSanders.arrowright,
+                              color: kColors.gold,
+                              onTap: model.animateToNextCard,
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                )
-              : MSProgressIndicator(),
-        ),
-      );
+                ),
+              )
+            : MSProgressIndicator(),
+      ),
+    );
+  }
 
   Future _showModalPopup(CardDisplayViewModel model) => showCupertinoModalPopup(
         context: context,
