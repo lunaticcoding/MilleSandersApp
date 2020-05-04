@@ -7,8 +7,6 @@ import 'package:growthdeck/widgets/MSRoundedSquare.dart';
 import 'package:growthdeck/widgets/MSSliderIndicator.dart';
 import 'package:provider/provider.dart';
 
-import '../viewmodels/deck_selection_viewmodel.dart';
-
 class DeckSelectionView extends StatefulWidget {
   @override
   _DeckSelectionViewState createState() => _DeckSelectionViewState();
@@ -16,160 +14,187 @@ class DeckSelectionView extends StatefulWidget {
 
 class _DeckSelectionViewState extends State<DeckSelectionView> {
   @override
-  Widget build(BuildContext context) => Consumer2<NavigationService, Decks>(
-        builder: (context, navigationService, decks, child) =>
-            decks.isDoneLoading
-                ? decks.error == null
-                    ? Container(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              SizedBox(height: 20),
-                              Text(
-                                "Heute möchte ich...",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: Colors.black,
-                                  decorationStyle: TextDecorationStyle.solid,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 18,
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              _SectionList(
-                                  sectionNames: decks.cardSections
-                                      .map((section) => section.name)
-                                      .toList()),
-                            ],
-                          ),
-                        ),
-                      )
-                    : GestureDetector(
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(40.0),
-                            child: Text(
-                              decks.error,
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 15,
-                              ),
+  Widget build(BuildContext context) => Consumer<Decks>(
+        builder: (context, Decks decks, Widget child) => decks.hasData
+            ? decks.cardSections != null
+                ? Container(
+                    color: Colors.white,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(height: 20),
+                          Text(
+                            "Heute möchte ich...",
+                            style: TextStyle(
+                              color: Colors.black,
+                              decoration: TextDecoration.underline,
+                              decorationColor: Colors.black,
+                              decorationStyle: TextDecorationStyle.solid,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
                             ),
                           ),
+                          SizedBox(height: 10),
+                          SectionList(
+                              sectionNames: decks.cardSections
+                                  .map((section) => section.name)
+                                  .toList()),
+                        ],
+                      ),
+                    ),
+                  )
+                : GestureDetector(
+                    onTap: decks.reloadData,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(40.0),
+                        child: Text(
+                          decks.error,
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15,
+                          ),
                         ),
-                      )
-                : MSProgressIndicator(),
+                      ),
+                    ),
+                  )
+            : MSProgressIndicator(),
       );
 }
 
-class _SectionList extends StatelessWidget {
-  _SectionList({this.sectionNames});
+class SectionList extends StatelessWidget {
+  SectionList({this.sectionNames});
   final List<String> sectionNames;
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: ListView.builder(
-        itemCount: sectionNames.length,
-        itemBuilder: (BuildContext ctxt, int index) => Column(
-          children: <Widget>[
-            LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) =>
-                  Container(
-                width: constraints.maxWidth,
-                child: Text(
-                  sectionNames[index],
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    decoration: TextDecoration.none,
-                    color: Colors.black,
-                    fontSize: 15,
+    return Consumer<Decks>(
+      builder: (context, Decks decks, Widget child) => Flexible(
+        child: ListView.builder(
+          itemCount: sectionNames.length,
+          itemBuilder: (BuildContext ctxt, int index) => Column(
+            children: <Widget>[
+              LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) =>
+                    Container(
+                  width: constraints.maxWidth,
+                  child: Text(
+                    sectionNames[index],
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      decoration: TextDecoration.none,
+                      color: Colors.black,
+                      fontSize: 15,
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 5),
-            _CardDeckList(index),
-            SizedBox(height: 20),
-          ],
+              SizedBox(height: 5),
+              CardDeckList(section: decks.cardSections[index]),
+              SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class _CardDeckList extends StatefulWidget {
-  _CardDeckList(this.index);
-  final int index;
+class CardDeckList extends StatefulWidget {
+  CardDeckList({this.section});
+  final CardSection section;
 
   @override
-  __CardDeckListState createState() => __CardDeckListState();
+  _CardDeckListState createState() => _CardDeckListState();
 }
 
-class __CardDeckListState extends State<_CardDeckList> {
+class _CardDeckListState extends State<CardDeckList> {
+  ScrollController scrollController = ScrollController();
+  int sliderIndex = 0;
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProxyProvider<Decks, DeckSelectionViewModel>(
-      create: (BuildContext context) => DeckSelectionViewModel(),
-      update: (BuildContext context, decks, model) =>
-          model..initWithSections(decks?.cardSections),
-      child: Consumer3<NavigationService, DeckSelectionViewModel, Decks>(
-        builder: (context, navigationService, model, decks, child) =>
-            LayoutBuilder(
-          builder: (context, constraints) => model.isLoading
-              ? MSProgressIndicator()
-              : Column(
-                  children: <Widget>[
-                    Container(
-                      width: constraints.maxWidth,
-                      height: constraints.maxWidth / 2 - 10,
-                      child: NotificationListener<ScrollNotification>(
-                        onNotification: (notification) => model.onNotification(
-                            notification, constraints, widget.index),
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          controller: model.scrollControllers[widget.index],
-                          itemCount:
-                              model.cardSections[widget.index].cardDecks.length,
-                          separatorBuilder: (context, index) =>
-                              SizedBox(width: 20),
-                          itemBuilder: (context, i) {
-                            CardDeck cardDeck =
-                                model.cardSections[widget.index].cardDecks[i];
-                            return _DeckCard(
-                              constraints: constraints,
-                              color: cardDeck.color,
-                              text: cardDeck.name,
-                              iconData: cardDeck.icon,
-                              onTap: () {
-                                decks.setSelectedDeck(cardDeck);
-                                navigationService.jumpToPage(5);
-                              },
-                            );
-                          },
+    return Consumer2<Decks, NavigationService>(
+      builder: (
+        context,
+        Decks decks,
+        NavigationService navService,
+        Widget child,
+      ) =>
+          LayoutBuilder(
+        builder: (context, constraints) => decks.hasData
+            ? decks.cardSections != null
+                ? Column(
+                    children: <Widget>[
+                      Container(
+                        width: constraints.maxWidth,
+                        height: constraints.maxWidth / 2 - 10,
+                        child: NotificationListener<ScrollNotification>(
+                          onNotification: (notification) =>
+                              onNotification(notification, constraints),
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            controller: scrollController,
+                            itemCount: widget.section.cardDecks.length,
+                            separatorBuilder: (context, index) =>
+                                SizedBox(width: 20),
+                            itemBuilder: (context, i) {
+                              CardDeck cardDeck = widget.section.cardDecks[i];
+                              return DeckCard(
+                                constraints: constraints,
+                                color: cardDeck.color,
+                                text: cardDeck.name,
+                                iconData: cardDeck.icon,
+                                onTap: () {
+                                  decks.setSelectedDeck(cardDeck);
+                                  navService.jumpToPage(5);
+                                },
+                              );
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                    MSSliderIndicator(
-                      list: model.cardSections[widget.index].cardDecks,
-                      selectedIndex: model.indices[widget.index],
-                    ),
-                  ],
-                ),
-        ),
+                      MSSliderIndicator(
+                        list: widget.section.cardDecks,
+                        selectedIndex: sliderIndex,
+                      ),
+                    ],
+                  )
+                : Center(
+                    child: Text(decks.error),
+                  )
+            : MSProgressIndicator(),
       ),
     );
   }
+
+  bool onNotification(
+    ScrollNotification notification,
+    BoxConstraints constraints,
+  ) {
+    double cardSize = constraints.maxWidth / 2 + 10;
+    if (notification is ScrollUpdateNotification) {
+      double offset = scrollController.offset;
+      sliderIndex = offset < 0
+          ? 0
+          : offset ~/ cardSize + ((offset % cardSize > (cardSize / 2)) ? 1 : 0);
+    } else if (notification is ScrollEndNotification) {
+      Future.delayed(Duration(microseconds: 1), () {
+        double target = sliderIndex * cardSize;
+        scrollController.animateTo(target,
+            duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+      });
+    }
+    return true;
+  }
 }
 
-class _DeckCard extends StatelessWidget {
-  _DeckCard(
+class DeckCard extends StatelessWidget {
+  DeckCard(
       {this.constraints, this.color, this.text, this.iconData, this.onTap});
   final BoxConstraints constraints;
   final Color color;

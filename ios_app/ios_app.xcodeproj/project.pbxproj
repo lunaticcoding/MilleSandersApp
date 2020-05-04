@@ -17,6 +17,7 @@
 		A4C3992B245CF18300A75F2B /* ios_appTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C3992A245CF18300A75F2B /* ios_appTests.swift */; };
 		A4C39936245CF18300A75F2B /* ios_appUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C39935245CF18300A75F2B /* ios_appUITests.swift */; };
 		A4C39945245CF99F00A75F2B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4C39943245CF99E00A75F2B /* LaunchScreen.storyboard */; };
+
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		A4C39935245CF18300A75F2B /* ios_appUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ios_appUITests.swift; sourceTree = "<group>"; };
 		A4C39937245CF18300A75F2B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A4C39944245CF99E00A75F2B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = ../../flutter_app/ios/Runner/Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
