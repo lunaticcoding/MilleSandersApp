@@ -20,6 +20,7 @@
 		A4C39949245E4FD600A75F2B /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C39948245E4FD600A75F2B /* ShopViewController.swift */; };
 		A4C3994B245E4FEA00A75F2B /* ImpressumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C3994A245E4FEA00A75F2B /* ImpressumViewController.swift */; };
 		A4E14FAF24602303007F8A69 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4E14FAE24602303007F8A69 /* MainView.swift */; };
+		A4E14FB124607D49007F8A69 /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4E14FB024607D49007F8A69 /* IntroductionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		A4C39948245E4FD600A75F2B /* ShopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
 		A4C3994A245E4FEA00A75F2B /* ImpressumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImpressumViewController.swift; sourceTree = "<group>"; };
 		A4E14FAE24602303007F8A69 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		A4E14FB024607D49007F8A69 /* IntroductionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroductionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 				A4C39921245CF18300A75F2B /* Info.plist */,
 				A4C39919245CF17E00A75F2B /* ios_app.xcdatamodeld */,
 				A4E14FAE24602303007F8A69 /* MainView.swift */,
+				A4E14FB024607D49007F8A69 /* IntroductionView.swift */,
 			);
 			path = ios_app;
 			sourceTree = "<group>";
@@ -273,6 +276,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4E14FB124607D49007F8A69 /* IntroductionView.swift in Sources */,
 				A4C39915245CF17E00A75F2B /* BlogViewController.swift in Sources */,
 				A4C39913245CF17E00A75F2B /* IntroductionViewController.swift in Sources */,
 				A4E14FAF24602303007F8A69 /* MainView.swift in Sources */,
