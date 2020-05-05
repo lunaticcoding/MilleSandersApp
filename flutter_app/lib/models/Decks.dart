@@ -1,83 +1,49 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:growthdeck/constants/constants.dart';
 import 'package:growthdeck/constants/mille_sanders_icons.dart';
-import 'package:growthdeck/services/http_service.dart';
-import 'package:growthdeck/services/local_storage_service.dart';
 
 class Decks extends ChangeNotifier {
-  String error;
-  LocalStorageService _localStorageService;
-  HttpService _httpService;
-
   List<CardSection> cardSections;
   CardDeck selectedDeck;
-  bool isDoneLoading = false;
+  bool hasData = false;
+  String error;
 
   void setSelectedDeck(CardDeck cardDeck) {
     selectedDeck = cardDeck;
     notifyListeners();
   }
 
-  Future<void> loadData(
-    LocalStorageService localStorageService,
-    HttpService httpService,
-  ) async {
-    if (localStorageService == null ||
-        httpService == null ||
-        (_httpService != null && _localStorageService == null)) {
-      return;
-    }
-    _localStorageService = localStorageService;
-    _httpService = httpService;
-
-    double localVersion = await _localStorageService.getVersion();
-    double newestVersion;
-    try {
-      newestVersion = (await _httpService.getJson(kVersionUrl))["version"];
-    } catch (e) {
-      dynamic data = await _localStorageService.getFile(kFileName);
-      cardSections =
-          List.generate(data.length, (i) => CardSection.fromJson(data[i]));
-      isDoneLoading = true;
-      notifyListeners();
-      return;
-    }
-    try {
-      if (localVersion != null && localVersion == newestVersion) {
-        dynamic data = await _localStorageService.getFile(kFileName);
-        cardSections =
-            List.generate(data.length, (i) => CardSection.fromJson(data[i]));
-      } else {
-        await reloadData();
-        return;
-      }
-    } catch (e) {
-      await reloadData();
-    }
-    isDoneLoading = true;
-    notifyListeners();
+  Decks() {
+    _loadData();
   }
 
-  Future<void> reloadData() async {
-    error = null;
-    isDoneLoading = false;
+  void _loadData() {
+    Firestore.instance
+        .collection(kCollectionName)
+        .getDocuments()
+        .then((QuerySnapshot snapshot) {
+      List<DocumentSnapshot> sections = snapshot.documents
+        ..sort((sectionA, sectionB) =>
+            (sectionA["id"] as int).compareTo(sectionB["id"] as int));
+      cardSections = sections
+          .map<CardSection>((snapshot) => CardSection.fromData(snapshot))
+          .toList();
+      hasData = true;
+      notifyListeners();
+    }).catchError((error) {
+      this.error = error;
+      hasData = true;
+      notifyListeners();
+    });
+  }
+
+  void reloadData() {
+    hasData = false;
     notifyListeners();
-    try {
-      double newestVersion =
-          (await _httpService.getJson(kVersionUrl))["version"];
-      dynamic data = await _httpService.getJson(kDataUrl);
-      cardSections =
-          List.generate(data.length, (i) => CardSection.fromJson(data[i]));
-      _localStorageService.writeFile(kFileName, data);
-      _localStorageService.setVersion(newestVersion);
-    } catch (e) {
-      error =
-          "Make sure you are connected to the internet. If the error persists, contact the us at email.";
-    }
-    isDoneLoading = true;
-    notifyListeners();
+    _loadData();
   }
 
   static Color colorFromHex(String hexString) {
@@ -110,11 +76,11 @@ class Decks extends ChangeNotifier {
 class CardSection {
   String name;
   List<CardDeck> cardDecks;
-  CardSection.fromJson(dynamic json) {
+  CardSection.fromData(dynamic json) {
     name = json['sectionName'] as String;
     cardDecks = List<CardDeck>();
     json['decks']
-        .forEach((dynamic deck) => cardDecks.add(CardDeck.fromJson(deck)));
+        .forEach((dynamic deck) => cardDecks.add(CardDeck.fromData(deck)));
   }
 }
 
@@ -125,14 +91,14 @@ class CardDeck {
   Color color;
   List<Card> cards;
 
-  CardDeck.fromJson(dynamic json) {
+  CardDeck.fromData(dynamic json) {
     name = json['deckName'] as String;
     filters = json['filterIcons'].cast<String>() as List<String>;
     icon = Decks.getIcon(json['icon'] as String);
     color = Decks.colorFromHex(json['color'] as String);
     cards = List<Card>();
     json['cards']
-        .forEach((dynamic cardDeck) => cards.add(Card.fromJson(cardDeck)));
+        .forEach((dynamic cardDeck) => cards.add(Card.fromData(cardDeck)));
   }
 }
 
@@ -141,7 +107,7 @@ class Card {
   Color color;
   List<String> filters;
 
-  Card.fromJson(dynamic json) {
+  Card.fromData(dynamic json) {
     text = json['text'] as String;
     color = Decks.colorFromHex(json['color']);
     filters = json['filter'].cast<String>() as List<String>;

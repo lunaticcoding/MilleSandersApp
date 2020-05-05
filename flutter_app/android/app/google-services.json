@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "414592820091",
+    "firebase_url": "https://mille-sanders-app.firebaseio.com",
+    "project_id": "mille-sanders-app",
+    "storage_bucket": "mille-sanders-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414592820091:android:ebb17bf86949df1aff13de",
+        "android_client_info": {
+          "package_name": "com.lunaticcoding.growthdeck"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "414592820091-te86ru84nn6n0l83cr45loo6sv7g3c0g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJlZc6Qg6ULo087b-X-c0-MdAdzN4H__4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "414592820091-te86ru84nn6n0l83cr45loo6sv7g3c0g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "414592820091-8g5d3ueumf32clphjld4rh4j33oq7rjq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.lunaticcoding.growthdeck"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

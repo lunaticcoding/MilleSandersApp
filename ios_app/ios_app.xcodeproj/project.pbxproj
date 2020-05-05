@@ -17,6 +17,7 @@
 		A4E14FAF24602303007F8A69 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4E14FAE24602303007F8A69 /* MainView.swift */; };
 		A4E14FB124607D49007F8A69 /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4E14FB024607D49007F8A69 /* IntroductionView.swift */; };
 		A4E14FB824622D6F007F8A69 /* BebasNeue-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A4E14FB724622D6F007F8A69 /* BebasNeue-Regular.ttf */; };
+
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		A4E14FAE24602303007F8A69 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		A4E14FB024607D49007F8A69 /* IntroductionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroductionView.swift; sourceTree = "<group>"; };
 		A4E14FB724622D6F007F8A69 /* BebasNeue-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BebasNeue-Regular.ttf"; sourceTree = "<group>"; };
+
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

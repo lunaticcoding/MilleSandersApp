@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:growthdeck/models/Decks.dart';
 import 'package:growthdeck/viewmodels/card_display_viewmodel.dart';
+import 'package:growthdeck/models/Decks.dart';
 
 import '../mockData.dart';
 import '../mocks.dart';
@@ -16,11 +16,11 @@ void main() {
     translationMock = AnimationMock();
     rotationMock = AnimationMock();
 
-    model = CardDisplayViewModel.withAnimationMocks(
-      animationControllerMock,
-      translationMock,
-      rotationMock,
-    )..initWithSelectedDeck(filledCardDeckMock);
+    model = CardDisplayViewModel(
+        animationController: animationControllerMock,
+        animationTranslation: translationMock,
+        animationRotation: rotationMock,
+        cardDeck: filledCardDeckMock);
   });
 
   group('test card deck', () {
@@ -70,8 +70,7 @@ void main() {
 
     test('applying all filter filters only card with no filter', () {
       int magicNumberCards = 3;
-      model.filters
-          .forEach((key, _) => model.filters[key] = true);
+      model.filters.forEach((key, _) => model.filters[key] = true);
       model.updateFilter();
       expect(model.getNrValidCards(), magicNumberCards);
     });
