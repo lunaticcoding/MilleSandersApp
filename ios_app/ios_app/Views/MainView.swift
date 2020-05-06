@@ -25,7 +25,7 @@ struct MainView: View {
                     .font(.system(size: 22, weight: .medium))
                 }
                 
-                Text("The content of the second view")
+                DeckSelectionView()
                 .tabItem {
                     Image("noun_overview")
                     .font(.system(size: 22, weight: .medium))
