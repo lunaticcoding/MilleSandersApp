@@ -18,6 +18,7 @@
 		A4E14FB124607D49007F8A69 /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4E14FB024607D49007F8A69 /* IntroductionView.swift */; };
 		A4E14FB824622D6F007F8A69 /* BebasNeue-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A4E14FB724622D6F007F8A69 /* BebasNeue-Regular.ttf */; };
 		A4E14FBB24623175007F8A69 /* DeckSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4E14FBA24623175007F8A69 /* DeckSelectionView.swift */; };
+		A4E14FBF24636758007F8A69 /* Decks.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4E14FBE24636758007F8A69 /* Decks.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 		A4E14FB024607D49007F8A69 /* IntroductionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroductionView.swift; sourceTree = "<group>"; };
 		A4E14FB724622D6F007F8A69 /* BebasNeue-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BebasNeue-Regular.ttf"; sourceTree = "<group>"; };
 		A4E14FBA24623175007F8A69 /* DeckSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckSelectionView.swift; sourceTree = "<group>"; };
+		A4E14FBE24636758007F8A69 /* Decks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Decks.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,12 +107,14 @@
 		A4C3990D245CF17E00A75F2B /* ios_app */ = {
 			isa = PBXGroup;
 			children = (
-				A4E14FB624622D5E007F8A69 /* fonts */,
 				A4C3990E245CF17E00A75F2B /* AppDelegate.swift */,
 				A4C39910245CF17E00A75F2B /* SceneDelegate.swift */,
+				A4E14FB92462310F007F8A69 /* Views */,
+				A4E14FBD246361B5007F8A69 /* Models */,
+				A4E14FBC246361A8007F8A69 /* Viewmodels */,
 				A4C39943245CF99E00A75F2B /* LaunchScreen.storyboard */,
 				A4C3991C245CF18300A75F2B /* Assets.xcassets */,
-				A4E14FB92462310F007F8A69 /* Views */,
+				A4E14FB624622D5E007F8A69 /* fonts */,
 				A4C39921245CF18300A75F2B /* Info.plist */,
 				A4C39919245CF17E00A75F2B /* ios_app.xcdatamodeld */,
 			);
@@ -151,6 +155,21 @@
 				A4E14FBA24623175007F8A69 /* DeckSelectionView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		A4E14FBC246361A8007F8A69 /* Viewmodels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Viewmodels;
+			sourceTree = "<group>";
+		};
+		A4E14FBD246361B5007F8A69 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A4E14FBE24636758007F8A69 /* Decks.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -287,6 +306,7 @@
 				A4E14FB124607D49007F8A69 /* IntroductionView.swift in Sources */,
 				A4E14FAF24602303007F8A69 /* MainView.swift in Sources */,
 				A4C3990F245CF17E00A75F2B /* AppDelegate.swift in Sources */,
+				A4E14FBF24636758007F8A69 /* Decks.swift in Sources */,
 				A4C39911245CF17E00A75F2B /* SceneDelegate.swift in Sources */,
 				A4E14FBB24623175007F8A69 /* DeckSelectionView.swift in Sources */,
 				A4C3991B245CF17E00A75F2B /* ios_app.xcdatamodeld in Sources */,

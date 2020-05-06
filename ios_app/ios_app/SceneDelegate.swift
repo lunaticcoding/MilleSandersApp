@@ -9,9 +9,11 @@
 import UIKit
 import SwiftUI
 
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    var decks = Decks()
     
     // MARK:**UISceneSession Lifecycle**
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
@@ -30,7 +32,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // Use a UIHostingController as window root view controller
             if let windowScene = scene as? UIWindowScene {
                 let window = UIWindow(windowScene: windowScene)
-                window.rootViewController = UIHostingController(rootView: MainView())
+                window.rootViewController = UIHostingController(rootView: MainView().environmentObject(decks))
                 self.window = window
                 window.makeKeyAndVisible()
             }
