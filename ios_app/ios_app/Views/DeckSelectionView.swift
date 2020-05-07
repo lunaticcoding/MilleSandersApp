@@ -9,10 +9,11 @@
 import SwiftUI
 
 struct DeckSelectionView: View {
+    
     @EnvironmentObject var decks: Decks
 
     var body: some View {
-        Text(decks.sections[0])
+        Text((decks.sections.count > 0 ? decks.sections[0].sectionName : "0")).onAppear(perform: decks.getData)
     }
 }
 
