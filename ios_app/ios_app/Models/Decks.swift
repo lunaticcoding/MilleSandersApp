@@ -34,7 +34,11 @@ class Decks: ObservableObject {
 
                         tmpSections.append(section)
                     }
-                    self.sections = tmpSections
+                    DispatchQueue.main.async {
+                        self.sections = tmpSections.sorted(by: { (section1, section2) -> Bool in
+                            section1.id < section2.id
+                        })
+                    }
                 }, onError: { error in
                     print("Error fetching snapshots: \(error)")
                 })
@@ -45,7 +49,7 @@ class Decks: ObservableObject {
 }
 
 
-struct Section: Codable {
+struct Section: Codable{
     var id: Int
     var sectionName: String
     var decks: [Deck]
@@ -63,4 +67,10 @@ struct Card: Codable {
     var text: String
     var color: String
     var filter: [String]
+}
+
+struct Decks_Previews: PreviewProvider {
+    static var previews: some View {
+        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
+    }
 }
