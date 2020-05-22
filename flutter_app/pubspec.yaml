@@ -19,9 +19,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  get_it: ^4.0.2
+  bloc: ^4.0.0
+  injectable: ^0.4.0
+  dartz: ^0.9.1
+  equatable: ^1.1.1
   cupertino_icons: ^0.1.2
   google_fonts: ^0.4.0
   provider: ^4.0.5
@@ -33,16 +35,16 @@ dependencies:
 
 dev_dependencies:
   mockito: ^4.1.1
+  injectable_generator: ^0.4.0
+  build_runner: ^1.10.0
   flutter_test:
     sdk: flutter
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -67,7 +69,7 @@ flutter:
   fonts:
     - family: MilleSanders
       fonts:
-      - asset: assets/fonts/MilleSanders.ttf
+        - asset: assets/fonts/MilleSanders.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
