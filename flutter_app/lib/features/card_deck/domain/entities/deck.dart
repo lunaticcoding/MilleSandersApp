@@ -1,19 +1,15 @@
-import 'package:flutter/material.dart';
+
+import 'package:flutter/widgets.dart';
 
 class Deck {
-//   String name;
-//   List<String> filters;
-//   IconData icon;
-//   Color color;
-//   List<Card> cards;
+  final String name;
+  final List<String> filters;
+  final IconData icon;
+  final Color color;
 
-//   Deck.fromData(dynamic json) {
-//     name = json['deckName'] as String;
-//     filters = json['filterIcons'].cast<String>() as List<String>;
-//     icon = Decks.getIcon(json['icon'] as String);
-//     color = Decks.colorFromHex(json['color'] as String);
-//     cards = List<Card>();
-//     json['cards']
-//         .forEach((dynamic cardDeck) => cards.add(Card.fromData(cardDeck)));
-//   }
+  Deck(
+      {@required this.name,
+      @required this.filters,
+      @required this.icon,
+      @required this.color});
 }

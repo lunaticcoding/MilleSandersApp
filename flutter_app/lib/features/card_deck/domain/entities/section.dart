@@ -1,16 +1,9 @@
-import 'package:equatable/equatable.dart';
-import 'package:growthdeck/models/Decks.dart';
+import 'package:growthdeck/features/card_deck/domain/entities/deck.dart';
+import 'package:meta/meta.dart';
 
-class Section extends Equatable {
-  @override
-  List<Object> get props => [name]..addAll(cardDecks);
+class Section {
+  final String name;
+  final List<Deck> decks;
 
-  String name;
-  List<CardDeck> cardDecks;
-//   Section.fromData(dynamic json) {
-//     name = json['sectionName'] as String;
-//     cardDecks = List<CardDeck>();
-//     json['decks']
-//         .forEach((dynamic deck) => cardDecks.add(CardDeck.fromData(deck)));
-//   }
+  Section({@required this.name, @required this.decks});
 }

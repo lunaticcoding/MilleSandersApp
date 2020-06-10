@@ -1,13 +1,10 @@
 import 'dart:ui';
+import 'package:meta/meta.dart';
 
-// class Card {
-//   String text;
-//   Color color;
-//   List<String> filters;
+class Card {
+  final String text;
+  final Color color;
+  final List<String> categories;
 
-//   Card.fromData(dynamic json) {
-//     text = json['text'] as String;
-//     color = Decks.colorFromHex(json['color']);
-//     filters = json['filter'].cast<String>() as List<String>;
-//   }
-// }
+  Card({@required this.text, @required this.color, @required this.categories});
+}
