@@ -16,25 +16,12 @@ void main() {
     usecase = GetSections(mockCardDataRepository);
   });
 
-  final List<Section> tSections = [Section()];
+  final List<Section> tSections = [Section(name: "section1", decks: [])];
 
   test('should return list of sections when call to repository successful',
       () async {
     when(mockCardDataRepository.getSections())
-        .thenAnswer((_) async => Right([Section()]));
-
-    final result = (await usecase()).getOrElse(() => throw Exception(
-        'Failure object was returned instead of Right([Sections])'));
-
-    expect(result, tSections);
-    verify(mockCardDataRepository.getSections());
-    verifyNoMoreInteractions(mockCardDataRepository);
-  });
-
-  test('should return list of sections when call to repository successful',
-      () async {
-    when(mockCardDataRepository.getSections())
-        .thenAnswer((_) async => Right([Section()]));
+        .thenAnswer((_) async => Right([Section(name: "section1", decks: [])]));
 
     final result = (await usecase()).getOrElse(() => throw Exception(
         'Failure object was returned instead of Right([Sections])'));
