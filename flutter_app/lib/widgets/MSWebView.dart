@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:growthdeck/widgets/MSProgressIndicator.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:growthdeck/constants/k_colors.dart';
 
 class MSWebView extends StatefulWidget {
   MSWebView(this.url);
