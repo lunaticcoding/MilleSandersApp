@@ -1,4 +1,8 @@
+import 'dart:ui';
+
 import 'package:dartz/dartz.dart';
+import 'package:growthdeck/constants/mille_sanders_icons.dart';
+import 'package:growthdeck/features/card_deck/domain/entities/deck.dart';
 import 'package:growthdeck/features/card_deck/domain/entities/section.dart';
 import 'package:growthdeck/features/card_deck/domain/repositories/cardDataRepository.dart';
 import 'package:growthdeck/features/card_deck/domain/usecases/get_sections.dart';
@@ -7,7 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 class MockCardDataRepository extends Mock implements CardDataRepository {}
 
-void main() {
+main() {
   GetSections usecase;
   CardDataRepository mockCardDataRepository;
 
@@ -16,7 +20,16 @@ void main() {
     usecase = GetSections(mockCardDataRepository);
   });
 
-  final List<Section> tSections = [Section(name: "section1", decks: [])];
+  final List<Section> tSections = [
+    Section(name: "section1", decks: [
+      Deck(
+        name: 'test',
+        filters: ['1', '2'],
+        icon: MilleSanders.advice,
+        color: Color(0xff324354),
+      )
+    ])
+  ];
 
   test('should return list of sections when call to repository successful',
       () async {
@@ -26,7 +39,7 @@ void main() {
     final result = (await usecase()).getOrElse(() => throw Exception(
         'Failure object was returned instead of Right([Sections])'));
 
-    expect(result, tSections);
+    expect(result.length, tSections.length);
     verify(mockCardDataRepository.getSections());
     verifyNoMoreInteractions(mockCardDataRepository);
   });
