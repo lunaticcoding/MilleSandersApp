@@ -1,7 +1,25 @@
-import 'package:flutter/material.dart';
-import 'package:growthdeck/features/card_deck/data/models/card_model.dart';
+import 'dart:ui';
 
-int main() {
-  CardModel model =
-      CardModel(text: "test", color: Colors.red, categories: ["f1", "f2"]);
+import 'package:flutter_test/flutter_test.dart';
+import 'package:growthdeck/features/card_deck/data/models/card_model.dart';
+import 'package:growthdeck/features/card_deck/domain/entities/card.dart';
+
+import '../../../../fixtures/card_map_fixture.dart';
+
+main() {
+  CardModel model;
+
+  setUp(() {
+    model = CardModel.fromMap(cardFixture);
+  });
+
+  test('CardModel is a subtype of Card entity', () async {
+    expect(model, isA<Card>());
+  });
+
+  test('initializes CardModel with valid data from map', () {
+    expect(model.text, 'demo text');
+    expect(model.categories.length, isNonZero);
+    expect(model.color, isNotNull);
+  });
 }
