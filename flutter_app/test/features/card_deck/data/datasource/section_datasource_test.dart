@@ -13,9 +13,7 @@ class FirestoreMock extends Mock implements Firestore {}
 class CollectionReferenceMock extends Mock implements CollectionReference {}
 
 class QuerySnapshotMock extends Mock implements QuerySnapshot {
-  final List<DocumentSnapshotMock> documents = [
-    DocumentSnapshotMock()
-  ];
+  final List<DocumentSnapshotMock> documents = [DocumentSnapshotMock()];
 }
 
 class DocumentSnapshotMock extends Mock implements DocumentSnapshot {
@@ -49,7 +47,7 @@ main() {
     when(firestoreMock.collection(any))
         .thenAnswer((_) => collectionReferenceMock);
     when(collectionReferenceMock.snapshots())
-        .thenAnswer((_) => Stream.error(NoDataFailure()));
+        .thenAnswer((_) => Stream.error("SomeError"));
 
     final SectionDataSource dataSource = SectionDataSourceImpl(firestoreMock);
 
