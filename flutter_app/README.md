@@ -1,9 +1,9 @@
 # Growth Decks Flutter
 
-## Architecture
+## Architecture (Needs to be updated!)
 While experimenting with different approaches to the provider architecture by using various combinations of [get_it](https://pub.dev/packages/get_it), [provider_architecture](https://pub.dev/packages/provider_architecture) and of course [provider](https://pub.dev/packages/provider). The approach I eventually pretty much the same as presented in the three part medium article series ([Part 1](https://medium.com/flutter-community/understanding-provider-in-diagrams-part-1-providing-values-4379aa1e7fd5), [Part 2](https://medium.com/flutter-community/understanding-provider-in-diagrams-part-2-basic-providers-1a80fb74d4e7) and [Part 3](https://medium.com/flutter-community/understanding-provider-in-diagrams-part-3-architecture-a145e4fbbde1)) shown in the diagram below: 
 
-[<img src="https://github.com/lunaticcoding/MilleSandersApp/blob/developer/images/provider_architecture.png" width="600"/>](provider_architecture.png)
+[<img src="https://github.com/lunaticcoding/MilleSandersApp/blob/master/images/provider_architecture.png" width="600"/>](provider_architecture.png)
 
 What I was looking for was for a central way to keep track of the state, while also being able to keep the business logic separated from the User Interface. This lead to the creation of ViewModels for the Views which needed additional functionality that I did not want to keep in the State. 
 
