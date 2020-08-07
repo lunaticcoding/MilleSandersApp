@@ -4,8 +4,9 @@ import 'deck_model.dart';
 
 class SectionModel extends Section {
   SectionModel.fromMap(Map<String, dynamic> section)
-      : super(name: section['name'],
-        decks: section['decks']
-            .map<DeckModel>((deck) => DeckModel.fromMap(deck))
-            .toList());
+      : super(
+            name: section['name'],
+            decks: section['decks']
+                .map<DeckModel>((deck) => DeckModel.fromMap(deck))
+                .toList());
 }

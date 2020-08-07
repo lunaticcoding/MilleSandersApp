@@ -6,8 +6,11 @@ import 'package:growthdeck/features/card_deck/domain/entities/deck.dart';
 
 class DeckModel extends Deck {
   DeckModel.fromMap(Map<String, dynamic> decks)
-      : super(name: decks['name'],
-        color: Color(int.parse(decks['color'])),
-        icon: milleSandersIconFrom(decks['icon']),
-        filters: decks['filters'] as List<String>);
+      : super(
+          name: decks['name'],
+          color: Color(int.parse(decks['color'])),
+          iconData: milleSandersIconFrom(decks['icon']),
+          filters: decks['filters'] as List<String>,
+          cards: decks['cards'],
+        );
 }
