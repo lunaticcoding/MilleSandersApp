@@ -11,6 +11,5 @@ class DeckModel extends Deck {
           color: Color(int.parse(decks['color'])),
           iconData: milleSandersIconFrom(decks['icon']),
           filters: decks['filters'] as List<String>,
-          cards: decks['cards'],
         );
 }
