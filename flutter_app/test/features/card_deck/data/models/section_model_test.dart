@@ -8,7 +8,7 @@ main() {
   SectionModel model;
 
   setUp(() {
-    model = SectionModel.fromMap(sectionFixture);
+    model = SectionModel(sectionFixture);
   });
 
   test('SectionModel is a subtype of Section entity', () async {

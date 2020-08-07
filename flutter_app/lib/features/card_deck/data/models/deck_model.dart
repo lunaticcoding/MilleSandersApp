@@ -5,7 +5,7 @@ import 'package:growthdeck/constants/mille_sanders_icon_from_string.dart';
 import 'package:growthdeck/features/card_deck/domain/entities/deck.dart';
 
 class DeckModel extends Deck {
-  DeckModel.fromMap(Map<String, dynamic> decks)
+  DeckModel(Map<String, dynamic> decks)
       : super(
           name: decks['name'],
           color: Color(int.parse(decks['color'])),

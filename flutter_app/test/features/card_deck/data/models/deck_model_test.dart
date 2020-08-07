@@ -9,7 +9,7 @@ main() {
   DeckModel model;
 
   setUp(() {
-    model = DeckModel.fromMap(deckFixture);
+    model = DeckModel(deckFixture);
   });
 
   test('DeckModel is a subtype of Deck entity', () {
@@ -19,7 +19,7 @@ main() {
   test('initializes DeckModel with valid data from map', () {
     expect(model.name, 'name');
     expect(model.color, isNotNull);
-    expect(model.icon, MilleSanders.advice);
+    expect(model.iconData, MilleSanders.advice);
     expect(model.filters.length, isNonZero);
   });
 }

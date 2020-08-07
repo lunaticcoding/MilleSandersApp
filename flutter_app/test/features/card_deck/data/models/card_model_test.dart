@@ -10,7 +10,7 @@ main() {
   CardModel model;
 
   setUp(() {
-    model = CardModel.fromMap(cardFixture);
+    model = CardModel(cardFixture);
   });
 
   test('CardModel is a subtype of Card entity', () async {
