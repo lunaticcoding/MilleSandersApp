@@ -1,19 +1,17 @@
-
-import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
-class Deck extends Equatable {
+class Deck {
   final String name;
-  final IconData icon;
+  final IconData iconData;
   final Color color;
   final List<String> filters;
+  final String cards;
 
-  Deck(
-      {@required this.name,
-      @required this.icon,
-      @required this.color,
-      @required this.filters});
-
-  @override
-  List<Object> get props => [name, icon, color, filters];
+  Deck({
+    @required this.name,
+    @required this.iconData,
+    @required this.color,
+    @required this.filters,
+    @required this.cards,
+  });
 }

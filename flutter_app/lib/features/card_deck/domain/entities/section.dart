@@ -1,13 +1,12 @@
-import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:growthdeck/features/card_deck/domain/entities/deck.dart';
-import 'package:meta/meta.dart';
 
-class Section extends Equatable {
+class Section {
   final String name;
-  final List<Deck> decks;
+  List<Deck> decks;
 
-  Section({@required this.name, @required this.decks});
-
-  @override
-  List<Object> get props => [name, decks];
+  Section({
+    @required this.name,
+    @required this.decks,
+  });
 }
