@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:growthdeck/constants/mille_sanders_icons.dart';
 import 'package:growthdeck/services/http_service.dart';
 
-class IntroductionView extends StatelessWidget {
+class IntroductionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
