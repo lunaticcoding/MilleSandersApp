@@ -1,4 +1,6 @@
-part of 'carddeck_bloc.dart';
+part of 'card_deck_bloc.dart';
 
-@immutable
-abstract class CarddeckEvent {}
+@freezed
+abstract class CardDeckEvent with _$CardDeckEvent{
+  const factory CardDeckEvent.loadData() = _LoadData;
+}
