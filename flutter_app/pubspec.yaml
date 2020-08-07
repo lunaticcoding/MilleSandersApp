@@ -21,7 +21,7 @@ dependencies:
     sdk: flutter
 
   get_it: ^4.0.2
-  bloc: ^6.0.1
+  flutter_bloc: ^6.0.1
   dartz: ^0.9.1
   freezed: ^0.11.4
   google_fonts: ^1.1.0
