@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:growthdeck/constants/k_colors.dart';
 import 'package:growthdeck/services/http_service.dart';
 
-class ImpressumView extends StatelessWidget {
+class ImpressumPages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
