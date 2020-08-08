@@ -39,7 +39,7 @@ main() {
 
     final SectionDataSource dataSource = SectionDataSourceImpl(firestoreMock);
 
-    expectLater(dataSource.sections, emits([SectionModel.fromMap(sectionFixture)]));
+    expectLater(dataSource.sections, emits([SectionModel(sectionFixture)]));
     verify(firestoreMock.collection(kCollectionName));
   });
 

@@ -25,16 +25,16 @@ main() {
       Deck(
         name: 'test',
         filters: ['1', '2'],
-        icon: MilleSanders.advice,
+        iconData: MilleSanders.advice,
         color: Color(0xff324354),
-      )
+      ),
     ])
   ];
 
   test('should return list of sections when call to repository successful',
       () async {
-    when(mockCardDataRepository.getSections())
-        .thenAnswer((_) => Stream.value([Section(name: "section1", decks: [])]));
+    when(mockCardDataRepository.getSections()).thenAnswer(
+        (_) => Stream.value([Section(name: "section1", decks: [])]));
 
     final expected = [Section(name: "section1", decks: [])];
 
